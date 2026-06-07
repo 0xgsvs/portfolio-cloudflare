@@ -1,0 +1,25 @@
+---
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import '../styles/global.css';
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description || "Venkat Sundaraneedi — Rust & Blockchain Developer"} />
+    <title>{title || "Venkat Sundaraneedi | Portfolio"}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <div class="container">
+      <Header />
+      <slot />
+      <Footer />
+    </div>
+  </body>
+</html>

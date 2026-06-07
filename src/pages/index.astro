@@ -1,0 +1,204 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { projects, techStack, socialLinks } from '../data/projects';
+import PixelTerminal from '../components/generic/PixelTerminal.astro';
+import PixelRust from '../components/generic/PixelRust.astro';
+import PixelSolana from '../components/generic/PixelSolana.astro';
+import PixelGithub from '../components/generic/PixelGithub.astro';
+import PixelEmail from '../components/generic/PixelEmail.astro';
+import PixelChain from '../components/generic/PixelChain.astro';
+import PixelFile from '../components/generic/PixelFile.astro';
+import PixelChart from '../components/generic/PixelChart.astro';
+import MobileSocials from '../components/home/MobileSocials.astro';
+
+const iconMap: Record<string, any> = {
+  chain: PixelChain,
+  file: PixelFile,
+  chart: PixelChart,
+  github: PixelGithub,
+  email: PixelEmail,
+};
+---
+
+<Layout title="Venkat Sundaraneedi | Rust & Blockchain Dev" description="Rust & Blockchain developer. Building on Solana, living in Arch/Nix, learning Zig.">
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <h1>
+      <span class="glitch" data-text="VENKAT SUNDARANEEDI">VENKAT SUNDARANEEDI</span>
+    </h1>
+    <p class="tagline">
+      <span id="typewriter" class="typewriter-cursor"></span>
+    </p>
+  </section>
+
+  <!-- Mobile social links -->
+  <MobileSocials />
+
+  <!-- ===== CURL COMMAND ===== -->
+  <div class="curl-box">
+    <code>$ curl -L https://0xgsvs.dev/contact</code>
+    <button class="copy-btn" id="copy-btn" onclick="copyCurl()">COPY</button>
+  </div>
+
+  <!-- ===== DEV TOOLKIT ===== -->
+  <section class="section">
+    <h2 class="section-title">DEV TOOLKIT</h2>
+    <div class="dev-toolkit">
+      <div class="dev-tool">
+        <div class="tool-icon">
+          <PixelTerminal />
+        </div>
+        <div class="tool-label">Terminal</div>
+      </div>
+      <div class="dev-tool">
+        <div class="tool-icon">
+          <PixelRust />
+        </div>
+        <div class="tool-label">Rust</div>
+      </div>
+      <div class="dev-tool">
+        <div class="tool-icon">
+          <PixelSolana />
+        </div>
+        <div class="tool-label">Solana</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROJECTS ===== -->
+  <section id="projects" class="section">
+    <h2 class="section-title">FEATURED PROJECTS</h2>
+    <div class="project-grid">
+      {
+        projects.map((project) => {
+          const IconComponent = iconMap[project.icon];
+          return (
+            <div class={`project-card card-${project.color}`}>
+              <div class="pixel-icon">
+                {IconComponent && <IconComponent />}
+              </div>
+              <h3>{project.title}</h3>
+              <p>{project.description}</p>
+              <div class="tags">
+                {project.tags.map((tag) => <span class="tag">{tag}</span>)}
+              </div>
+              <div class="links">
+                {project.codeUrl && (
+                  <a href={project.codeUrl} target="_blank" rel="noopener noreferrer">Code ↗</a>
+                )}
+                {project.demoUrl && (
+                  <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">Demo ↗</a>
+                )}
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <!-- ===== TECH STACK ===== -->
+  <section id="tech" class="section">
+    <h2 class="section-title">TECH STACK</h2>
+    <div class="tech-grid">
+      {
+        techStack.map((tech) => (
+          <span class={`tech-tag card-${tech.color}`}>{tech.name}</span>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ===== ASCII ART / SCREEN TOO SMALL ===== -->
+  <div class="ascii-art">
+    <pre> ██████╗ ██╗  ██╗ ██████╗ ███████╗██╗   ██╗███████╗
+██╔═████╗╚██╗██╔╝██╔════╝ ██╔════╝██║   ██║██╔════╝
+██║██╔██║ ╚███╔╝ ██║  ███╗███████╗██║   ██║███████╗
+████╔╝██║ ██╔██╗ ██║   ██║╚════██║██║   ██║╚════██║
+╚██████╔╝██╔╝ ██╗╚██████╔╝███████║╚██████╔╝███████║
+ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝ ╚═════╝ ╚══════╝
+
+Rust & Blockchain Developer | Solana Ecosystem
+Arch/Nix Dual Boot | Terminal Enthusiast
+
+📧 venkat.subrahmanyam.34@gmail.com
+🐙 github.com/0xgsvs</pre>
+  </div>
+
+  <div class="screen-too-small">
+    <pre>┌──────────────────────────────────┐
+│       SCREEN TOO SMALL           │
+│                                  │
+│     ┌───┐    ┌───┐    ┌───┐      │
+│     │ ▼ │    │ ▼ │    │ ▼ │      │
+│     └───┘    └───┘    └───┘      │
+│       ↑        ↑        ↑        │
+│     GET A    GET A     GET A     │
+│    BIGGER   BIGGER    BIGGER     │
+│    SCREEN   SCREEN    SCREEN     │
+│                                  │
+│ Terminal devs use real monitors  │
+└──────────────────────────────────┘</pre>
+  </div>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact" class="section">
+    <h2 class="section-title">GET IN TOUCH</h2>
+    <div class="contact-grid">
+      {
+        socialLinks.map((link) => {
+          const IconComponent = iconMap[link.icon];
+          return (
+            <a
+              href={link.url}
+              class={`contact-card card-${link.color}`}
+              target={link.url.startsWith('mailto:') ? undefined : '_blank'}
+              rel="noopener noreferrer"
+            >
+              <div class="contact-icon">
+                {IconComponent && <IconComponent />}
+              </div>
+              <div class="contact-label">{link.name}</div>
+              <div class="contact-detail">{link.detail}</div>
+            </a>
+          );
+        })
+      }
+    </div>
+  </section>
+</Layout>
+
+<script>
+  // Typewriter effect
+  const text = "Rust & Blockchain developer. Arch/Nix dual boot. Building in the Solana ecosystem.";
+  const el = document.getElementById('typewriter');
+  let i = 0;
+
+  function type() {
+    if (el && i < text.length) {
+      el.textContent = text.slice(0, i + 1);
+      i++;
+      setTimeout(type, 40);
+    } else if (el) {
+      el.classList.remove('typewriter-cursor');
+      el.classList.add('typewriter-done');
+    }
+  }
+  type();
+
+  // Copy curl command
+  function copyCurl() {
+    navigator.clipboard.writeText('curl -L https://0xgsvs.dev/contact');
+    const btn = document.getElementById('copy-btn');
+    if (btn) {
+      btn.textContent = 'COPIED!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'COPY';
+        btn.classList.remove('copied');
+      }, 2000);
+    }
+  }
+  // Expose to global scope for onclick
+  (window as any).copyCurl = copyCurl;
+</script>
