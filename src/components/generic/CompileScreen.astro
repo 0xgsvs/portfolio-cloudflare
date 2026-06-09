@@ -1,11 +1,11 @@
 <!-- Fake Rust compiler loading screen — brutalist themed, auto-dismisses -->
 <div id="compile-overlay" style="display:none;position:fixed;inset:0;background:var(--white);z-index:99999;flex-direction:column;align-items:center;justify-content:center;font-family:'Courier New',monospace;">
-  <div id="compile-card" style="background:white;border:3px solid black;border-radius:8px;padding:28px 32px;max-width:580px;width:90%;filter:drop-shadow(7px 7px 0 rgba(0,0,0,1));">
+  <div id="compile-card" style="background:white;border:3px solid black;border-radius:8px;padding:28px 32px;max-width:600px;width:90%;filter:drop-shadow(7px 7px 0 rgba(0,0,0,1));">
     <div style="font-weight:800;font-size:11px;margin-bottom:12px;opacity:0.4;display:flex;justify-content:space-between;">
       <span>cargo build</span>
       <span id="compile-timer">0.0s</span>
     </div>
-    <pre id="compile-output" style="font-size:12px;line-height:1.5;white-space:pre-wrap;margin:0;min-height:60px;"></pre>
+    <pre id="compile-output" style="font-size:12px;line-height:1.6;white-space:pre-wrap;margin:0;min-height:60px;"></pre>
     <div id="compile-status" style="margin-top:12px;height:4px;background:#f0f0f0;border-radius:2px;overflow:hidden;">
       <div id="compile-bar" style="height:100%;width:0%;background:var(--yellow);border-radius:2px;transition:width 0.3s ease;"></div>
     </div>
@@ -24,40 +24,49 @@
     overlay.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
-    const lines = [
-      { text: '   Compiling venkat v0.1.0', pct: 15 },
-      { text: '   Compiling personality v0.7.3', pct: 30 },
-      { text: '   Compiling social_life v0.0.1', pct: 40 },
-      { text: '', pct: 40 },
-      { text: '\x1b[33mwarning\x1b[0m: unused variable: `weekend`', pct: 45 },
-      { text: '   --> src/main.rs:42:9', pct: 45 },
-      { text: ' 42 |     let weekend = plan_something();', pct: 45 },
-      { text: '    |         ^^^^^^^ help: remove this, you know why', pct: 50 },
-      { text: '', pct: 50 },
-      { text: '\x1b[31merror[E0425]\x1b[0m: cannot find value `sleep` in this scope', pct: 55 },
-      { text: '   --> src/main.rs:87:5', pct: 55 },
-      { text: ' 87 |     sleep(8);', pct: 55 },
-      { text: '    |     ^^^^^ not found in this scope', pct: 60 },
-      { text: '    = note: try `cargo build --release` and go outside', pct: 65 },
-      { text: '', pct: 65 },
-      { text: '\x1b[31merror\x1b[0m: could not compile `venkat` due to 1 error', pct: 70 },
-      { text: '', pct: 70 },
-      { text: '   Falling back to precompiled binary...', pct: 85 },
-      { text: '\x1b[32m   Finished\x1b[0m dev [unoptimized] in 1.8s', pct: 100 },
+    // {html, pct} — html supports <c:color> tags for coloring
+    const lines: { html: string; pct: number }[] = [
+      { html: '   Compiling venkat v0.1.0', pct: 15 },
+      { html: '   Compiling personality v0.7.3', pct: 30 },
+      { html: '   Compiling social_life v0.0.1', pct: 40 },
+      { html: '', pct: 40 },
+      { html: '<c:warn>warning</c>: unused variable: `weekend`', pct: 45 },
+      { html: '   --> src/main.rs:42:9', pct: 45 },
+      { html: ' 42 |     let weekend = plan_something();', pct: 45 },
+      { html: '    |         ^^^^^^^ help: remove this, you know why', pct: 50 },
+      { html: '', pct: 50 },
+      { html: '<c:err>error[E0425]</c>: cannot find value `sleep` in this scope', pct: 55 },
+      { html: '   --> src/main.rs:87:5', pct: 55 },
+      { html: ' 87 |     sleep(8);', pct: 55 },
+      { html: '    |     ^^^^^ not found in this scope', pct: 60 },
+      { html: '    = note: try `cargo build --release` and go outside', pct: 65 },
+      { html: '', pct: 65 },
+      { html: '<c:err>error</c>: could not compile `venkat` due to 1 previous error', pct: 70 },
+      { html: '', pct: 70 },
+      { html: '   Falling back to precompiled binary...', pct: 85 },
+      { html: '<c:ok>   Finished</c> dev [unoptimized] in 1.8s', pct: 100 },
     ];
+
+    function colorize(html: string): string {
+      return html
+        .replace(/<c:warn>/g, '<span style="color:#ca8a04;font-weight:700;">')
+        .replace(/<c:err>/g, '<span style="color:#dc2626;font-weight:700;">')
+        .replace(/<c:ok>/g, '<span style="color:#16a34a;font-weight:700;">')
+        .replace(/<\/c>/g, '</span>');
+    }
 
     const startTime = Date.now();
 
     let i = 0;
     function typeNext() {
       if (i < lines.length) {
-        output.textContent += lines[i].text + '\n';
+        output.innerHTML += colorize(lines[i].html) + '\n';
         output.scrollTop = output.scrollHeight;
         bar.style.width = lines[i].pct + '%';
         const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
         timer.textContent = elapsed + 's';
         i++;
-        setTimeout(typeNext, 150 + Math.random() * 250);
+        setTimeout(typeNext, 180 + Math.random() * 270);
       } else {
         bar.style.background = 'var(--green)';
         setTimeout(() => {
