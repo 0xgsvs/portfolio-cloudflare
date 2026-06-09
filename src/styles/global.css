@@ -681,3 +681,122 @@ h3 {
     text-align: center;
   }
 }
+
+/* ===== KONAMI TOAST ===== */
+.konami-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--black);
+  color: var(--green);
+  border: 3px solid var(--green);
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+  font-size: 14px;
+  z-index: 9999;
+  filter: drop-shadow(4px 4px 0 rgba(134, 239, 172, 0.6));
+  animation:
+    toastIn 0.3s ease-out,
+    toastOut 0.3s ease-in 2.7s forwards;
+}
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+@keyframes toastOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+}
+
+/* ===== MATRIX MODE (toggled via matrix() in console) ===== */
+body.matrix-mode {
+  background: #0a0a0a !important;
+  color: #00ff41 !important;
+}
+body.matrix-mode .container {
+  filter: none;
+}
+body.matrix-mode .brutal-card,
+body.matrix-mode .project-card,
+body.matrix-mode .curl-box,
+body.matrix-mode .contact-card,
+body.matrix-mode .ascii-art,
+body.matrix-mode .screen-too-small,
+body.matrix-mode .dev-tool .tool-icon,
+body.matrix-mode .tech-tag {
+  background: #0a0a0a !important;
+  border-color: #00ff41 !important;
+  color: #00ff41 !important;
+  filter: drop-shadow(4px 4px 0 #00ff41) !important;
+}
+body.matrix-mode .section-title::before {
+  background: #00ff41 !important;
+}
+body.matrix-mode .project-card .tag {
+  background: #0a0a0a !important;
+  border-color: #00ff41 !important;
+  color: #00ff41 !important;
+}
+body.matrix-mode .project-card .links a {
+  background: #0a0a0a !important;
+  border-color: #00ff41 !important;
+  color: #00ff41 !important;
+}
+body.matrix-mode .project-card .links a:hover {
+  background: #00ff41 !important;
+  color: #0a0a0a !important;
+}
+body.matrix-mode .header {
+  border-color: #00ff41 !important;
+}
+body.matrix-mode .footer {
+  border-color: #00ff41 !important;
+}
+body.matrix-mode .curl-box .copy-btn {
+  background: #0a0a0a !important;
+  border-color: #00ff41 !important;
+  color: #00ff41 !important;
+}
+body.matrix-mode .curl-box .copy-btn:hover {
+  background: #00ff41 !important;
+  color: #0a0a0a !important;
+}
+body.matrix-mode .nav-links a {
+  color: #00ff41 !important;
+  border-color: #00ff41 !important;
+}
+body.matrix-mode .nav-links a:hover {
+  background: #00ff41 !important;
+  color: #0a0a0a !important;
+}
+body.matrix-mode .terminal-window {
+  background: #0a0a0a !important;
+  border-color: #00ff41 !important;
+  filter: drop-shadow(5px 5px 0 #00ff41) !important;
+}
+body.matrix-mode .terminal-header {
+  background: #00ff41 !important;
+  color: #0a0a0a !important;
+}
+body.matrix-mode .terminal-body {
+  color: #00ff41 !important;
+}
+body.matrix-mode .terminal-input-form {
+  background: #0a0a0a !important;
+  border-color: #00ff41 !important;
+  color: #00ff41 !important;
+}

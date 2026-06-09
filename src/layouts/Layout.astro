@@ -36,6 +36,40 @@ const { title, description } = Astro.props;
       console.log("%c📧 venkat.subrahmanyam.34@gmail.com", "font-size: 12px; color: #666;");
       console.log("%c🐙 github.com/0xgsvs", "font-size: 12px; color: #666;");
       console.log("%c💡 Try typing 'matrix()' or 'konami()' for more surprises...", "font-size: 11px; color: #999; font-style: italic;");
+
+      // ── Konami Code (↑↑↓↓←→←→BA) ──
+      const KONAMI = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
+      let konamiPos = 0;
+      let konamiDone = false;
+      document.addEventListener("keydown", (e) => {
+        if (konamiDone) return;
+        if (e.key === KONAMI[konamiPos]) {
+          konamiPos++;
+          if (konamiPos === KONAMI.length) {
+            konamiDone = true;
+            konamiPos = 0;
+            document.body.classList.add("konami-activated");
+            // Glitch the page briefly
+            document.body.style.transform = "rotate(1deg)";
+            document.body.style.transition = "transform 0.08s";
+            setTimeout(() => { document.body.style.transform = "rotate(-1deg)"; }, 80);
+            setTimeout(() => { document.body.style.transform = "rotate(0deg)"; }, 160);
+            // Toast
+            const toast = document.createElement("div");
+            toast.className = "konami-toast";
+            toast.textContent = "⬆⬆⬇⬇⬅➡⬅➡🅱🅰 — HACKER MODE UNLOCKED";
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+            console.log("%c🎮 KONAMI CODE ACTIVATED — 30 lives granted", "font-size:16px;color:#86efac;font-weight:bold;");
+            console.log("%cTry 'matrix()' in console or press ` (backtick) for terminal", "font-size:12px;color:#666;");
+          }
+        } else {
+          konamiPos = 0;
+        }
+      });
+      // Expose matrix() as a global for console use
+      (window as any).matrix = () => document.body.classList.toggle("matrix-mode");
+      (window as any).konami = () => { konamiDone = false; console.log("Konami code reset. Try again!"); };
     </script>
   </body>
 </html>
