@@ -10,6 +10,7 @@ import PixelChain from '../components/generic/PixelChain.astro';
 import PixelFile from '../components/generic/PixelFile.astro';
 import PixelChart from '../components/generic/PixelChart.astro';
 import PixelPortrait from '../components/generic/PixelPortrait.astro';
+import PixelCommitGraph from '../components/generic/PixelCommitGraph.astro';
 import MobileSocials from '../components/home/MobileSocials.astro';
 
 const iconMap: Record<string, any> = {
@@ -103,6 +104,9 @@ const iconMap: Record<string, any> = {
       }
     </div>
   </section>
+
+  <!-- ===== COMMIT GRAPH ===== -->
+  <PixelCommitGraph />
 
   <!-- ===== TECH STACK ===== -->
   <section id="tech" class="section">
