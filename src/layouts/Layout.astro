@@ -4,6 +4,7 @@ import Footer from '../components/layout/Footer.astro';
 import TerminalOverlay from '../components/generic/TerminalOverlay.astro';
 import MatrixRain from '../components/generic/MatrixRain.astro';
 import CompileScreen from '../components/generic/CompileScreen.astro';
+import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 
 const { title, description } = Astro.props;
@@ -17,6 +18,7 @@ const { title, description } = Astro.props;
     <meta name="description" content={description || "Venkat Sundaraneedi — Rust & Blockchain Developer"} />
     <title>{title || "Venkat Sundaraneedi | Portfolio"}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <ClientRouter />
   </head>
   <body>
     <CompileScreen />
@@ -28,83 +30,84 @@ const { title, description } = Astro.props;
     <TerminalOverlay />
     <MatrixRain />
     <script>
-      console.log(
-        "%c██╗   ██╗███████╗███╗   ██╗██╗  ██╗ █████╗ ████████╗\n%c██║   ██║██╔════╝████╗  ██║██║ ██╔╝██╔══██╗╚══██╔══╝\n%c██║   ██║█████╗  ██╔██╗ ██║█████╔╝ ███████║   ██║   \n%c╚██╗ ██╔╝██╔══╝  ██║╚██╗██║██╔═██╗ ██╔══██║   ██║   \n%c ╚████╔╝ ███████╗██║ ╚████║██║  ██╗██║  ██║   ██║   \n%c  ╚═══╝  ╚══════╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ",
-        "color: #fde047; font-weight: bold;",
-        "color: #fde047; font-weight: bold;",
-        "color: #fde047; font-weight: bold;",
-        "color: #fde047; font-weight: bold;",
-        "color: #fde047; font-weight: bold;",
-        "color: #fde047; font-weight: bold;"
-      );
-      console.log("%c👋 You're poking around the console. I like that.", "font-size: 14px; font-weight: bold; color: black;");
-      console.log("%c💼 Rust & Blockchain Developer | Solana Ecosystem", "font-size: 12px; color: #666;");
-      console.log("%c📧 venkat.subrahmanyam.34@gmail.com", "font-size: 12px; color: #666;");
-      console.log("%c🐙 github.com/0xgsvs", "font-size: 12px; color: #666;");
-      console.log("%c💡 Try typing 'matrix()' or 'konami()' for more surprises...", "font-size: 11px; color: #999; font-style: italic;");
+      // Guard: only run setup once (window persists across ClientRouter navigations)
+      if (!(window as any).__portfolioSetup) {
+        (window as any).__portfolioSetup = true;
 
-      // ── Konami Code (↑↑↓↓←→←→BA) ──
-      const KONAMI = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
-      let konamiPos = 0;
-      let konamiDone = false;
-      document.addEventListener("keydown", (e) => {
-        if (konamiDone) return;
-        if (e.key === KONAMI[konamiPos]) {
-          konamiPos++;
-          if (konamiPos === KONAMI.length) {
-            konamiDone = true;
+        console.log(
+          "%c██╗   ██╗███████╗███╗   ██╗██╗  ██╗ █████╗ ████████╗\\n%c██║   ██║██╔════╝████╗  ██║██║ ██╔╝██╔══██╗╚══██╔══╝\\n%c██║   ██║█████╗  ██╔██╗ ██║█████╔╝ ███████║   ██║   \\n%c╚██╗ ██╔╝██╔══╝  ██║╚██╗██║██╔═██╗ ██╔══██║   ██║   \\n%c ╚████╔╝ ███████╗██║ ╚████║██║  ██╗██║  ██║   ██║   \\n%c  ╚═══╝  ╚══════╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ",
+          "color: #fde047; font-weight: bold;",
+          "color: #fde047; font-weight: bold;",
+          "color: #fde047; font-weight: bold;",
+          "color: #fde047; font-weight: bold;",
+          "color: #fde047; font-weight: bold;",
+          "color: #fde047; font-weight: bold;"
+        );
+        console.log("%c👋 You're poking around the console. I like that.", "font-size: 14px; font-weight: bold; color: black;");
+        console.log("%c💼 Rust & Blockchain Developer | Solana Ecosystem", "font-size: 12px; color: #666;");
+        console.log("%c📧 venkat.subrahmanyam.34@gmail.com", "font-size: 12px; color: #666;");
+        console.log("%c🐙 github.com/0xgsvs", "font-size: 12px; color: #666;");
+        console.log("%c💡 Try typing 'matrix()' or 'konami()' for more surprises...", "font-size: 11px; color: #999; font-style: italic;");
+
+        // ── Konami Code (↑↑↓↓←→←→BA) ──
+        const KONAMI = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
+        let konamiPos = 0;
+        let konamiDone = false;
+        document.addEventListener("keydown", (e) => {
+          if (konamiDone) return;
+          if (e.key === KONAMI[konamiPos]) {
+            konamiPos++;
+            if (konamiPos === KONAMI.length) {
+              konamiDone = true;
+              konamiPos = 0;
+              document.body.classList.add("konami-activated");
+              document.body.style.transform = "rotate(1deg)";
+              document.body.style.transition = "transform 0.08s";
+              setTimeout(() => { document.body.style.transform = "rotate(-1deg)"; }, 80);
+              setTimeout(() => { document.body.style.transform = "rotate(0deg)"; }, 160);
+              const toast = document.createElement("div");
+              toast.className = "konami-toast";
+              toast.textContent = "⬆⬆⬇⬇⬅➡⬅➡🅱🅰 — HACKER MODE UNLOCKED";
+              document.body.appendChild(toast);
+              setTimeout(() => toast.remove(), 3000);
+              console.log("%c🎮 KONAMI CODE ACTIVATED — 30 lives granted", "font-size:16px;color:#86efac;font-weight:bold;");
+              console.log("%cTry 'matrix()' in console or press ` (backtick) for terminal", "font-size:12px;color:#666;");
+            }
+          } else {
             konamiPos = 0;
-            document.body.classList.add("konami-activated");
-            // Glitch the page briefly
-            document.body.style.transform = "rotate(1deg)";
-            document.body.style.transition = "transform 0.08s";
-            setTimeout(() => { document.body.style.transform = "rotate(-1deg)"; }, 80);
-            setTimeout(() => { document.body.style.transform = "rotate(0deg)"; }, 160);
-            // Toast
-            const toast = document.createElement("div");
-            toast.className = "konami-toast";
-            toast.textContent = "⬆⬆⬇⬇⬅➡⬅➡🅱🅰 — HACKER MODE UNLOCKED";
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-            console.log("%c🎮 KONAMI CODE ACTIVATED — 30 lives granted", "font-size:16px;color:#86efac;font-weight:bold;");
-            console.log("%cTry 'matrix()' in console or press ` (backtick) for terminal", "font-size:12px;color:#666;");
           }
-        } else {
-          konamiPos = 0;
-        }
-      });
-      // Expose matrix() as a global for console use
+        });
+
+        // ── Timed page mutation ──
+        let idleTime = 0;
+        setInterval(() => {
+          idleTime++;
+          if (idleTime === 60) {
+            document.querySelectorAll('.brutal-card, .project-card, .ascii-art, .curl-box').forEach((el, i) => {
+              const colors = ['#fde047', '#86efac', '#d8b4fe', '#93c5fd', '#fca5a5', '#fdba74'];
+              (el as HTMLElement).style.filter = `drop-shadow(4px 4px 0 ${colors[i % colors.length]})`;
+              (el as HTMLElement).style.transition = 'filter 1.5s ease';
+            });
+            console.log("%c🌈 60 seconds. I'm just going to make things colorful now.", "font-size:12px;color:#d8b4fe;");
+          }
+          if (idleTime === 120) {
+            const msg = document.createElement('div');
+            msg.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:black;color:white;border:3px solid black;border-radius:8px;padding:8px 20px;font-family:"Courier New",monospace;font-size:12px;font-weight:700;z-index:9998;opacity:0.5;animation:toastIn 0.3s ease-out;';
+            msg.textContent = "you can leave now. or don't. i'm not your parent.";
+            document.body.appendChild(msg);
+            setTimeout(() => { msg.style.opacity = '0'; msg.style.transition = 'opacity 1s'; }, 5000);
+          }
+        }, 1000);
+
+        document.addEventListener('mousemove', () => { idleTime = 0; });
+        document.addEventListener('keydown', () => { idleTime = 0; });
+        document.addEventListener('scroll', () => { idleTime = 0; });
+        document.addEventListener('click', () => { idleTime = 0; });
+      }
+
+      // Re-expose globals on every navigation (inline script re-executes, window persists)
       (window as any).matrix = () => document.body.classList.toggle("matrix-mode");
-      (window as any).konami = () => { konamiDone = false; console.log("Konami code reset. Try again!"); };
-
-      // ── Timed page mutation ──
-      let idleTime = 0;
-      const idleTimer = setInterval(() => {
-        idleTime++;
-        // 60 seconds: drop shadows shift colors
-        if (idleTime === 60) {
-          document.querySelectorAll('.brutal-card, .project-card, .ascii-art, .curl-box').forEach((el, i) => {
-            const colors = ['#fde047', '#86efac', '#d8b4fe', '#93c5fd', '#fca5a5', '#fdba74'];
-            (el as HTMLElement).style.filter = `drop-shadow(4px 4px 0 ${colors[i % colors.length]})`;
-            (el as HTMLElement).style.transition = 'filter 1.5s ease';
-          });
-          console.log("%c🌈 60 seconds. I'm just going to make things colorful now.", "font-size:12px;color:#d8b4fe;");
-        }
-        // 120 seconds: a subtle message
-        if (idleTime === 120) {
-          const msg = document.createElement('div');
-          msg.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:black;color:white;border:3px solid black;border-radius:8px;padding:8px 20px;font-family:"Courier New",monospace;font-size:12px;font-weight:700;z-index:9998;opacity:0.5;animation:toastIn 0.3s ease-out;';
-          msg.textContent = 'you can leave now. or don\'t. i\'m not your parent.';
-          document.body.appendChild(msg);
-          setTimeout(() => { msg.style.opacity = '0'; msg.style.transition = 'opacity 1s'; }, 5000);
-        }
-      }, 1000);
-
-      // Reset timer on any interaction
-      document.addEventListener('mousemove', () => { idleTime = 0; });
-      document.addEventListener('keydown', () => { idleTime = 0; });
-      document.addEventListener('scroll', () => { idleTime = 0; });
-      document.addEventListener('click', () => { idleTime = 0; });
+      (window as any).konami = () => { console.log("Konami code reset. Try again!"); };
     </script>
   </body>
 </html>

@@ -52,6 +52,9 @@
 
 <script>
   (function() {
+    // Guard: only initialize once (window persists across ClientRouter navigations)
+    if ((window as any).__termInitialized) return;
+    (window as any).__termInitialized = true;
     const overlay = document.getElementById('term-overlay')!;
     const backdrop = document.getElementById('term-backdrop')!;
     const body = document.getElementById('term-overlay-body')!;

@@ -2,71 +2,74 @@
 <canvas id="matrix-canvas" style="display:none;position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:0.15;"></canvas>
 
 <script>
-  const canvas = document.getElementById('matrix-canvas') as HTMLCanvasElement;
-  if (!canvas) throw new Error('Matrix canvas not found');
-  const ctx = canvas.getContext('2d')!;
+  (function() {
+    // Guard: only initialize once (window persists across ClientRouter navigations)
+    if ((window as any).__matrixInitialized) return;
+    (window as any).__matrixInitialized = true;
 
-  let animId: number | null = null;
-  let drops: number[] = [];
-  const chars = 'ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜｦﾝ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ<>/?;:[]{}!@#$%^&*()'.split('');
+    const canvas = document.getElementById('matrix-canvas') as HTMLCanvasElement;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d')!;
 
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const cols = Math.floor(canvas.width / 20);
-    drops = Array(cols).fill(0);
-  }
+    let animId: number | null = null;
+    let drops: number[] = [];
+    const chars = 'ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜｦﾝ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ<>/?;:[]{}!@#$%^&*()'.split('');
 
-  function draw() {
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#00ff41';
-    ctx.font = '16px monospace';
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const cols = Math.floor(canvas.width / 20);
+      drops = Array(cols).fill(0);
+    }
 
-    for (let i = 0; i < drops.length; i++) {
-      const char = chars[Math.floor(Math.random() * chars.length)];
-      ctx.fillText(char, i * 20, drops[i] * 20);
-      if (drops[i] * 20 > canvas.height && Math.random() > 0.975) {
-        drops[i] = 0;
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#00ff41';
+      ctx.font = '16px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const char = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(char, i * 20, drops[i] * 20);
+        if (drops[i] * 20 > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
       }
-      drops[i]++;
     }
-  }
 
-  function loop() {
-    draw();
-    animId = requestAnimationFrame(loop);
-  }
-
-  function start() {
-    resize();
-    canvas.style.display = 'block';
-    loop();
-  }
-
-  function stop() {
-    if (animId) {
-      cancelAnimationFrame(animId);
-      animId = null;
+    function loop() {
+      draw();
+      animId = requestAnimationFrame(loop);
     }
-    canvas.style.display = 'none';
-  }
 
-  // Watch for matrix-mode class changes
-  const observer = new MutationObserver(() => {
-    if (document.body.classList.contains('matrix-mode')) {
-      start();
-    } else {
-      stop();
+    function start() {
+      resize();
+      canvas.style.display = 'block';
+      loop();
     }
-  });
-  observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
-  // Initial check
-  if (document.body.classList.contains('matrix-mode')) start();
+    function stop() {
+      if (animId) {
+        cancelAnimationFrame(animId);
+        animId = null;
+      }
+      canvas.style.display = 'none';
+    }
 
-  // Handle resize
-  window.addEventListener('resize', () => {
-    if (document.body.classList.contains('matrix-mode')) resize();
-  });
+    const observer = new MutationObserver(() => {
+      if (document.body.classList.contains('matrix-mode')) {
+        start();
+      } else {
+        stop();
+      }
+    });
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+    if (document.body.classList.contains('matrix-mode')) start();
+
+    window.addEventListener('resize', () => {
+      if (document.body.classList.contains('matrix-mode')) resize();
+    });
+  })();
 </script>
