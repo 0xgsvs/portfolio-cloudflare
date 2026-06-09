@@ -110,8 +110,8 @@ const iconMap: Record<string, any> = {
   </section>
 
   <!-- ===== ASCII ART / SCREEN TOO SMALL ===== -->
-  <div class="ascii-art">
-    <pre> ██████╗ ██╗  ██╗ ██████╗ ███████╗██╗   ██╗███████╗
+  <div class="ascii-art" id="ascii-art">
+    <pre id="ascii-pre"> ██████╗ ██╗  ██╗ ██████╗ ███████╗██╗   ██╗███████╗
 ██╔═████╗╚██╗██╔╝██╔════╝ ██╔════╝██║   ██║██╔════╝
 ██║██╔██║ ╚███╔╝ ██║  ███╗███████╗██║   ██║███████╗
 ████╔╝██║ ██╔██╗ ██║   ██║╚════██║██║   ██║╚════██║
@@ -201,4 +201,59 @@ Arch/Nix Dual Boot | Terminal Enthusiast
   }
   // Expose to global scope for onclick
   (window as any).copyCurl = copyCurl;
+
+  // ── Rage-click counter on ASCII art ──
+  const asciiArt = document.getElementById('ascii-art');
+  const asciiPre = document.getElementById('ascii-pre');
+  let asciiClicks = 0;
+  let asciiTimeout: ReturnType<typeof setTimeout>;
+  const messages = [
+    "calm down, it's just ASCII",
+    "ok keep going...",
+    "you're persistent, I'll give you that",
+    "almost there...",
+    "🔥 YOU BROKE IT",
+  ];
+
+  if (asciiArt) {
+    asciiArt.addEventListener('click', () => {
+      asciiClicks++;
+      clearTimeout(asciiTimeout);
+      const msgIdx = Math.min(asciiClicks - 1, messages.length - 1);
+
+      if (asciiClicks >= 10) {
+        // Glitch out the ASCII art
+        if (asciiPre) {
+          asciiPre.style.animation = 'glitch-shift-1 0.05s infinite linear alternate-reverse';
+        }
+        asciiArt.style.filter = 'drop-shadow(4px 4px 0 #fca5a5)';
+
+        const toast = document.createElement('div');
+        toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:black;color:#fca5a5;border:3px solid #fca5a5;border-radius:8px;padding:12px 24px;font-family:"Courier New",monospace;font-weight:700;font-size:14px;z-index:9999;animation:toastIn 0.3s ease-out,toastOut 0.3s ease-in 2.7s forwards;';
+        toast.textContent = messages[msgIdx];
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+
+        setTimeout(() => {
+          if (asciiPre) asciiPre.style.animation = '';
+          asciiArt.style.filter = '';
+        }, 2000);
+        asciiClicks = 0;
+      } else {
+        // Show counter as a small tooltip
+        let counter = document.getElementById('ascii-click-counter');
+        if (!counter) {
+          counter = document.createElement('div');
+          counter.id = 'ascii-click-counter';
+          counter.style.cssText = 'position:absolute;top:-8px;right:-8px;background:black;color:#fde047;border:2px solid black;border-radius:4px;padding:2px 8px;font-family:"Courier New",monospace;font-weight:700;font-size:12px;z-index:10;pointer-events:none;';
+          asciiArt.style.position = 'relative';
+          asciiArt.appendChild(counter);
+        }
+        counter.textContent = `${asciiClicks}/10 — ${messages[msgIdx]}`;
+        setTimeout(() => { if (counter && counter.parentNode) counter.remove(); }, 1500);
+      }
+
+      asciiTimeout = setTimeout(() => { asciiClicks = 0; }, 2000);
+    });
+  }
 </script>
