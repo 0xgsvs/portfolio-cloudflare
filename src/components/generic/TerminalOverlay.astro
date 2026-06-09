@@ -1,0 +1,239 @@
+<!-- Floating terminal overlay — toggle with backtick (`) key -->
+<div id="term-overlay" class="term-overlay" style="display:none;">
+  <div class="term-overlay-backdrop" id="term-backdrop"></div>
+  <div class="terminal-window term-floating" id="term-window">
+    <div class="terminal-header">
+      <span class="dot red" id="term-close-btn" style="cursor:pointer;"></span>
+      <span class="dot yellow"></span>
+      <span class="dot green"></span>
+      <span style="margin-left:8px;">0xgsvs@portfolio:~</span>
+      <span style="margin-left:auto;font-size:10px;opacity:0.6;">press ` to close</span>
+    </div>
+    <div class="terminal-body" id="term-overlay-body">
+      <div class="line output">Type 'help' for available commands. Press ` or Esc to close.</div>
+      <div class="line output">&nbsp;</div>
+    </div>
+    <form class="terminal-input-form" onsubmit="return window.__termHandleSubmit(event)">
+      <span class="dollar">$</span>
+      <input type="text" id="term-overlay-input" placeholder="Type a command..." autocomplete="off" />
+    </form>
+  </div>
+</div>
+
+<style>
+  .term-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .term-overlay-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+  }
+  .term-floating {
+    position: relative;
+    z-index: 10001;
+    width: 100%;
+    max-width: 650px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .term-floating .terminal-body {
+    flex: 1;
+    min-height: 200px;
+  }
+</style>
+
+<script>
+  (function() {
+    const overlay = document.getElementById('term-overlay')!;
+    const backdrop = document.getElementById('term-backdrop')!;
+    const body = document.getElementById('term-overlay-body')!;
+    const input = document.getElementById('term-overlay-input') as HTMLInputElement;
+    const closeBtn = document.getElementById('term-close-btn')!;
+
+    const COMMANDS: Record<string, string | string[]> = {
+      help: [
+        'Available commands:',
+        '  help       - Show this',
+        '  whoami     - Who I am',
+        '  ls         - List pages',
+        '  projects   - Featured projects',
+        '  contact    - Get in touch',
+        '  resume     - Download resume (coming soon)',
+        '  matrix     - Toggle matrix mode',
+        '  dark       - Toggle matrix mode',
+        '  normal     - Back to normal mode',
+        '  clear      - Clear terminal',
+        '  exit       - Close terminal',
+        '  cat .secret - Look inside .secret',
+        '  neofetch   - System info',
+        '  cowsay     - The cow speaks',
+      ],
+      whoami: ['venkat@0xgsvs.dev — Rust & Blockchain Developer'],
+      ls: ['home/  projects/  contact/  .secret/  pgp/  now/  writing/'],
+      projects: [
+        'Featured Projects:',
+        '  1. Solana DEX Aggregator — Rust, Anchor, Web3',
+        '  2. Rust TUI File Manager — ratatui, vim-bindings',
+        '  3. Solana Indexer — PostgreSQL, Redis, real-time',
+        '',
+        '→ github.com/0xgsvs',
+      ],
+      contact: [
+        'Email: venkat.subrahmanyam.34@gmail.com',
+        'GitHub: github.com/0xgsvs',
+        'PGP: https://0xgsvs.dev/pgp',
+        '',
+        'curl -L https://0xgsvs.dev/contact',
+      ],
+      resume: ['Download at: https://0xgsvs.dev/resume (coming soon)'],
+      neofetch: [
+        '        ......            venkat@0xgsvs.dev',
+        '      .:--------:.        ─────────────────',
+        '    .:------------:.      OS: Arch Linux / NixOS dual boot',
+        '   .:---:------:---:.     Shell: zsh + tmux',
+        '  .:----:--------:--:.    Editor: neovim (btw)',
+        '  .:----------------:.   Lang: Rust, Zig, TypeScript',
+        '  .:----------------:.   Theme: pastel brutalist',
+        '   .:--------------:.    Uptime: since last kernel panic',
+        '    .:------------:.     ',
+        '      .:--------:.       ',
+        '        ......           ',
+      ],
+      cowsay: [
+        '  ────────────────────────────────────',
+        ' < Rust is the only language where   >',
+        ' < the compiler is also your therapist >',
+        '  ────────────────────────────────────',
+        '         \\   ^__^',
+        '          \\  (oo)\\_______',
+        '             (__)\\       )\\/\\',
+        '                 ||----w |',
+        '                 ||     ||',
+      ],
+      'cat .secret': '→ Opening /.secret ...',
+    };
+
+    const NAV: Record<string, string> = {
+      'cd /': '/',
+      'cd ~': '/',
+      'cd home': '/',
+      'cd projects': '/#projects',
+      'cd contact': '/#contact',
+    };
+
+    function addLine(text: string, cls = 'output') {
+      const div = document.createElement('div');
+      div.className = `line ${cls}`;
+      div.textContent = text;
+      body.appendChild(div);
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function addPrompt(text: string) {
+      const div = document.createElement('div');
+      div.className = 'line prompt';
+      div.innerHTML = `<span class="dollar">$</span> ${text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}`;
+      body.appendChild(div);
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function handleSubmit(e: Event): boolean {
+      e.preventDefault();
+      const cmd = input.value.trim().toLowerCase();
+      if (!cmd) return false;
+      addPrompt(cmd);
+      input.value = '';
+
+      // Navigation
+      if (NAV[cmd]) {
+        window.location.href = NAV[cmd];
+        return false;
+      }
+
+      // Special actions
+      if (cmd === 'cat .secret') {
+        addLine('Accessing secret...', 'yellow');
+        window.location.href = '/.secret';
+        return false;
+      }
+      if (cmd === 'matrix' || cmd === 'dark') {
+        document.body.classList.add('matrix-mode');
+        addLine('Matrix mode activated. Type "normal" to undo.', 'yellow');
+        addLine('', 'output');
+        return false;
+      }
+      if (cmd === 'normal' || cmd === 'light') {
+        document.body.classList.remove('matrix-mode');
+        addLine('Back to normal mode.', 'yellow');
+        addLine('', 'output');
+        return false;
+      }
+      if (cmd === 'clear') {
+        body.innerHTML = '';
+        return false;
+      }
+      if (cmd === 'exit' || cmd === 'quit' || cmd === ':q' || cmd === ':wq') {
+        overlay.style.display = 'none';
+        return false;
+      }
+      if (cmd === 'sudo rm -rf /') {
+        addLine('Nice try. This is a static site.', 'error');
+        addLine('', 'output');
+        return false;
+      }
+
+      const result = COMMANDS[cmd];
+      if (result) {
+        const lines = Array.isArray(result) ? result : [result];
+        lines.forEach(l => addLine(l, 'output'));
+        addLine('', 'output');
+      } else {
+        addLine(`bash: ${cmd}: command not found`, 'error');
+        addLine("Type 'help' for available commands", 'output');
+        addLine('', 'output');
+      }
+      return false;
+    }
+
+    function open() {
+      overlay.style.display = 'flex';
+      input.focus();
+    }
+
+    function close() {
+      overlay.style.display = 'none';
+    }
+
+    // Expose to window
+    (window as any).__termHandleSubmit = handleSubmit;
+
+    // Key listener
+    document.addEventListener('keydown', (e) => {
+      // Don't trigger when typing in actual inputs
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      if (e.key === '`' || e.key === '~') {
+        e.preventDefault();
+        if (overlay.style.display === 'flex') {
+          close();
+        } else {
+          open();
+        }
+      }
+      if (e.key === 'Escape' && overlay.style.display === 'flex') {
+        close();
+      }
+    });
+
+    // Close handlers
+    backdrop.addEventListener('click', close);
+    closeBtn.addEventListener('click', close);
+  })();
+</script>
