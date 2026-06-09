@@ -1,0 +1,42 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const nowItems = [
+  { emoji: "🦀", text: "Building a high-performance DEX aggregator on Solana with Rust and Anchor" },
+  { emoji: "📟", text: "Writing a TUI file manager in Rust with ratatui — vim keybindings, preview panes" },
+  { emoji: "🐧", text: "Daily driving NixOS after 3 years on Arch. The declarative life chose me" },
+  { emoji: "⚡", text: "Learning Zig for systems programming. The comptime stuff is wild" },
+  { emoji: "📡", text: "Running a Solana RPC node and indexer — on-chain data is addictive" },
+  { emoji: "📖", text: "Reading: 'Crafting Interpreters' by Robert Nystrom. Finally understanding my tools" },
+  { emoji: "🎯", text: "Goal this month: ship the DEX aggregator MVP and write a deep-dive blog post" },
+];
+
+const lastUpdated = "2026-06-07";
+---
+
+<Layout title="Now | Venkat Sundaraneedi" description="What Venkat is working on right now">
+  <section class="section" style="padding-top:40px;">
+    <h2 class="section-title">/NOW</h2>
+    <p style="font-size:14px;opacity:0.6;margin-bottom:24px;">
+      What I'm focused on right now. Inspired by <a href="https://nownownow.com/about" style="color:black;">Derek Sivers' /now page movement</a>.
+      <br/>Last updated: {lastUpdated}
+    </p>
+
+    <div class="brutal-card">
+      {nowItems.map(item => (
+        <div style="display:flex;gap:14px;align-items:flex-start;padding:16px 0;border-bottom:1px solid rgba(0,0,0,0.08);">
+          <span style="font-size:24px;flex-shrink:0;">{item.emoji}</span>
+          <p style="font-size:15px;line-height:1.5;margin:0;">{item.text}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="brutal-card card-yellow" style="margin-top:24px;">
+      <h3 style="margin-top:0;">📡 Currently online?</h3>
+      <p style="font-size:14px;">
+        Best way to reach me: <strong>venkat.subrahmanyam.34@gmail.com</strong><br/>
+        Response time: usually within 24 hours. If it's about Rust/Solana/Zig, probably faster.
+      </p>
+    </div>
+  </section>
+</Layout>
