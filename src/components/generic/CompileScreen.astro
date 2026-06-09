@@ -1,13 +1,23 @@
-<!-- Fake Rust compiler loading screen — auto-dismisses. Default: hidden, only shown via JS on first visit. -->
-<div id="compile-overlay" style="display:none;position:fixed;inset:0;background:#0a0a0a;color:#00ff41;z-index:99999;flex-direction:column;align-items:center;justify-content:center;font-family:'Courier New',monospace;font-size:13px;line-height:1.6;overflow:hidden;">
-  <pre id="compile-output" style="font-size:12px;max-width:700px;white-space:pre-wrap;opacity:0.9;"></pre>
+<!-- Fake Rust compiler loading screen — brutalist themed, auto-dismisses -->
+<div id="compile-overlay" style="display:none;position:fixed;inset:0;background:var(--white);z-index:99999;flex-direction:column;align-items:center;justify-content:center;font-family:'Courier New',monospace;">
+  <div id="compile-card" style="background:white;border:3px solid black;border-radius:8px;padding:28px 32px;max-width:580px;width:90%;filter:drop-shadow(7px 7px 0 rgba(0,0,0,1));">
+    <div style="font-weight:800;font-size:11px;margin-bottom:12px;opacity:0.4;display:flex;justify-content:space-between;">
+      <span>cargo build</span>
+      <span id="compile-timer">0.0s</span>
+    </div>
+    <pre id="compile-output" style="font-size:12px;line-height:1.5;white-space:pre-wrap;margin:0;min-height:60px;"></pre>
+    <div id="compile-status" style="margin-top:12px;height:4px;background:#f0f0f0;border-radius:2px;overflow:hidden;">
+      <div id="compile-bar" style="height:100%;width:0%;background:var(--yellow);border-radius:2px;transition:width 0.3s ease;"></div>
+    </div>
+  </div>
 </div>
 
 <script>
   const overlay = document.getElementById('compile-overlay')!;
   const output = document.getElementById('compile-output')!;
+  const bar = document.getElementById('compile-bar')!;
+  const timer = document.getElementById('compile-timer')!;
 
-  // Only show on first visit (session). Default is hidden, so no action needed on repeat visits.
   const hasVisited = sessionStorage.getItem('compile-shown');
   if (!hasVisited) {
     sessionStorage.setItem('compile-shown', '1');
@@ -15,46 +25,49 @@
     document.body.style.overflow = 'hidden';
 
     const lines = [
-      { text: '   Compiling venkat v0.1.0', delay: 200 },
-      { text: '   Compiling personality v0.7.3', delay: 400 },
-      { text: '   Compiling social_life v0.0.1', delay: 300 },
-      { text: '', delay: 100 },
-      { text: '\x1b[1;33mwarning\x1b[0m: unused variable: `weekend`', delay: 300 },
-      { text: '   --> src/main.rs:42:9', delay: 100 },
-      { text: '    |', delay: 50 },
-      { text: ' 42 |     let weekend = plan_something();', delay: 100 },
-      { text: '    |         ^^^^^^^ help: remove this, you know why', delay: 400 },
-      { text: '', delay: 100 },
-      { text: '\x1b[1;31merror[E0425]\x1b[0m: cannot find value `sleep` in this scope', delay: 400 },
-      { text: '   --> src/main.rs:87:5', delay: 100 },
-      { text: '    |', delay: 50 },
-      { text: ' 87 |     sleep(8);', delay: 100 },
-      { text: '    |     ^^^^^ not found in this scope', delay: 300 },
-      { text: '    |', delay: 50 },
-      { text: '    = note: try `cargo build --release` and go outside', delay: 500 },
-      { text: '', delay: 100 },
-      { text: '\x1b[1;31merror\x1b[0m: could not compile `venkat` due to 1 error', delay: 400 },
-      { text: '', delay: 200 },
-      { text: '   Falling back to precompiled binary...', delay: 400 },
-      { text: '\x1b[1;32m   Finished\x1b[0m dev [unoptimized] in 1.8s', delay: 300 },
+      { text: '   Compiling venkat v0.1.0', pct: 15 },
+      { text: '   Compiling personality v0.7.3', pct: 30 },
+      { text: '   Compiling social_life v0.0.1', pct: 40 },
+      { text: '', pct: 40 },
+      { text: '\x1b[33mwarning\x1b[0m: unused variable: `weekend`', pct: 45 },
+      { text: '   --> src/main.rs:42:9', pct: 45 },
+      { text: ' 42 |     let weekend = plan_something();', pct: 45 },
+      { text: '    |         ^^^^^^^ help: remove this, you know why', pct: 50 },
+      { text: '', pct: 50 },
+      { text: '\x1b[31merror[E0425]\x1b[0m: cannot find value `sleep` in this scope', pct: 55 },
+      { text: '   --> src/main.rs:87:5', pct: 55 },
+      { text: ' 87 |     sleep(8);', pct: 55 },
+      { text: '    |     ^^^^^ not found in this scope', pct: 60 },
+      { text: '    = note: try `cargo build --release` and go outside', pct: 65 },
+      { text: '', pct: 65 },
+      { text: '\x1b[31merror\x1b[0m: could not compile `venkat` due to 1 error', pct: 70 },
+      { text: '', pct: 70 },
+      { text: '   Falling back to precompiled binary...', pct: 85 },
+      { text: '\x1b[32m   Finished\x1b[0m dev [unoptimized] in 1.8s', pct: 100 },
     ];
+
+    const startTime = Date.now();
 
     let i = 0;
     function typeNext() {
       if (i < lines.length) {
         output.textContent += lines[i].text + '\n';
         output.scrollTop = output.scrollHeight;
+        bar.style.width = lines[i].pct + '%';
+        const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+        timer.textContent = elapsed + 's';
         i++;
-        setTimeout(typeNext, lines[i - 1].delay);
+        setTimeout(typeNext, 150 + Math.random() * 250);
       } else {
+        bar.style.background = 'var(--green)';
         setTimeout(() => {
           overlay.style.opacity = '0';
-          overlay.style.transition = 'opacity 0.4s';
+          overlay.style.transition = 'opacity 0.3s';
           document.body.style.overflow = '';
-          setTimeout(() => overlay.remove(), 500);
-        }, 600);
+          setTimeout(() => overlay.remove(), 400);
+        }, 500);
       }
     }
-    setTimeout(typeNext, 300);
+    setTimeout(typeNext, 200);
   }
 </script>
