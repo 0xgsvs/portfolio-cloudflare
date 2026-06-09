@@ -1,0 +1,61 @@
+<!-- Fake Rust compiler loading screen — auto-dismisses -->
+<div id="compile-overlay" style="display:flex;position:fixed;inset:0;background:#0a0a0a;color:#00ff41;z-index:99999;flex-direction:column;align-items:center;justify-content:center;font-family:'Courier New',monospace;font-size:13px;line-height:1.6;overflow:hidden;">
+  <pre id="compile-output" style="font-size:12px;max-width:700px;white-space:pre-wrap;opacity:0.9;"></pre>
+</div>
+
+<script>
+  const overlay = document.getElementById('compile-overlay')!;
+  const output = document.getElementById('compile-output')!;
+
+  const lines = [
+    { text: '   Compiling venkat v0.1.0', delay: 200 },
+    { text: '   Compiling personality v0.7.3', delay: 400 },
+    { text: '   Compiling social_life v0.0.1', delay: 300 },
+    { text: '', delay: 100 },
+    { text: '\x1b[1;33mwarning\x1b[0m: unused variable: `weekend`', delay: 300 },
+    { text: '   --> src/main.rs:42:9', delay: 100 },
+    { text: '    |', delay: 50 },
+    { text: ' 42 |     let weekend = plan_something();', delay: 100 },
+    { text: '    |         ^^^^^^^ help: remove this, you know why', delay: 400 },
+    { text: '', delay: 100 },
+    { text: '\x1b[1;31merror[E0425]\x1b[0m: cannot find value `sleep` in this scope', delay: 400 },
+    { text: '   --> src/main.rs:87:5', delay: 100 },
+    { text: '    |', delay: 50 },
+    { text: ' 87 |     sleep(8);', delay: 100 },
+    { text: '    |     ^^^^^ not found in this scope', delay: 300 },
+    { text: '    |', delay: 50 },
+    { text: '    = note: try `cargo build --release` and go outside', delay: 500 },
+    { text: '', delay: 100 },
+    { text: '\x1b[1;31merror\x1b[0m: could not compile `venkat` due to 1 error', delay: 400 },
+    { text: '', delay: 200 },
+    { text: '   Falling back to precompiled binary...', delay: 400 },
+    { text: '\x1b[1;32m   Finished\x1b[0m dev [unoptimized] in 1.8s', delay: 300 },
+  ];
+
+  // Only show on first visit (session)
+  const hasVisited = sessionStorage.getItem('compile-shown');
+  if (hasVisited) {
+    overlay.style.display = 'none';
+  } else {
+    sessionStorage.setItem('compile-shown', '1');
+    document.body.style.overflow = 'hidden';
+
+    let i = 0;
+    function typeNext() {
+      if (i < lines.length) {
+        output.textContent += lines[i].text + '\n';
+        output.scrollTop = output.scrollHeight;
+        i++;
+        setTimeout(typeNext, lines[i - 1].delay);
+      } else {
+        setTimeout(() => {
+          overlay.style.opacity = '0';
+          overlay.style.transition = 'opacity 0.4s';
+          document.body.style.overflow = '';
+          setTimeout(() => overlay.remove(), 500);
+        }, 600);
+      }
+    }
+    setTimeout(typeNext, 300);
+  }
+</script>
