@@ -81,17 +81,6 @@ const { title, description } = Astro.props;
       let idleTime = 0;
       const idleTimer = setInterval(() => {
         idleTime++;
-        // 30 seconds: subtle glitch intensifies
-        if (idleTime === 30) {
-          const glitch = document.querySelector('.glitch') as HTMLElement | null;
-          if (glitch) {
-            glitch.style.setProperty('--glitch-speed', '0.15s');
-            document.querySelectorAll('.glitch::before, .glitch::after').forEach(el => {
-              (el as HTMLElement).style.animationDuration = '0.15s';
-            });
-          }
-          console.log("%c⏳ 30 seconds... you're still here? Respect.", "font-size:12px;color:#fde047;");
-        }
         // 60 seconds: drop shadows shift colors
         if (idleTime === 60) {
           document.querySelectorAll('.brutal-card, .project-card, .ascii-art, .curl-box').forEach((el, i) => {

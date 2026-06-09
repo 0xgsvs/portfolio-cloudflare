@@ -26,7 +26,7 @@ const iconMap: Record<string, any> = {
   <!-- ===== HERO ===== -->
   <section class="hero">
     <h1>
-      <span class="glitch" data-text="VENKAT SUNDARANEEDI">VENKAT SUNDARANEEDI</span>
+      <span class="hero-name">VENKAT SUNDARANEEDI</span>
     </h1>
     <p class="tagline">
       <span id="typewriter" class="typewriter-cursor"></span>
@@ -235,7 +235,7 @@ Arch/Nix Dual Boot | Terminal Enthusiast
       if (asciiClicks >= 10) {
         // Glitch out the ASCII art
         if (asciiPre) {
-          asciiPre.style.animation = 'glitch-shift-1 0.05s infinite linear alternate-reverse';
+          asciiPre.style.animation = 'jitter 0.05s infinite linear alternate-reverse';
         }
         asciiArt.style.filter = 'drop-shadow(4px 4px 0 #fca5a5)';
 
