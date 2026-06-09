@@ -12,8 +12,8 @@
   </div>
 </div>
 
-<!-- Synchronous inline script: runs before paint, immediately hides if already visited -->
-<script is:inline>
+<!-- Runs before paint on first load AND re-executes on every ClientRouter navigation -->
+<script is:inline data-astro-rerun>
   (function() {
     var overlay = document.getElementById('compile-overlay');
     if (overlay && sessionStorage.getItem('compile-shown')) {
@@ -22,20 +22,19 @@
   })();
 </script>
 
-<script>
+<script data-astro-rerun>
   (function() {
-    const overlay = document.getElementById('compile-overlay')!;
-    // Already hidden by the sync script above? Skip.
-    if (overlay.style.display === 'none') return;
+    var overlay = document.getElementById('compile-overlay');
+    if (!overlay || overlay.style.display === 'none') return;
 
     sessionStorage.setItem('compile-shown', '1');
     document.body.style.overflow = 'hidden';
 
-    const output = document.getElementById('compile-output')!;
-    const bar = document.getElementById('compile-bar')!;
-    const timer = document.getElementById('compile-timer')!;
+    var output = document.getElementById('compile-output');
+    var bar = document.getElementById('compile-bar');
+    var timer = document.getElementById('compile-timer');
 
-    const lines: { html: string; pct: number }[] = [
+    var lines = [
       { html: '   Compiling 0xgsvs v0.1.0', pct: 15 },
       { html: '   Compiling personality v0.7.3', pct: 30 },
       { html: '   Compiling social_life v0.0.1', pct: 40 },
@@ -57,7 +56,7 @@
       { html: '<c:ok>   Finished</c> dev [unoptimized] in 1.8s', pct: 100 },
     ];
 
-    function colorize(html: string): string {
+    function colorize(html) {
       return html
         .replace(/<c:warn>/g, '<span style="color:#ca8a04;font-weight:700;">')
         .replace(/<c:err>/g, '<span style="color:#dc2626;font-weight:700;">')
@@ -65,15 +64,15 @@
         .replace(/<\/c>/g, '</span>');
     }
 
-    const startTime = performance.now();
-    let i = 0;
+    var startTime = performance.now();
+    var i = 0;
 
     function typeNext() {
       if (i < lines.length) {
         output.innerHTML += colorize(lines[i].html) + '\n';
         output.scrollTop = output.scrollHeight;
         bar.style.width = lines[i].pct + '%';
-        const elapsed = ((performance.now() - startTime) / 1000).toFixed(1);
+        var elapsed = ((performance.now() - startTime) / 1000).toFixed(1);
         timer.textContent = elapsed + 's';
         i++;
         setTimeout(typeNext, 180 + Math.random() * 270);
