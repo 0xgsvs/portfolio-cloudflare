@@ -180,24 +180,31 @@ Arch/Nix Dual Boot | Terminal Enthusiast
 </Layout>
 
 <script>
-  // Typewriter effect
-  const text = "Rust & Blockchain developer. Arch/Nix dual boot. Building in the Solana ecosystem.";
-  const el = document.getElementById('typewriter');
-  let i = 0;
-
-  function type() {
-    if (el && i < text.length) {
-      el.textContent = text.slice(0, i + 1);
-      i++;
-      setTimeout(type, 40);
-    } else if (el) {
-      el.classList.remove('typewriter-cursor');
-      el.classList.add('typewriter-done');
+  // Typewriter effect — runs on initial load + every ClientRouter nav back to home
+  function startTypewriter() {
+    const el = document.getElementById('typewriter');
+    if (!el) return;
+    const text = "Rust & Blockchain developer. Arch/Nix dual boot. Building in the Solana ecosystem.";
+    el.textContent = '';
+    el.classList.add('typewriter-cursor');
+    el.classList.remove('typewriter-done');
+    let i = 0;
+    function type() {
+      if (i < text.length) {
+        el.textContent = text.slice(0, i + 1);
+        i++;
+        setTimeout(type, 40);
+      } else {
+        el.classList.remove('typewriter-cursor');
+        el.classList.add('typewriter-done');
+      }
     }
+    type();
   }
-  type();
+  startTypewriter();
+  document.addEventListener('astro:page-load', startTypewriter);
 
-  // Copy curl command
+  // Copy curl command — exposed globally via window
   function copyCurl() {
     navigator.clipboard.writeText('curl -L https://0xgsvs.dev/contact.txt');
     const btn = document.getElementById('copy-btn');
@@ -210,48 +217,44 @@ Arch/Nix Dual Boot | Terminal Enthusiast
       }, 2000);
     }
   }
-  // Expose to global scope for onclick
   (window as any).copyCurl = copyCurl;
 
-  // ── Rage-click counter on ASCII art ──
-  const asciiArt = document.getElementById('ascii-art');
-  const asciiPre = document.getElementById('ascii-pre');
-  let asciiClicks = 0;
-  let asciiTimeout: ReturnType<typeof setTimeout>;
-  const messages = [
-    "calm down, it's just ASCII",
-    "ok keep going...",
-    "you're persistent, I'll give you that",
-    "almost there...",
-    "🔥 YOU BROKE IT",
-  ];
+  // Rage-click on ASCII art — runs on initial load + every ClientRouter nav
+  function startRageClick() {
+    const asciiArt = document.getElementById('ascii-art');
+    if (!asciiArt) return;
+    const asciiPre = document.getElementById('ascii-pre');
+    let asciiClicks = 0;
+    let asciiTimeout: ReturnType<typeof setTimeout>;
+    const messages = [
+      "calm down, it's just ASCII",
+      "ok keep going...",
+      "you're persistent, I'll give you that",
+      "almost there...",
+      "🔥 YOU BROKE IT",
+    ];
 
-  if (asciiArt) {
     asciiArt.addEventListener('click', () => {
       asciiClicks++;
       clearTimeout(asciiTimeout);
       const msgIdx = Math.min(asciiClicks - 1, messages.length - 1);
 
       if (asciiClicks >= 10) {
-        // Glitch out the ASCII art
         if (asciiPre) {
           asciiPre.style.animation = 'jitter 0.05s infinite linear alternate-reverse';
         }
         asciiArt.style.filter = 'drop-shadow(4px 4px 0 #fca5a5)';
-
         const toast = document.createElement('div');
         toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:black;color:#fca5a5;border:3px solid #fca5a5;border-radius:8px;padding:12px 24px;font-family:"Courier New",monospace;font-weight:700;font-size:14px;z-index:9999;animation:toastIn 0.3s ease-out,toastOut 0.3s ease-in 2.7s forwards;';
         toast.textContent = messages[msgIdx];
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 3000);
-
         setTimeout(() => {
           if (asciiPre) asciiPre.style.animation = '';
           asciiArt.style.filter = '';
         }, 2000);
         asciiClicks = 0;
       } else {
-        // Show counter as a small tooltip
         let counter = document.getElementById('ascii-click-counter');
         if (!counter) {
           counter = document.createElement('div');
@@ -263,8 +266,9 @@ Arch/Nix Dual Boot | Terminal Enthusiast
         counter.textContent = `${asciiClicks}/10 — ${messages[msgIdx]}`;
         setTimeout(() => { if (counter && counter.parentNode) counter.remove(); }, 1500);
       }
-
       asciiTimeout = setTimeout(() => { asciiClicks = 0; }, 2000);
     });
   }
+  startRageClick();
+  document.addEventListener('astro:page-load', startRageClick);
 </script>
