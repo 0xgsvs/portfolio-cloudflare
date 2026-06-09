@@ -65,7 +65,7 @@
         .replace(/<\/c>/g, '</span>');
     }
 
-    const startTime = Date.now();
+    const startTime = Temporal.Now.instant();
     let i = 0;
 
     function typeNext() {
@@ -73,7 +73,7 @@
         output.innerHTML += colorize(lines[i].html) + '\n';
         output.scrollTop = output.scrollHeight;
         bar.style.width = lines[i].pct + '%';
-        const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+        const elapsed = (Temporal.Now.instant().since(startTime).total('milliseconds') / 1000).toFixed(1);
         timer.textContent = elapsed + 's';
         i++;
         setTimeout(typeNext, 180 + Math.random() * 270);
