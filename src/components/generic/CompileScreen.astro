@@ -13,15 +13,12 @@
 </div>
 
 <!-- Synchronous inline script: runs before paint, immediately hides if already visited -->
-<script>
+<script is:inline>
   (function() {
-    const overlay = document.getElementById('compile-overlay')!;
-    if (sessionStorage.getItem('compile-shown')) {
+    var overlay = document.getElementById('compile-overlay');
+    if (overlay && sessionStorage.getItem('compile-shown')) {
       overlay.style.display = 'none';
-      return;
     }
-    sessionStorage.setItem('compile-shown', '1');
-    document.body.style.overflow = 'hidden';
   })();
 </script>
 
@@ -30,6 +27,9 @@
     const overlay = document.getElementById('compile-overlay')!;
     // Already hidden by the sync script above? Skip.
     if (overlay.style.display === 'none') return;
+
+    sessionStorage.setItem('compile-shown', '1');
+    document.body.style.overflow = 'hidden';
 
     const output = document.getElementById('compile-output')!;
     const bar = document.getElementById('compile-bar')!;
