@@ -1,42 +1,14 @@
 ---
 import Layout from '../layouts/Layout.astro';
-
-// Check if this is a curl request
-const ua = Astro.request.headers.get("user-agent") || "";
-const isCurl = ua.toLowerCase().includes("curl") ||
-               ua.toLowerCase().includes("wget") ||
-               ua.toLowerCase().includes("httpie") ||
-               ua.toLowerCase().includes("python-requests") ||
-               ua.toLowerCase().includes("go-http-client");
-
-const wantsJson = Astro.request.headers.get("accept")?.includes("application/json");
-const wantsText = isCurl || wantsJson;
 ---
 
-{ wantsText ? (
-  <pre style="font-family:monospace;padding:20px;font-size:14px;">
-{`BEGIN:VCARD
-VERSION:3.0
-FN:VENKAT SUNDARANEEDI
-ORG:Rust & Blockchain Developer
-TITLE:Blockchain Developer
-EMAIL:venkat.subrahmanyam.34@gmail.com
-URL:https://0xgsvs.dev
-GITHUB:https://github.com/0xgsvs
-NOTE:Building on Solana. Arch/Nix dual boot. Terminal enthusiast.
-END:VCARD
+<Layout title="Contact | Venkat Sundaraneedi" description="Get in touch with Venkat Sundaraneedi — Rust & Blockchain Developer">
+  <section class="section" style="padding-top:40px;">
+    <h2 class="section-title">GET IN TOUCH</h2>
 
-─── or JSON ───
-curl -H "Accept: application/json" https://0xgsvs.dev/contact`}
-  </pre>
-) : (
-  <Layout title="Contact | Venkat Sundaraneedi" description="Get in touch with Venkat Sundaraneedi — Rust & Blockchain Developer">
-    <section class="section" style="padding-top:40px;">
-      <h2 class="section-title">GET IN TOUCH</h2>
-
-      <div class="brutal-card card-yellow" style="max-width:600px;margin-bottom:24px;">
-        <h3 style="margin-top:0;">📋 vCard</h3>
-        <pre style="font-family:'Courier New',monospace;font-size:13px;line-height:1.6;overflow-x:auto;">
+    <div class="brutal-card card-yellow" style="max-width:600px;margin-bottom:24px;">
+      <h3 style="margin-top:0;">📋 vCard</h3>
+      <pre style="font-family:'Courier New',monospace;font-size:13px;line-height:1.6;overflow-x:auto;">
 BEGIN:VCARD
 VERSION:3.0
 FN:VENKAT SUNDARANEEDI
@@ -47,26 +19,22 @@ URL:https://0xgsvs.dev
 GITHUB:https://github.com/0xgsvs
 NOTE:Building on Solana. Arch/Nix dual boot. Terminal enthusiast.
 END:VCARD</pre>
-      </div>
+    </div>
 
-      <div class="brutal-card card-green" style="max-width:600px;margin-bottom:24px;">
-        <h3 style="margin-top:0;">💻 For terminal users</h3>
-        <pre style="font-family:'Courier New',monospace;font-size:13px;line-height:1.6;">
+    <div class="brutal-card card-green" style="max-width:600px;margin-bottom:24px;">
+      <h3 style="margin-top:0;">💻 For terminal users</h3>
+      <pre style="font-family:'Courier New',monospace;font-size:13px;line-height:1.6;">
 # Get contact info
-curl -L https://0xgsvs.dev/contact
-
-# Get as JSON
-curl -H "Accept: application/json" https://0xgsvs.dev/contact
+curl -L https://0xgsvs.dev/contact.txt
 
 # Get PGP key
-curl -L https://0xgsvs.dev/pgp</pre>
-      </div>
+curl -L https://0xgsvs.dev/pgp.txt</pre>
+    </div>
 
-      <div class="brutal-card card-blue" style="max-width:600px;">
-        <h3 style="margin-top:0;">📬 Direct</h3>
-        <p>Email: <strong>venkat.subrahmanyam.34@gmail.com</strong></p>
-        <p>GitHub: <a href="https://github.com/0xgsvs" style="color:black;">github.com/0xgsvs</a></p>
-      </div>
-    </section>
-  </Layout>
-)}
+    <div class="brutal-card card-blue" style="max-width:600px;">
+      <h3 style="margin-top:0;">📬 Direct</h3>
+      <p>Email: <strong>venkat.subrahmanyam.34@gmail.com</strong></p>
+      <p>GitHub: <a href="https://github.com/0xgsvs" style="color:black;">github.com/0xgsvs</a></p>
+    </div>
+  </section>
+</Layout>

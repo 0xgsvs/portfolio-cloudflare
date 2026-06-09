@@ -1,0 +1,16 @@
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mQINBGabcdef1234567890ABCDEFGhijklmnopqrstuvwxyz
+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvw
+xyz0123456789+/ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefg
+hijklmnopqrstuvwxyz0123456789+/ABCDEFGHIJKLMNOPQ
+RSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/AB
+CDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxy
+z0123456789+/ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghij
+klmnopqrstuvwxyz0123456789+/ABCDEFGHIJKLMNOPQRSTU
+=ABCD
+-----END PGP PUBLIC KEY BLOCK-----
+
+// ── REPLACE WITH YOUR ACTUAL PGP PUBLIC KEY ──
+// Generate: gpg --full-generate-key
+// Export:  gpg --armor --export your@email.com

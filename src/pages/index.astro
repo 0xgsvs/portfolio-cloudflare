@@ -38,7 +38,7 @@ const iconMap: Record<string, any> = {
 
   <!-- ===== CURL COMMAND ===== -->
   <div class="curl-box">
-    <code>$ curl -L https://0xgsvs.dev/contact</code>
+    <code>$ curl -L https://0xgsvs.dev/contact.txt</code>
     <button class="copy-btn" id="copy-btn" onclick="copyCurl()">COPY</button>
   </div>
 
@@ -199,7 +199,7 @@ Arch/Nix Dual Boot | Terminal Enthusiast
 
   // Copy curl command
   function copyCurl() {
-    navigator.clipboard.writeText('curl -L https://0xgsvs.dev/contact');
+    navigator.clipboard.writeText('curl -L https://0xgsvs.dev/contact.txt');
     const btn = document.getElementById('copy-btn');
     if (btn) {
       btn.textContent = 'COPIED!';
