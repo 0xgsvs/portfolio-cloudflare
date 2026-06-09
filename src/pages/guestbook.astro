@@ -1,0 +1,70 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const guestbookIssueUrl = "https://github.com/0xgsvs/portfolio-cloudflare/issues/new?title=Guestbook%3A%20%5Byour%20name%5D&body=%23%23%20Guestbook%20Entry%0A%0A**Name%3A**%20%0A**From%3A**%20%0A**Message%3A**%20%0A%0A---%0A_Signed%20via%20the%20hidden%20guestbook%20at%200xgsvs.dev%2Fguestbook_";
+
+const sampleEntries = [
+  { name: "alice_h4ck3r", date: "2026-05-20", msg: "nice terminal. your neofetch made me install Arch. no regrets." },
+  { name: "0xBob", date: "2026-05-18", msg: "found the .secret page. pineapple on pizza is indeed the hill to die on." },
+  { name: "nix_newbie", date: "2026-05-12", msg: "your NixOS post convinced me to try it. 3 days later I still haven't booted to a GUI. thanks." },
+  { name: "sol_dev_42", date: "2026-04-28", msg: "the DEX aggregator looks sick. open source it so I can steal your code." },
+  { name: "anonymous_ferris", date: "2026-04-15", msg: "🦀" },
+];
+---
+
+<Layout title="Guestbook | Venkat Sundaraneedi" description="Sign the hidden guestbook">
+  <section class="section" style="padding-top:40px;">
+    <h2 class="section-title">/GUESTBOOK</h2>
+    <p style="font-size:13px;opacity:0.6;margin-bottom:20px;">
+      You found the guestbook. Leave a trace. It works via GitHub Issues — because I'm not running a database for this.
+    </p>
+
+    <!-- Sign form -->
+    <div class="brutal-card card-green" style="margin-bottom:24px;">
+      <h3 style="margin-top:0;">✍️ Sign the guestbook</h3>
+      <p style="font-size:14px;margin-bottom:16px;">
+        Clicking below opens a pre-filled GitHub issue. Fill in your name and message, submit, and you're in the guestbook.
+        No accounts needed if you have a GitHub account.
+      </p>
+      <a
+        href={guestbookIssueUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        style="display:inline-block;padding:12px 24px;background:var(--black);color:var(--green);border:3px solid var(--green);border-radius:6px;text-decoration:none;font-weight:700;font-family:'Courier New',monospace;font-size:14px;filter:drop-shadow(3px 3px 0 rgba(134,239,172,0.6));transition:all 0.15s;"
+        onmouseover="this.style.filter='drop-shadow(1px 1px 0 rgba(134,239,172,0.6))'"
+        onmouseout="this.style.filter='drop-shadow(3px 3px 0 rgba(134,239,172,0.6))'"
+      >
+        $ git commit -m "sign guestbook"
+      </a>
+    </div>
+
+    <!-- Sample entries -->
+    <div class="brutal-card">
+      <h3 style="margin-top:0;">📜 Recent entries</h3>
+      {sampleEntries.map(entry => (
+        <div style="padding:12px 0;border-bottom:1px solid rgba(0,0,0,0.08);">
+          <div style="display:flex;gap:8px;align-items:baseline;margin-bottom:4px;">
+            <span style="font-weight:700;font-size:14px;font-family:'Courier New',monospace;">{entry.name}</span>
+            <span style="font-size:11px;opacity:0.4;">{entry.date}</span>
+          </div>
+          <p style="font-size:14px;opacity:0.7;margin:0;">{entry.msg}</p>
+        </div>
+      ))}
+      <p style="font-size:11px;opacity:0.3;margin-top:12px;font-style:italic;">
+        These are sample entries. Your real entry creates a GitHub issue. I review and feature the best ones here.
+      </p>
+    </div>
+
+    <!-- Terminal way -->
+    <div class="brutal-card card-yellow" style="margin-top:24px;">
+      <h3 style="margin-top:0;">💻 Terminal method</h3>
+      <pre style="font-family:'Courier New',monospace;font-size:13px;line-height:1.6;overflow-x:auto;">
+# Create a guestbook entry via GitHub CLI
+gh issue create \
+  --repo 0xgsvs/portfolio-cloudflare \
+  --title "Guestbook: [your name]" \
+  --body "Message here" \
+  --label guestbook</pre>
+    </div>
+  </section>
+</Layout>
