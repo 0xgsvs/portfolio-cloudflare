@@ -9,6 +9,7 @@ import PixelEmail from '../components/generic/PixelEmail.astro';
 import PixelChain from '../components/generic/PixelChain.astro';
 import PixelFile from '../components/generic/PixelFile.astro';
 import PixelChart from '../components/generic/PixelChart.astro';
+import PixelPortrait from '../components/generic/PixelPortrait.astro';
 import MobileSocials from '../components/home/MobileSocials.astro';
 
 const iconMap: Record<string, any> = {
@@ -64,6 +65,12 @@ const iconMap: Record<string, any> = {
       </div>
     </div>
   </section>
+
+  <!-- ===== PIXEL PORTRAIT ===== -->
+  <div style="text-align:center;padding:20px 0;">
+    <PixelPortrait />
+    <p style="font-size:11px;opacity:0.4;margin-top:8px;font-family:'Courier New',monospace;">hover for diagnostics</p>
+  </div>
 
   <!-- ===== PROJECTS ===== -->
   <section id="projects" class="section">
