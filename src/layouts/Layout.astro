@@ -47,49 +47,7 @@ const { title, description } = Astro.props;
       if (!(window as any).__portfolioSetup) {
         (window as any).__portfolioSetup = true;
 
-        console.log(
-          "%c██╗   ██╗███████╗███╗   ██╗██╗  ██╗ █████╗ ████████╗\\n%c██║   ██║██╔════╝████╗  ██║██║ ██╔╝██╔══██╗╚══██╔══╝\\n%c██║   ██║█████╗  ██╔██╗ ██║█████╔╝ ███████║   ██║   \\n%c╚██╗ ██╔╝██╔══╝  ██║╚██╗██║██╔═██╗ ██╔══██║   ██║   \\n%c ╚████╔╝ ███████╗██║ ╚████║██║  ██╗██║  ██║   ██║   \\n%c  ╚═══╝  ╚══════╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ",
-          "color: #fde047; font-weight: bold;",
-          "color: #fde047; font-weight: bold;",
-          "color: #fde047; font-weight: bold;",
-          "color: #fde047; font-weight: bold;",
-          "color: #fde047; font-weight: bold;",
-          "color: #fde047; font-weight: bold;"
-        );
-        console.log("%c👋 You're poking around the console. I like that.", "font-size: 14px; font-weight: bold; color: black;");
-        console.log("%c💼 Rust & Blockchain Developer | Solana Ecosystem", "font-size: 12px; color: #666;");
-        console.log("%c📧 venkat.subrahmanyam.34@gmail.com", "font-size: 12px; color: #666;");
-        console.log("%c🐙 github.com/0xgsvs", "font-size: 12px; color: #666;");
-        console.log("%c💡 Try typing 'matrix()' or 'konami()' for more surprises...", "font-size: 11px; color: #999; font-style: italic;");
-
-        // ── Konami Code (↑↑↓↓←→←→BA) ──
-        const KONAMI = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
-        let konamiPos = 0;
-        let konamiDone = false;
-        document.addEventListener("keydown", (e) => {
-          if (konamiDone) return;
-          if (e.key === KONAMI[konamiPos]) {
-            konamiPos++;
-            if (konamiPos === KONAMI.length) {
-              konamiDone = true;
-              konamiPos = 0;
-              document.body.classList.add("konami-activated");
-              document.body.style.transform = "rotate(1deg)";
-              document.body.style.transition = "transform 0.08s";
-              setTimeout(() => { document.body.style.transform = "rotate(-1deg)"; }, 80);
-              setTimeout(() => { document.body.style.transform = "rotate(0deg)"; }, 160);
-              const toast = document.createElement("div");
-              toast.className = "konami-toast";
-              toast.textContent = "⬆⬆⬇⬇⬅➡⬅➡🅱🅰 — HACKER MODE UNLOCKED";
-              document.body.appendChild(toast);
-              setTimeout(() => toast.remove(), 3000);
-              console.log("%c🎮 KONAMI CODE ACTIVATED — 30 lives granted", "font-size:16px;color:#86efac;font-weight:bold;");
-              console.log("%cTry 'matrix()' in console or press ` (backtick) for terminal", "font-size:12px;color:#666;");
-            }
-          } else {
-            konamiPos = 0;
-          }
-        });
+        console.log("%c ██████╗ ██╗  ██╗ ██████╗ ███████╗██╗   ██╗███████╗\n%c██╔═████╗╚██╗██╔╝██╔════╝ ██╔════╝██║   ██║██╔════╝\n%c██║██╔██║ ╚███╔╝ ██║  ███╗███████╗██║   ██║███████╗\n%c████╔╝██║ ██╔██╗ ██║   ██║╚════██║██║   ██║╚════██║\n%c╚██████╔╝██╔╝ ██╗╚██████╔╝███████║╚██████╔╝███████║\n%c ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝ ╚═════╝ ╚══════╝", "color: #fde047; font-weight: bold;", "color: #fde047; font-weight: bold;", "color: #fde047; font-weight: bold;", "color: #fde047; font-weight: bold;", "color: #fde047; font-weight: bold;", "color: #fde047; font-weight: bold;");
 
         // ── Timed page mutation ──
         let idleTime = 0;
@@ -118,8 +76,6 @@ const { title, description } = Astro.props;
         document.addEventListener('click', () => { idleTime = 0; });
       }
 
-      // Re-expose globals on every navigation (inline script re-executes, window persists)
-      (window as any).konami = () => { console.log("Konami code reset. Try again!"); };
     </script>
   </body>
 </html>

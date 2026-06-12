@@ -642,26 +642,6 @@ h3 {
   }
 }
 
-/* ===== KONAMI TOAST ===== */
-.konami-toast {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--black);
-  color: var(--green);
-  border: 3px solid var(--green);
-  border-radius: 8px;
-  padding: 12px 24px;
-  font-family: "Courier New", monospace;
-  font-weight: 700;
-  font-size: 14px;
-  z-index: 9999;
-  filter: drop-shadow(4px 4px 0 rgba(134, 239, 172, 0.6));
-  animation:
-    toastIn 0.3s ease-out,
-    toastOut 0.3s ease-in 2.7s forwards;
-}
 @keyframes toastIn {
   from {
     opacity: 0;
