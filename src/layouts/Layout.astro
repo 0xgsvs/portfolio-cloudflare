@@ -2,7 +2,6 @@
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import TerminalOverlay from '../components/generic/TerminalOverlay.astro';
-import MatrixRain from '../components/generic/MatrixRain.astro';
 import CompileScreen from '../components/generic/CompileScreen.astro';
 import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
@@ -43,7 +42,6 @@ const { title, description } = Astro.props;
       <Footer />
     </div>
     <TerminalOverlay />
-    <MatrixRain />
     <script>
       // Guard: only run setup once (window persists across ClientRouter navigations)
       if (!(window as any).__portfolioSetup) {
@@ -121,7 +119,6 @@ const { title, description } = Astro.props;
       }
 
       // Re-expose globals on every navigation (inline script re-executes, window persists)
-      (window as any).matrix = () => document.body.classList.toggle("matrix-mode");
       (window as any).konami = () => { console.log("Konami code reset. Try again!"); };
     </script>
   </body>

@@ -70,9 +70,6 @@
         '  projects   - Featured projects',
         '  contact    - Get in touch',
         '  resume     - Download resume (coming soon)',
-        '  matrix     - Toggle matrix mode',
-        '  dark       - Toggle matrix mode',
-        '  normal     - Back to normal mode',
         '  clear      - Clear terminal',
         '  exit       - Close terminal',
         '  cat .secret - Look inside .secret',
@@ -165,18 +162,6 @@
       if (cmd === 'cat .secret') {
         addLine('Accessing secret...', 'yellow');
         window.location.href = '/secret';
-        return false;
-      }
-      if (cmd === 'matrix' || cmd === 'dark') {
-        document.body.classList.add('matrix-mode');
-        addLine('Matrix mode activated. Type "normal" to undo.', 'yellow');
-        addLine('', 'output');
-        return false;
-      }
-      if (cmd === 'normal' || cmd === 'light') {
-        document.body.classList.remove('matrix-mode');
-        addLine('Back to normal mode.', 'yellow');
-        addLine('', 'output');
         return false;
       }
       if (cmd === 'clear') {
