@@ -11,12 +11,9 @@
   "dependencies": {
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.3",
-    "@astrojs/tailwind": "^6.0.2",
     "@eliancodes/brutal-ui": "^1.0.0",
-    "@tailwindcss/vite": "^4.3.0",
     "astro": "^6.4.5",
-    "astro-font": "^1.1.0",
-    "tailwindcss": "^4.3.0"
+    "astro-font": "^1.1.0"
   },
   "devDependencies": {
     "typescript": "~6.0.3"
