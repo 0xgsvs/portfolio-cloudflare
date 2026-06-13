@@ -16,6 +16,8 @@
 
     <p id="commit-stats" class="commit-stats" style="display:none;"></p>
 
+    <p id="commit-streak" class="commit-streak" style="display:none;"></p>
+
     <div class="commit-legend" id="commit-legend">
       <span><span class="commit-legend-dot c0"></span> <span class="legend-label">off</span></span>
       <span><span class="commit-legend-dot c1"></span> <span class="legend-label">light</span></span>
@@ -105,7 +107,12 @@
   .commit-stats {
     text-align: center; font-size: 11px; font-weight: 600;
     font-family: 'Courier New', monospace; opacity: 0.6;
-    margin: 0 0 6px;
+    margin: 0 0 2px;
+  }
+  .commit-streak {
+    text-align: center; font-size: 10px;
+    font-family: 'Courier New', monospace; opacity: 0.45;
+    margin: 0 0 4px;
   }
 </style>
 
@@ -223,6 +230,33 @@
           var lastDate = days[days.length - 1].date;
           stats.textContent = total + ' contributions · ' + active + ' active days · ' + firstDate + ' – ' + lastDate;
           stats.style.display = 'block';
+        }
+
+        // Compute streaks
+        var streak = document.getElementById('commit-streak');
+        if (streak) {
+          var currentStreak = 0;
+          var longestStreak = 0;
+          var running = 0;
+          // Walk days newest→oldest for current streak
+          for (var si = days.length - 1; si >= 0; si--) {
+            if (days[si].count > 0) { currentStreak++; }
+            else break;
+          }
+          // Walk all days old→new for longest streak
+          for (var si = 0; si < days.length; si++) {
+            if (days[si].count > 0) { running++; }
+            else {
+              if (running > longestStreak) longestStreak = running;
+              running = 0;
+            }
+          }
+          if (running > longestStreak) longestStreak = running;
+
+          var streakText = 'current streak: ' + currentStreak + (currentStreak === 1 ? ' day' : ' days');
+          streakText += ' · longest streak: ' + longestStreak + (longestStreak === 1 ? ' day' : ' days');
+          streak.textContent = streakText;
+          streak.style.display = 'block';
         }
 
         // Update legend with real count ranges from data
