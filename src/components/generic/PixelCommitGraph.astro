@@ -139,26 +139,28 @@
       var col = firstDow; // which column we're on
       var globalIdx = 0;
 
-      for (var i = 0; i < days.length; i++) {
-        // Start new row at beginning or when we wrap to Sunday
-        if (col === 0) {
+      function ensureRow() {
+        if (!rowDiv) {
           rowDiv = document.createElement('div');
           rowDiv.className = 'commit-week-row';
           container.appendChild(rowDiv);
         }
+      }
 
-        // Fill gaps before the first day in the first row
-        while (col < firstDow && i === 0 && !rowDiv) {
-          // First day isn't Sunday — pad with spacers
-          if (!rowDiv) {
-            rowDiv = document.createElement('div');
-            rowDiv.className = 'commit-week-row';
-            container.appendChild(rowDiv);
-          }
-          var spacer = document.createElement('div');
-          spacer.className = 'commit-week-spacer';
-          rowDiv.appendChild(spacer);
-          col++;
+      // Pad with spacers before the first day
+      ensureRow();
+      for (var p = 0; p < firstDow; p++) {
+        var spacer = document.createElement('div');
+        spacer.className = 'commit-week-spacer';
+        rowDiv.appendChild(spacer);
+      }
+
+      for (var i = 0; i < days.length; i++) {
+        // Start new row when we wrap back to Sunday
+        if (col === 0 && i > 0) {
+          rowDiv = document.createElement('div');
+          rowDiv.className = 'commit-week-row';
+          container.appendChild(rowDiv);
         }
 
         var day = days[i];
