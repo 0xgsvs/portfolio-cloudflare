@@ -1,8 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-// Placeholder PGP key — replace with your real one!
-const pgpKey = `-----BEGIN PGP PUBLIC KEY BLOCK-----
+// Placeholder GPG key — replace with your real one!
+const gpgKey = `-----BEGIN PGP PUBLIC KEY BLOCK-----
 
 mQINBGabcdef1234567890ABCDEFGhijklmnopqrstuvwxyz
 ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvw
@@ -15,7 +15,7 @@ klmnopqrstuvwxyz0123456789+/ABCDEFGHIJKLMNOPQRSTU
 =ABCD
 -----END PGP PUBLIC KEY BLOCK-----
 
-// ── REPLACE THIS WITH YOUR ACTUAL PGP PUBLIC KEY ──
+// ── REPLACE THIS WITH YOUR ACTUAL GPG PUBLIC KEY ──
 // Generate one:  gpg --full-generate-key
 // Export it:     gpg --armor --export your@email.com
 // Then paste it above and delete this comment block.`;
@@ -23,9 +23,9 @@ klmnopqrstuvwxyz0123456789+/ABCDEFGHIJKLMNOPQRSTU
 const shortId = "ABCD 1234 EFGH 5678";
 ---
 
-<Layout title="PGP Key | Venkat Sundaraneedi" description="PGP public key for Venkat Sundaraneedi">
+<Layout title="GPG Key | Venkat Sundaraneedi" description="GPG public key for Venkat Sundaraneedi">
   <section class="section" style="padding-top:40px;">
-    <h2 class="section-title">PGP PUBLIC KEY</h2>
+    <h2 class="section-title">GPG PUBLIC KEY</h2>
 
     <div class="brutal-card card-yellow" style="max-width:700px;margin-bottom:24px;">
       <h3 style="margin-top:0;">🔑 Key Info</h3>
@@ -41,17 +41,17 @@ const shortId = "ABCD 1234 EFGH 5678";
       <h3 style="margin-top:0;">📥 Import my key</h3>
       <pre style="font-family:'Courier New',monospace;font-size:13px;line-height:1.6;overflow-x:auto;background:white;padding:12px;border:2px solid black;border-radius:4px;">
 # From the web
-curl -L https://0xgsvs.dev/pgp.txt | gpg --import
+curl -L https://0xgsvs.dev/gpg.txt | gpg --import
 
 # From keyserver
-gpg --keyserver keys.openpgp.org --recv-keys ABCD1234EFGH5678</pre>
+gpg --keyserver keys.gnupg.net --recv-keys ABCD1234EFGH5678</pre>
     </div>
 
     <div class="brutal-card" style="max-width:700px;">
       <h3 style="margin-top:0;">🔐 Public Key Block</h3>
-      <pre style="font-family:'Courier New',monospace;font-size:11px;line-height:1.4;overflow-x:auto;white-space:pre-wrap;word-break:break-all;">{pgpKey}</pre>
+      <pre style="font-family:'Courier New',monospace;font-size:11px;line-height:1.4;overflow-x:auto;white-space:pre-wrap;word-break:break-all;">{gpgKey}</pre>
       <p style="margin-top:12px;font-size:12px;opacity:0.6;">
-        ⚠️ This is a placeholder key. Replace with your real PGP key.
+        ⚠️ This is a placeholder key. Replace with your real GPG key.
         <a href="https://www.gnupg.org/gph/en/manual/c14.html" style="color:black;">Learn how to generate one →</a>
       </p>
     </div>
