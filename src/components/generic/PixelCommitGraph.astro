@@ -5,8 +5,13 @@
       last 30 days · hover for details
     </p>
 
-    <div class="commit-rows" id="commit-rows">
-      <p style="font-size:11px;opacity:0.3;text-align:center;padding:20px 0;font-family:'Courier New',monospace;">loading...</p>
+    <div class="commit-graph-container">
+      <div class="commit-day-headers" id="commit-day-headers">
+        <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+      </div>
+      <div class="commit-rows" id="commit-rows">
+        <p style="font-size:11px;opacity:0.3;text-align:center;padding:20px 0;font-family:'Courier New',monospace;">loading...</p>
+      </div>
     </div>
 
     <p id="commit-stats" class="commit-stats" style="display:none;"></p>
@@ -28,8 +33,37 @@
 <style is:global>
   .commit-graph-wrapper { max-width: 640px; margin: 0 auto; padding: 12px 0; }
   .commit-graph-card { overflow: visible !important; }
-  .commit-rows { display: flex; flex-direction: column; gap: 4px; align-items: center; }
-  .commit-row-line { display: flex; gap: 4px; }
+  .commit-graph-container { display: flex; flex-direction: column; gap: 4px; align-items: center; }
+  .commit-day-headers {
+    display: grid;
+    grid-template-columns: repeat(7, 18px);
+    gap: 4px;
+    margin-bottom: 2px;
+    justify-content: center;
+  }
+  .commit-day-headers span {
+    font-size: 8px;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    opacity: 0.35;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .commit-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+  }
+  .commit-week-row {
+    display: grid;
+    grid-template-columns: repeat(7, 18px);
+    gap: 4px;
+  }
+  .commit-week-spacer {
+    width: 18px; height: 18px;
+    flex-shrink: 0;
+  }
   .commit-block {
     width: 18px; height: 18px;
     border: 3px solid black;
@@ -71,7 +105,7 @@
   .commit-stats {
     text-align: center; font-size: 11px; font-weight: 600;
     font-family: 'Courier New', monospace; opacity: 0.6;
-    margin: 0 0 6px; display: none;
+    margin: 0 0 6px;
   }
 </style>
 
@@ -94,27 +128,54 @@
 
     function renderBlocks(days) {
       // days: array of 30 { date: "YYYY-MM-DD", count: number, level: 0-4 }
+      // Layout: GitHub-style — Sun–Sat columns, one row per week
       container.innerHTML = '';
 
-      for (var r = 0; r < 2; r++) {
-        var rowDiv = document.createElement('div');
-        rowDiv.className = 'commit-row-line';
+      // Determine day-of-week for the first day (0=Sun, 6=Sat)
+      var firstDate = new Date(days[0].date + 'T00:00:00');
+      var firstDow = firstDate.getDay(); // 0=Sun
 
-        for (var j = 0; j < 15; j++) {
-          var idx = r * 15 + j;
-          var day = days[idx];
-          var cell = document.createElement('div');
-          cell.className = 'commit-block anim-in c' + day.level;
-          cell.style.animationDelay = (idx * 0.03) + 's';
+      var rowDiv = null;
+      var col = firstDow; // which column we're on
+      var globalIdx = 0;
 
-          var d = new Date(day.date + 'T00:00:00');
-          var label = levels[day.level];
-          var countStr = day.count === 1 ? '1 contribution' : day.count + ' contributions';
-          cell.title = months[d.getMonth()] + ' ' + d.getDate() + ' — ' + countStr + ' (' + label + ')';
-
-          rowDiv.appendChild(cell);
+      for (var i = 0; i < days.length; i++) {
+        // Start new row at beginning or when we wrap to Sunday
+        if (col === 0) {
+          rowDiv = document.createElement('div');
+          rowDiv.className = 'commit-week-row';
+          container.appendChild(rowDiv);
         }
-        container.appendChild(rowDiv);
+
+        // Fill gaps before the first day in the first row
+        while (col < firstDow && i === 0 && !rowDiv) {
+          // First day isn't Sunday — pad with spacers
+          if (!rowDiv) {
+            rowDiv = document.createElement('div');
+            rowDiv.className = 'commit-week-row';
+            container.appendChild(rowDiv);
+          }
+          var spacer = document.createElement('div');
+          spacer.className = 'commit-week-spacer';
+          rowDiv.appendChild(spacer);
+          col++;
+        }
+
+        var day = days[i];
+        var cell = document.createElement('div');
+        cell.className = 'commit-block anim-in c' + day.level;
+        cell.style.animationDelay = (globalIdx * 0.03) + 's';
+        globalIdx++;
+
+        var d = new Date(day.date + 'T00:00:00');
+        var label = levels[day.level];
+        var countStr = day.count === 1 ? '1 contribution' : day.count + ' contributions';
+        cell.title = months[d.getMonth()] + ' ' + d.getDate() + ' — ' + countStr + ' (' + label + ')';
+
+        rowDiv.appendChild(cell);
+
+        col++;
+        if (col >= 7) col = 0; // wrap to next row
       }
     }
 
@@ -164,28 +225,19 @@
 
         // Update legend with real count ranges from data
         var legendLabels = document.querySelectorAll('#commit-legend .legend-label');
-        var ranges = [null, null, null, null, null]; // min counts for levels 0-4
-        // Gather non-zero counts per level
         var levelCounts = [[],[],[],[],[]];
         for (var k = 0; k < days.length; k++) {
           var l = days[k].level;
           if (days[k].count > 0) levelCounts[l].push(days[k].count);
         }
-        // Compute min→max for each level that has data
-        for (var lvl = 0; lvl <= 4; lvl++) {
-          if (levelCounts[lvl].length > 0) {
-            var mn = Math.min.apply(null, levelCounts[lvl]);
-            var mx = Math.max.apply(null, levelCounts[lvl]);
-            ranges[lvl] = mn === mx ? mn + '' : mn + '–' + mx;
-          }
-        }
         var names = ['off', 'light', 'moderate', 'busy', 'intense'];
         for (var li = 0; li < legendLabels.length; li++) {
-          var r = ranges[li];
           if (li === 0) {
             legendLabels[li].textContent = 'off';
-          } else if (r) {
-            legendLabels[li].textContent = names[li] + ' (' + r + ')';
+          } else if (levelCounts[li].length > 0) {
+            var mn = Math.min.apply(null, levelCounts[li]);
+            var mx = Math.max.apply(null, levelCounts[li]);
+            legendLabels[li].textContent = names[li] + ' (' + (mn === mx ? mn : mn + '–' + mx) + ')';
           } else {
             legendLabels[li].textContent = names[li];
           }
