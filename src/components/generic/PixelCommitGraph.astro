@@ -11,12 +11,12 @@
 
     <p id="commit-stats" class="commit-stats" style="display:none;"></p>
 
-    <div class="commit-legend">
-      <span><span class="commit-legend-dot c0"></span> off</span>
-      <span><span class="commit-legend-dot c1"></span> light</span>
-      <span><span class="commit-legend-dot c2"></span> moderate</span>
-      <span><span class="commit-legend-dot c3"></span> busy</span>
-      <span><span class="commit-legend-dot c4"></span> intense</span>
+    <div class="commit-legend" id="commit-legend">
+      <span><span class="commit-legend-dot c0"></span> <span class="legend-label">off</span></span>
+      <span><span class="commit-legend-dot c1"></span> <span class="legend-label">light</span></span>
+      <span><span class="commit-legend-dot c2"></span> <span class="legend-label">moderate</span></span>
+      <span><span class="commit-legend-dot c3"></span> <span class="legend-label">busy</span></span>
+      <span><span class="commit-legend-dot c4"></span> <span class="legend-label">intense</span></span>
     </div>
 
     <p style="font-size:10px;font-weight:700;font-family:'Courier New',monospace;opacity:0.3;margin:10px 0 0;">
@@ -160,6 +160,35 @@
           var lastDate = days[days.length - 1].date;
           stats.textContent = total + ' contributions · ' + active + ' active days · ' + firstDate + ' – ' + lastDate;
           stats.style.display = 'block';
+        }
+
+        // Update legend with real count ranges from data
+        var legendLabels = document.querySelectorAll('#commit-legend .legend-label');
+        var ranges = [null, null, null, null, null]; // min counts for levels 0-4
+        // Gather non-zero counts per level
+        var levelCounts = [[],[],[],[],[]];
+        for (var k = 0; k < days.length; k++) {
+          var l = days[k].level;
+          if (days[k].count > 0) levelCounts[l].push(days[k].count);
+        }
+        // Compute min→max for each level that has data
+        for (var lvl = 0; lvl <= 4; lvl++) {
+          if (levelCounts[lvl].length > 0) {
+            var mn = Math.min.apply(null, levelCounts[lvl]);
+            var mx = Math.max.apply(null, levelCounts[lvl]);
+            ranges[lvl] = mn === mx ? mn + '' : mn + '–' + mx;
+          }
+        }
+        var names = ['off', 'light', 'moderate', 'busy', 'intense'];
+        for (var li = 0; li < legendLabels.length; li++) {
+          var r = ranges[li];
+          if (li === 0) {
+            legendLabels[li].textContent = 'off';
+          } else if (r) {
+            legendLabels[li].textContent = names[li] + ' (' + r + ')';
+          } else {
+            legendLabels[li].textContent = names[li];
+          }
         }
       })
       .catch(function(err) {
