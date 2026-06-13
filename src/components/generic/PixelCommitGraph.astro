@@ -9,6 +9,8 @@
       <p style="font-size:11px;opacity:0.3;text-align:center;padding:20px 0;font-family:'Courier New',monospace;">loading...</p>
     </div>
 
+    <p id="commit-stats" class="commit-stats" style="display:none;"></p>
+
     <div class="commit-legend">
       <span><span class="commit-legend-dot c0"></span> off</span>
       <span><span class="commit-legend-dot c1"></span> light</span>
@@ -18,7 +20,7 @@
     </div>
 
     <p style="font-size:10px;font-weight:700;font-family:'Courier New',monospace;opacity:0.3;margin:10px 0 0;">
-      github.com/0xgsvs
+      <a href="https://github.com/0xgsvs" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none;">github.com/0xgsvs</a>
     </p>
   </div>
 </div>
@@ -58,6 +60,11 @@
   .commit-legend-dot.c2 { background: #fdba74; }
   .commit-legend-dot.c3 { background: #fca5a5; }
   .commit-legend-dot.c4 { background: #d8b4fe; }
+  .commit-stats {
+    text-align: center; font-size: 11px; font-weight: 600;
+    font-family: 'Courier New', monospace; opacity: 0.6;
+    margin: 0 0 6px; display: none;
+  }
 </style>
 
 <script is:inline>
@@ -130,6 +137,21 @@
         }
 
         renderBlocks(days);
+
+        // Update stats summary
+        var stats = document.getElementById('commit-stats');
+        if (stats) {
+          var total = 0;
+          var active = 0;
+          for (var i = 0; i < days.length; i++) {
+            total += days[i].count;
+            if (days[i].count > 0) active++;
+          }
+          var firstDate = days[0].date;
+          var lastDate = days[days.length - 1].date;
+          stats.textContent = total + ' contributions · ' + active + ' active days · ' + firstDate + ' – ' + lastDate;
+          stats.style.display = 'block';
+        }
       })
       .catch(function(err) {
         container.innerHTML = '<p style="font-size:11px;color:#fca5a5;text-align:center;padding:20px 0;font-family:\'Courier New\',monospace;">⚠ failed to load — ' + err.message + '</p>';
