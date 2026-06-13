@@ -2,10 +2,12 @@
   <div class="brutal-card commit-graph-card" style="padding:20px 24px;">
     <h3 style="margin:0 0 4px;font-size:14px;font-weight:800;">RECENT ACTIVITY</h3>
     <p style="font-size:10px;opacity:0.4;margin:0 0 14px;font-family:'Courier New',monospace;">
-      last 30 days · hover for date
+      last 30 days · hover for details
     </p>
 
-    <div class="commit-rows" id="commit-rows"></div>
+    <div class="commit-rows" id="commit-rows">
+      <p style="font-size:11px;opacity:0.3;text-align:center;padding:20px 0;font-family:'Courier New',monospace;">loading...</p>
+    </div>
 
     <div class="commit-legend">
       <span><span class="commit-legend-dot c0"></span> off</span>
@@ -61,60 +63,76 @@
 <script is:inline>
   (function() {
     var container = document.getElementById('commit-rows');
-    if (!container || container.querySelector('.commit-block')) return;
+    if (!container) return;
 
-    // Build date labels: today minus 0..30 days
-    var today = new Date();
-    var dates = [];
-    for (var i = 0; i < 30; i++) {
-      var d = new Date(today);
-      d.setDate(d.getDate() - (29 - i));
-      dates.push(d);
-    }
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var levels = ['off','light','moderate','busy','intense'];
 
-    // Seeded PRNG
-    var seed = 42;
-    function rand() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
+    // Map GitHub contributionLevel → our 0-4 scale
+    var levelMap = {
+      NONE: 0,
+      FIRST_QUARTILE: 1,
+      SECOND_QUARTILE: 2,
+      THIRD_QUARTILE: 3,
+      FOURTH_QUARTILE: 4
+    };
 
-    // 2 rows of 15
-    var rows = [[], []];
-    for (var i = 0; i < 30; i++) {
-      var rowIdx = i < 15 ? 0 : 1;
-      rows[rowIdx].push(i);
-    }
+    function renderBlocks(days) {
+      // days: array of 30 { date: "YYYY-MM-DD", count: number, level: 0-4 }
+      container.innerHTML = '';
 
-    for (var r = 0; r < rows.length; r++) {
-      if (rows[r].length === 0) continue;
-      var rowDiv = document.createElement('div');
-      rowDiv.className = 'commit-row-line';
+      for (var r = 0; r < 2; r++) {
+        var rowDiv = document.createElement('div');
+        rowDiv.className = 'commit-row-line';
 
-      for (var j = 0; j < rows[r].length; j++) {
-        var idx = rows[r][j];
-        var cell = document.createElement('div');
+        for (var j = 0; j < 15; j++) {
+          var idx = r * 15 + j;
+          var day = days[idx];
+          var cell = document.createElement('div');
+          cell.className = 'commit-block c' + day.level;
 
-        // More activity on recent days + weekdays
-        var recency = (idx + 1) / 30;
-        var dayOfWeek = dates[idx].getDay(); // 0=Sun, 6=Sat
-        var weekend = (dayOfWeek === 0 || dayOfWeek === 6) ? 0.4 : 1.0;
-        var raw = rand() * (0.5 + recency * 2.5) * weekend;
+          var d = new Date(day.date + 'T00:00:00');
+          var label = levels[day.level];
+          var countStr = day.count === 1 ? '1 contribution' : day.count + ' contributions';
+          cell.title = months[d.getMonth()] + ' ' + d.getDate() + ' — ' + countStr + ' (' + label + ')';
 
-        var lvl;
-        if (raw < 0.4) lvl = 0;
-        else if (raw < 0.8) lvl = 1;
-        else if (raw < 1.2) lvl = 2;
-        else if (raw < 1.8) lvl = 3;
-        else lvl = 4;
-
-        cell.className = 'commit-block c' + lvl;
-
-        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-        var d = dates[idx];
-        var label = ['off','light','moderate','busy','intense'][lvl];
-        cell.title = months[d.getMonth()] + ' ' + d.getDate() + ' — ' + label;
-
-        rowDiv.appendChild(cell);
+          rowDiv.appendChild(cell);
+        }
+        container.appendChild(rowDiv);
       }
-      container.appendChild(rowDiv);
     }
+
+    // Fetch real data from public API
+    fetch('https://github-contributions-api.deno.dev/0xgsvs.json')
+      .then(function(res) {
+        if (!res.ok) throw new Error('API returned ' + res.status);
+        return res.json();
+      })
+      .then(function(data) {
+        var allDays = [];
+        var weeks = data.contributions;
+        for (var w = 0; w < weeks.length; w++) {
+          for (var d = 0; d < weeks[w].length; d++) {
+            allDays.push(weeks[w][d]);
+          }
+        }
+
+        // Take last 30 days
+        var recent = allDays.slice(-30);
+
+        var days = [];
+        for (var i = 0; i < recent.length; i++) {
+          days.push({
+            date: recent[i].date,
+            count: recent[i].contributionCount,
+            level: levelMap[recent[i].contributionLevel] || 0
+          });
+        }
+
+        renderBlocks(days);
+      })
+      .catch(function(err) {
+        container.innerHTML = '<p style="font-size:11px;color:#fca5a5;text-align:center;padding:20px 0;font-family:\'Courier New\',monospace;">⚠ failed to load — ' + err.message + '</p>';
+      });
   })();
 </script>
