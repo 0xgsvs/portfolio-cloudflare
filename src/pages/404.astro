@@ -44,7 +44,7 @@ import { ClientRouter } from 'astro:transitions';
           <div class="line prompt"><span class="dollar">$</span> type 'help' for commands</div>
           <div class="line output">&nbsp;</div>
         </div>
-        <form class="terminal-input-form" onsubmit="return handle404(event)">
+        <form class="terminal-input-form" id="term-form">
           <span class="dollar">$</span>
           <input type="text" id="term-input" placeholder="Type a command..." autocomplete="off" />
         </form>
@@ -97,4 +97,5 @@ import { ClientRouter } from 'astro:transitions';
     body.scrollTop = body.scrollHeight;
     return false;
   }
+  document.getElementById('term-form').addEventListener('submit', handle404);
 </script>
