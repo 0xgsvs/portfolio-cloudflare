@@ -33,7 +33,7 @@ const iconMap: Record<string, any> = { chain: PixelChain, file: PixelFile, chart
   <!-- ===== CURL COMMAND ===== -->
   <div class="curl-box">
     <code>$ curl -L https://0xgsvs.dev/contact.txt</code>
-    <button class="copy-btn" id="copy-btn" onclick="copyCurl()">COPY</button>
+    <button class="copy-btn" onclick="navigator.clipboard.writeText('curl -L https://0xgsvs.dev/contact.txt');this.textContent='COPIED!';this.classList.add('copied');setTimeout(()=>{this.textContent='COPY';this.classList.remove('copied')},2000)">COPY</button>
   </div>
 
   <!-- ===== DEV TOOLKIT ===== -->
