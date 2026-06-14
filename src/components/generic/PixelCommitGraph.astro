@@ -259,24 +259,11 @@
           streak.style.display = 'block';
         }
 
-        // Update legend with real count ranges from data
+        // Hardcoded legend labels
         var legendLabels = document.querySelectorAll('#commit-legend .legend-label');
-        var levelCounts = [[],[],[],[],[]];
-        for (var k = 0; k < days.length; k++) {
-          var l = days[k].level;
-          if (days[k].count > 0) levelCounts[l].push(days[k].count);
-        }
-        var names = ['off', 'light', 'moderate', 'busy', 'intense'];
+        var labels = ['off', 'light (1–3)', 'moderate (4–8)', 'busy (9–15)', 'intense (16+)'];
         for (var li = 0; li < legendLabels.length; li++) {
-          if (li === 0) {
-            legendLabels[li].textContent = 'off';
-          } else if (levelCounts[li].length > 0) {
-            var mn = Math.min.apply(null, levelCounts[li]);
-            var mx = Math.max.apply(null, levelCounts[li]);
-            legendLabels[li].textContent = names[li] + ' (' + (mn === mx ? mn : mn + '–' + mx) + ')';
-          } else {
-            legendLabels[li].textContent = names[li];
-          }
+          legendLabels[li].textContent = labels[li];
         }
       })
       .catch(function(err) {
