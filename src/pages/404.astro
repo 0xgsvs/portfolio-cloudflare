@@ -38,15 +38,11 @@ import { ClientRouter } from 'astro:transitions';
           <span class="dot green"></span>
           <span style="margin-left:8px;">0xgsvs@terminal:~ (404)</span>
         </div>
-        <div class="terminal-body" id="terminal-body">
-          <div class="line prompt"><span class="dollar">$</span> # Welcome to the 404 Terminal</div>
-          <div class="line prompt"><span class="dollar">$</span> # Type 'help' for available commands</div>
-          <div class="line output">&nbsp;</div>
+        <div class="terminal-body">
+          <div class="line prompt"><span class="dollar">$</span> cd /this-page</div>
+          <div class="line error">bash: cd: /this-page: No such file or directory</div>
+          <div class="line prompt"><span class="dollar">$</span> _</div>
         </div>
-        <form class="terminal-input-form" onsubmit="return handleSubmit(event)">
-          <span class="dollar">$</span>
-          <input type="text" id="terminal-input" placeholder="Type a command..." autofocus autocomplete="off" />
-        </form>
       </div>
 
       <!-- Easter egg (hidden initially) -->
@@ -60,118 +56,4 @@ import { ClientRouter } from 'astro:transitions';
   </body>
 </html>
 
-<script>
-  const COMMANDS: Record<string, string | string[]> = {
-    help: [
-      'Available commands:',
-      '  help       - Show available commands',
-      '  ls         - List pages',
-      '  pwd        - Print working directory',
-      '  whoami     - Display user info',
-      '  clear      - Clear terminal',
-      '  ls -la     - List all (including hidden)',
-      '  cat .secret - Look inside .secret',
-      '  cd ~       - Go home',
-    ],
-    ls: ['home/  projects/  .secret/'],
-    pwd: ['/dev/null/404'],
-    whoami: ['lost_soul@internet'],
-    'ls -la': [
-      'drwxr-xr-x .',
-      'drwxr-xr-x ..',
-      'drwxr-xr-x home/',
-      'drwxr-xr-x projects/',
-      'drwxr-xr-x .secret/',
-    ],
-    'ls -a': [
-      'drwxr-xr-x .',
-      'drwxr-xr-x ..',
-      'drwxr-xr-x home/',
-      'drwxr-xr-x projects/',
-      'drwxr-xr-x .secret/',
-    ],
-    'cat .secret': '🎉 You found the easter egg!',
-    'ls .secret': '🎉 You found the easter egg!',
-    'cd .secret': '🎉 You found the easter egg!',
-  };
 
-  const NAV_COMMANDS: Record<string, string> = {
-    'cd ~': '/',
-    'cd /': '/',
-    'cd home': '/',
-    'cd projects': '/projects',
-  };
-
-  const body = document.getElementById('terminal-body')!;
-  const input = document.getElementById('terminal-input') as HTMLInputElement;
-  const easterEgg = document.getElementById('easter-egg')!;
-
-  function addLine(text: string, type: string = 'output') {
-    const div = document.createElement('div');
-    div.className = `line ${type}`;
-    div.textContent = text;
-    body.appendChild(div);
-    body.scrollTop = body.scrollHeight;
-  }
-
-  function addPrompt(text: string) {
-    const div = document.createElement('div');
-    div.className = 'line prompt';
-    div.innerHTML = `<span class="dollar">$</span> ${escapeHtml(text)}`;
-    body.appendChild(div);
-    body.scrollTop = body.scrollHeight;
-  }
-
-  function escapeHtml(s: string): string {
-    const d = document.createElement('div');
-    d.textContent = s;
-    return d.innerHTML;
-  }
-
-  function handleSubmit(e: Event): boolean {
-    e.preventDefault();
-    const cmd = input.value.trim().toLowerCase();
-    if (!cmd) return false;
-
-    addPrompt(cmd);
-    input.value = '';
-
-    // Check navigation first
-    if (NAV_COMMANDS[cmd]) {
-      window.location.href = NAV_COMMANDS[cmd];
-      return false;
-    }
-
-    // Check for easter egg
-    if (cmd === 'cat .secret' || cmd === 'ls .secret' || cmd === 'cd .secret') {
-      addLine('Accessing secret directory...', 'yellow');
-      addLine('🎉 You found the easter egg!', 'yellow');
-      addLine("The developer likes pineapple on pizza. Controversial.", 'yellow');
-      easterEgg.style.display = 'block';
-      addLine('', 'output');
-      return false;
-    }
-
-    // Check clear
-    if (cmd === 'clear') {
-      body.innerHTML = '';
-      return false;
-    }
-
-    // Check commands
-    const result = COMMANDS[cmd];
-    if (result) {
-      const lines = Array.isArray(result) ? result : [result];
-      lines.forEach((line) => addLine(line, 'output'));
-      addLine('', 'output');
-    } else {
-      addLine(`bash: ${cmd}: command not found`, 'error');
-      addLine("Type 'help' for available commands", 'output');
-      addLine('', 'output');
-    }
-
-    return false;
-  }
-
-  (window as any).handleSubmit = handleSubmit;
-</script>
