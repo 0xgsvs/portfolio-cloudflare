@@ -38,11 +38,16 @@ import { ClientRouter } from 'astro:transitions';
           <span class="dot green"></span>
           <span style="margin-left:8px;">0xgsvs@terminal:~ (404)</span>
         </div>
-        <div class="terminal-body">
+        <div class="terminal-body" id="term-body">
           <div class="line prompt"><span class="dollar">$</span> cd /this-page</div>
           <div class="line error">bash: cd: /this-page: No such file or directory</div>
-          <div class="line prompt"><span class="dollar">$</span> _</div>
+          <div class="line prompt"><span class="dollar">$</span> type 'help' for commands</div>
+          <div class="line output">&nbsp;</div>
         </div>
+        <form class="terminal-input-form" onsubmit="return handle404(event)">
+          <span class="dollar">$</span>
+          <input type="text" id="term-input" placeholder="Type a command..." autocomplete="off" />
+        </form>
       </div>
 
       <!-- Home link -->
@@ -51,4 +56,45 @@ import { ClientRouter } from 'astro:transitions';
   </body>
 </html>
 
+<script>
+  const CMDS = {
+    help: ['help / ls / whoami / pwd / clear / cd ~ / cat .secret'],
+    ls: ['home/  projects/  .secret/'],
+    whoami: ['lost_soul@internet'],
+    pwd: ['/dev/null/404'],
+    'ls -la': ['drwxr-xr-x .', 'drwxr-xr-x ..', 'drwxr-xr-x home/', 'drwxr-xr-x projects/', 'drwxr-xr-x .secret/'],
+    'cat .secret': ['→ Opening .secret ...'],
+    'ls .secret': ['→ Opening .secret ...'],
+    'cd .secret': ['→ Opening .secret ...'],
+  };
+  const NAV = { 'cd ~': '/', 'cd /': '/', 'cd home': '/', 'cd projects': '/#projects' };
 
+  function handle404(e) {
+    e.preventDefault();
+    const body = document.getElementById('term-body');
+    const input = document.getElementById('term-input');
+    const cmd = input.value.trim().toLowerCase();
+    input.value = '';
+    if (!cmd) return false;
+    // echo prompt
+    const p = document.createElement('div');
+    p.className = 'line prompt';
+    p.innerHTML = '<span class="dollar">$</span> ' + cmd.replace(/</g,'&lt;');
+    body.appendChild(p);
+    // navigate
+    if (NAV[cmd]) { window.location.href = NAV[cmd]; return false; }
+    // secret → redirect
+    if (cmd === 'cat .secret' || cmd === 'ls .secret' || cmd === 'cd .secret') { window.location.href = '/secret'; return false; }
+    // clear
+    if (cmd === 'clear') { body.innerHTML = ''; return false; }
+    // dispatch
+    const lines = CMDS[cmd] || ['bash: ' + cmd + ': command not found', "type 'help' for commands"];
+    lines.forEach(t => { const d = document.createElement('div'); d.className = 'line output'; d.textContent = t; body.appendChild(d); });
+    const sp = document.createElement('div');
+    sp.className = 'line output';
+    sp.innerHTML = '&nbsp;';
+    body.appendChild(sp);
+    body.scrollTop = body.scrollHeight;
+    return false;
+  }
+</script>
