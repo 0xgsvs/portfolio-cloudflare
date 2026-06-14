@@ -47,26 +47,21 @@ const { title, description } = Astro.props;
         setInterval(() => {
           idleTime++;
           if (idleTime === 60) {
-            document.querySelectorAll('.brutal-card, .project-card, .ascii-art, .curl-box').forEach((el, i) => {
-              const colors = ['#fde047', '#86efac', '#d8b4fe', '#93c5fd', '#fca5a5', '#fdba74'];
-              (el as HTMLElement).style.filter = `drop-shadow(4px 4px 0 ${colors[i % colors.length]})`;
-              (el as HTMLElement).style.transition = 'filter 1.5s ease';
+            ['#fde047','#86efac','#d8b4fe','#93c5fd','#fca5a5','#fdba74'].forEach((c,i) => {
+              const el = document.querySelectorAll('.brutal-card,.project-card,.ascii-art,.curl-box')[i];
+              if (el) { (el as HTMLElement).style.filter = `drop-shadow(4px 4px 0 ${c})`; (el as HTMLElement).style.transition = 'filter 1.5s ease'; }
             });
-            console.log("%c🌈 60 seconds. I'm just going to make things colorful now.", "font-size:12px;color:#d8b4fe;");
+            console.log("%c🌈 60s idle — adding color.", "font-size:12px;color:#d8b4fe;");
           }
           if (idleTime === 120) {
-            const msg = document.createElement('div');
-            msg.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:black;color:white;border:3px solid black;border-radius:8px;padding:8px 20px;font-family:"Courier New",monospace;font-size:12px;font-weight:700;z-index:9998;opacity:0.5;animation:toastIn 0.3s ease-out;';
-            msg.textContent = "you can leave now. or don't. i'm not your parent.";
-            document.body.appendChild(msg);
-            setTimeout(() => { msg.style.opacity = '0'; msg.style.transition = 'opacity 1s'; }, 5000);
+            const m = document.createElement('div');
+            m.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#000;color:#fff;border:3px solid #000;border-radius:8px;padding:8px 20px;font:700 12px "Courier New",monospace;z-index:9998;opacity:.5;animation:toastIn .3s ease-out';
+            m.textContent = "you can leave now. or don't. i'm not your parent.";
+            document.body.appendChild(m);
+            setTimeout(() => { m.style.opacity = '0'; m.style.transition = 'opacity 1s'; }, 5000);
           }
         }, 1000);
-
-        document.addEventListener('mousemove', () => { idleTime = 0; });
-        document.addEventListener('keydown', () => { idleTime = 0; });
-        document.addEventListener('scroll', () => { idleTime = 0; });
-        document.addEventListener('click', () => { idleTime = 0; });
+        ['mousemove','keydown','scroll','click'].forEach(e => document.addEventListener(e, () => { idleTime = 0; }));
       }
 
     </script>
