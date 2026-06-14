@@ -1,7 +1,6 @@
 ---
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
-import TerminalOverlay from '../components/generic/TerminalOverlay.astro';
 import CompileScreen from '../components/generic/CompileScreen.astro';
 import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
@@ -36,7 +35,6 @@ const { title, description } = Astro.props;
       <slot />
       <Footer />
     </div>
-    <TerminalOverlay />
     <script>
       // Guard: only run setup once (window persists across ClientRouter navigations)
       if (!(window as any).__portfolioSetup) {
