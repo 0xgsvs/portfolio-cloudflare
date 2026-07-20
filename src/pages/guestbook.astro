@@ -13,52 +13,47 @@ const sampleEntries = [
 ---
 
 <Layout title="Guestbook | Venkat Sundaraneedi" description="Sign the hidden guestbook">
-  <section class="section" style="padding-top:40px;">
-    <h2 class="section-title">/GUESTBOOK</h2>
-    <p style="font-size:13px;opacity:0.6;margin-bottom:20px;">
-      You found the guestbook. Leave a trace. It works via GitHub Issues — because I'm not running a database for this.
-    </p>
-
-    <!-- Sign form -->
-    <div class="brutal-card card-green" style="margin-bottom:24px;">
-      <h3 style="margin-top:0;">✍️ Sign the guestbook</h3>
-      <p style="font-size:14px;margin-bottom:16px;">
-        Clicking below opens a pre-filled GitHub issue. Fill in your name and message, submit, and you're in the guestbook.
-        No accounts needed if you have a GitHub account.
+  <section class="section">
+    <div class="section-head">
+      <span class="section-label">Guestbook</span>
+      <h1 class="section-title">Leave a trace</h1>
+      <p class="section-note">
+        This runs on GitHub Issues. I am not standing up a database for a guestbook.
       </p>
-      <a
-        href={guestbookIssueUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        style="display:inline-block;padding:12px 24px;background:var(--black);color:var(--green);border:3px solid var(--green);border-radius:6px;text-decoration:none;font-weight:700;font-family:'Courier New',monospace;font-size:14px;filter:drop-shadow(3px 3px 0 rgba(134,239,172,0.6));transition:all 0.15s;"
-        onmouseover="this.style.filter='drop-shadow(1px 1px 0 rgba(134,239,172,0.6))'"
-        onmouseout="this.style.filter='drop-shadow(3px 3px 0 rgba(134,239,172,0.6))'"
-      >
+    </div>
+
+    <div class="brutal-card card-green" style="max-width:720px;">
+      <h2>Sign the guestbook</h2>
+      <p>
+        This opens a prefilled GitHub issue. Add your name and message, submit, and you are in.
+        You need a GitHub account.
+      </p>
+      <a class="btn btn--commit" href={guestbookIssueUrl} target="_blank" rel="noopener noreferrer">
         $ git commit -m "sign guestbook"
       </a>
     </div>
 
-    <!-- Sample entries -->
-    <div class="brutal-card">
-      <h3 style="margin-top:0;">📜 Recent entries</h3>
-      {sampleEntries.map(entry => (
-        <div style="padding:12px 0;border-bottom:1px solid rgba(0,0,0,0.08);">
-          <div style="display:flex;gap:8px;align-items:baseline;margin-bottom:4px;">
-            <span style="font-weight:700;font-size:14px;font-family:'Courier New',monospace;">{entry.name}</span>
-            <span style="font-size:11px;opacity:0.4;">{entry.date}</span>
+    <div class="brutal-card" style="max-width:720px;">
+      <h2>Recent entries</h2>
+      {
+        sampleEntries.map((entry) => (
+          <div class="entry">
+            <div class="entry-head">
+              <span class="entry-name">{entry.name}</span>
+              <span class="entry-date">{entry.date}</span>
+            </div>
+            <p class="entry-msg">{entry.msg}</p>
           </div>
-          <p style="font-size:14px;opacity:0.7;margin:0;">{entry.msg}</p>
-        </div>
-      ))}
-      <p style="font-size:11px;opacity:0.3;margin-top:12px;font-style:italic;">
-        These are sample entries. Your real entry creates a GitHub issue. I review and feature the best ones here.
+        ))
+      }
+      <p class="entry-note">
+        These are sample entries. Your real entry creates a GitHub issue, and I feature the best ones here.
       </p>
     </div>
 
-    <!-- Terminal way -->
-    <div class="brutal-card card-yellow" style="margin-top:24px;">
-      <h3 style="margin-top:0;">💻 Terminal method</h3>
-      <pre style="font-family:'Courier New',monospace;font-size:13px;line-height:1.6;overflow-x:auto;">
+    <div class="brutal-card card-yellow" style="max-width:720px;">
+      <h2>Terminal method</h2>
+      <pre class="block-pre">
 # Create a guestbook entry via GitHub CLI
 gh issue create \
   --repo 0xgsvs/portfolio-cloudflare \
@@ -68,3 +63,54 @@ gh issue create \
     </div>
   </section>
 </Layout>
+
+<style>
+  .btn--commit {
+    background: var(--ink);
+    color: var(--green);
+    border-color: var(--green);
+    margin-top: var(--space-2);
+  }
+  .btn--commit:hover {
+    background: var(--green);
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+  .entry {
+    padding: var(--space-3) 0;
+    border-bottom: 2px solid var(--line-soft);
+  }
+  .entry-head {
+    display: flex;
+    gap: var(--space-2);
+    align-items: baseline;
+    margin-bottom: var(--space-1);
+  }
+  .entry-name {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: var(--text-sm);
+  }
+  .entry-date {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--ink-3);
+  }
+  .entry-msg {
+    color: var(--ink-2);
+  }
+  .entry-note {
+    margin-top: var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--ink-3);
+  }
+  .block-pre {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+  .brutal-card p {
+    margin-bottom: var(--space-2);
+  }
+</style>

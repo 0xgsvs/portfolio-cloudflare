@@ -1,0 +1,7 @@
+# Taste
+- Keeps a close eye on the agent's todo list and expects it to stay accurate: tasks must be marked `completed` as they finish, with no stale `in_progress` items left behind (the user reads leftover `in_progress` entries as "paused" and calls them out). Confidence: 0.6
+- Prefers to resolve a batch of problems incrementally, one issue at a time (e.g. "we will resolve them one by one") rather than having everything fixed in one sweep. Confidence: 0.5
+- Uses Jujutsu (`jj`) for version control and expects commit descriptions authored via `jj describe`, written to the Conventional Commits specification (`feat:`, `fix:`, `refactor:`, `chore(deps):` etc., with a structured body). Confidence: 0.8
+- Expects every UI color — including focus rings and other incidental accents — to come from the project's established palette/design tokens. Calls out colors that are "out of place with the color theme" (e.g. a generic blue focus border) and wants them replaced with theme-consistent values rather than left as arbitrary picks. Confidence: 0.7
+- Wants a "clean", borderless look: dislikes borders/outlines as focus indicators and asks for them to be removed entirely, favoring an in-theme fill/background inversion (matching existing hover states) over any visible ring. Confidence: 0.6
+- Dislikes harsh, high-contrast color flips (e.g. a black fill with yellow text where the user "type[s] it in yellow" felt "too high contrast"). Prefers softer, subtler treatments that stay within the same hue family instead of inverting to opposite extremes. Confidence: 0.55

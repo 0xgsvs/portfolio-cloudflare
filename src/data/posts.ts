@@ -1,7 +1,4 @@
----
-import Layout from '../layouts/Layout.astro';
-
-interface Post {
+export interface Post {
   slug: string;
   title: string;
   date: string;
@@ -10,12 +7,13 @@ interface Post {
   content: string;
 }
 
-const posts: Post[] = [
+export const posts: Post[] = [
   {
     slug: "why-i-dual-boot-arch-and-nix",
     title: "Why I Dual Boot Arch Linux and NixOS (And You Shouldn't)",
     date: "2026-05-15",
-    excerpt: "One machine, two package managers, and a therapist on speed dial. The case for — and against — running both Arch and NixOS.",
+    excerpt:
+      "One machine, two package managers, and a therapist on speed dial. The case for — and against — running both Arch and NixOS.",
     tags: ["linux", "arch", "nixos", "opinion"],
     content: `
 ## The Setup
@@ -56,7 +54,8 @@ person. But I'm a developer — sanity was never in the job description.
     slug: "solana-dev-getting-started",
     title: "Getting Started with Solana Development in Rust — No BS Guide",
     date: "2026-04-20",
-    excerpt: "You've heard about Solana. You know Rust. Here's how to actually ship something on Solana without reading 47 Medium articles.",
+    excerpt:
+      "You've heard about Solana. You know Rust. Here's how to actually ship something on Solana without reading 47 Medium articles.",
     tags: ["solana", "rust", "anchor", "web3"],
     content: `
 ## Why Solana?
@@ -66,9 +65,9 @@ Solana is the autobahn. And Rust is the first-class language.
 
 ## The Stack
 
-- **Rust** — systems language, no garbage collector, perfect for blockchain
-- **Anchor** — framework that makes Solana development feel like writing normal Rust
-- **Solana CLI** — your gateway to the network
+- **Rust:** systems language, no garbage collector, perfect for blockchain
+- **Anchor:** framework that makes Solana development feel like writing normal Rust
+- **Solana CLI:** your gateway to the network
 
 ## Step 1: Hello World on Devnet
 
@@ -106,7 +105,8 @@ writes back. That's it. Everything else is optimization.
     slug: "terminal-tools-2026",
     title: "My Terminal Toolchain in 2026 — Minimal, Fast, and Mostly Rust",
     date: "2026-03-01",
-    excerpt: "A tour of the CLI tools I actually use every day. Spoiler: most of them are written in Rust now.",
+    excerpt:
+      "A tour of the CLI tools I actually use every day. Spoiler: most of them are written in Rust now.",
     tags: ["cli", "tools", "rust", "terminal"],
     content: `
 ## The Philosophy
@@ -140,70 +140,3 @@ exactly what I want. And that's the terminal ethos: if it doesn't exist, build i
     `.trim(),
   },
 ];
-
-// Determine if we're showing a single post or the index
-const url = new URL(Astro.request.url);
-const slug = url.searchParams.get("post");
-const activePost = slug ? posts.find(p => p.slug === slug) : null;
----
-
-<Layout title={activePost ? `${activePost.title} | Venkat` : "Writing | Venkat Sundaraneedi"} description="Technical writing by Venkat Sundaraneedi">
-  <section class="section" style="padding-top:40px;">
-    <h2 class="section-title">/WRITING</h2>
-    <p style="font-size:13px;opacity:0.6;margin-bottom:20px;">
-      Occasionally I write things. Mostly about Rust, Solana, Linux, and why NixOS is the answer to a question nobody asked.
-    </p>
-
-    {activePost ? (
-      <article>
-        <a href="/writing" style="font-size:13px;font-weight:700;color:black;text-decoration:none;display:inline-block;margin-bottom:20px;">← back to all posts</a>
-        <div class="brutal-card">
-          <h2 style="margin-top:0;font-size:24px;">{activePost.title}</h2>
-          <p style="font-size:12px;opacity:0.5;margin-bottom:16px;">
-            {activePost.date}
-            {activePost.tags.map(t => <span style="margin-left:8px;border:2px solid black;border-radius:3px;padding:1px 8px;font-size:11px;font-weight:700;">{t}</span>)}
-          </p>
-          <div style="font-size:14px;line-height:1.8;">
-            {activePost.content.split('\n').map(line => {
-              // Simple markdown-ish rendering
-              if (line.startsWith('## ')) return <h3 style="margin:24px 0 8px;font-size:18px;">{line.slice(3)}</h3>;
-              if (line.startsWith('**') && line.endsWith('**')) return <p style="font-weight:700;margin:12px 0 4px;">{line.slice(2, -2)}</p>;
-              if (line.startsWith('- **')) {
-                const match = line.match(/^- \*\*(.+?)\*\*:?\s*(.*)/);
-                if (match) return <p style="margin:4px 0;"><strong>{match[1]}:</strong> {match[2]}</p>;
-              }
-              if (line.startsWith('- ')) return <p style="margin:2px 0 2px 20px;opacity:0.8;">• {line.slice(2)}</p>;
-              if (line.startsWith('\`\`\`')) {
-                const lang = line.slice(3).trim();
-                return lang ? null : null; // code blocks handled via pre styling
-              }
-              if (line.trim() === '') return <br/>;
-              return <p style="margin:2px 0;">{line}</p>;
-            })}
-          </div>
-        </div>
-      </article>
-    ) : (
-      <div>
-        {posts.map(post => (
-          <a href={`/writing?post=${post.slug}`} class="brutal-card" style="display:block;text-decoration:none;color:black;margin-bottom:16px;cursor:pointer;">
-            <h3 style="margin:0 0 4px;font-size:18px;">{post.title}</h3>
-            <p style="font-size:12px;opacity:0.5;margin-bottom:8px;">
-              {post.date}
-              {post.tags.map(t => <span style="margin-left:8px;border:1px solid black;border-radius:2px;padding:1px 6px;font-size:10px;font-weight:700;">{t}</span>)}
-            </p>
-            <p style="font-size:14px;opacity:0.7;margin:0;">{post.excerpt}</p>
-          </a>
-        ))}
-      </div>
-    )}
-
-    <div class="brutal-card card-yellow" style="margin-top:24px;">
-      <h3 style="margin-top:0;">📬 RSS?</h3>
-      <p style="font-size:14px;">
-        No RSS feed yet. This blog is hidden for a reason — I write when I have something to say, not on a schedule.
-        If you found this page, you're either very curious or very lost. Either way, welcome.
-      </p>
-    </div>
-  </section>
-</Layout>

@@ -1,6 +1,6 @@
 <!-- Pixel-art self-portrait with hover tooltips -->
 <div class="pixel-portrait" id="pixel-portrait">
-  <svg viewBox="0 0 160 160" width="160" height="160" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 160 160" width="160" height="160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pixel-art self-portrait">
     <!-- Hair -->
     <rect x="35" y="10" width="90" height="25" rx="4" fill="#1a1a1a" data-zone="hair"/>
     <rect x="30" y="15" width="10" height="30" rx="2" fill="#1a1a1a" data-zone="hair"/>
@@ -33,7 +33,7 @@
     <!-- Brain overlay (invisible zone on forehead) -->
     <rect x="48" y="25" width="64" height="22" rx="4" fill="transparent" data-zone="brain"/>
   </svg>
-  <div class="portrait-tooltip" id="portrait-tooltip" style="display:none;"></div>
+  <div class="portrait-tooltip" id="portrait-tooltip" aria-hidden="true" style="display:none;"></div>
 </div>
 
 <style>
@@ -75,25 +75,35 @@
     body: "Hands: ~85 WPM, vim keybindings only, no arrow keys",
   };
 
-  const portrait = document.getElementById('pixel-portrait');
-  const tip = document.getElementById('portrait-tooltip')!;
+  function initPortrait() {
+    const portrait = document.getElementById('pixel-portrait');
+    const tip = document.getElementById('portrait-tooltip');
+    if (!portrait || !tip || portrait.dataset.bound === 'true') return;
+    portrait.dataset.bound = 'true';
 
-  if (portrait) {
-    portrait.addEventListener('mousemove', (e) => {
-      const target = e.target as Element;
-      const zoneEl = target.closest('[data-zone]');
+    function showAt(e: PointerEvent) {
+      const zoneEl = (e.target as Element | null)?.closest('[data-zone]');
       const zone = zoneEl?.getAttribute('data-zone');
       if (zone && tooltips[zone]) {
-        tip.textContent = tooltips[zone];
-        tip.style.display = 'block';
-        tip.style.left = (e.offsetX + 10) + 'px';
-        tip.style.top = (e.offsetY - 35) + 'px';
+        tip!.textContent = tooltips[zone];
+        tip!.style.display = 'block';
+        tip!.style.left = e.offsetX + 10 + 'px';
+        tip!.style.top = Math.max(e.offsetY - 35, 0) + 'px';
       } else {
-        tip.style.display = 'none';
+        tip!.style.display = 'none';
       }
-    });
-    portrait.addEventListener('mouseleave', () => {
-      tip.style.display = 'none';
-    });
+    }
+
+    function hide() {
+      tip!.style.display = 'none';
+    }
+
+    portrait.addEventListener('pointermove', showAt);
+    portrait.addEventListener('pointerdown', showAt);
+    portrait.addEventListener('pointerleave', hide);
+    portrait.addEventListener('pointercancel', hide);
   }
+
+  initPortrait();
+  document.addEventListener('astro:page-load', initPortrait);
 </script>

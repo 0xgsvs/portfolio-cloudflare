@@ -2,9 +2,9 @@
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import CompileScreen from '../components/generic/CompileScreen.astro';
+import TerminalOverlay from '../components/generic/TerminalOverlay.astro';
 import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
-// Tailwind temporarily disabled — its Vite plugin drops global CSS
 
 const { title, description } = Astro.props;
 ---
@@ -16,54 +16,72 @@ const { title, description } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <meta name="description" content={description || "Venkat Sundaraneedi — Rust & Blockchain Developer"} />
     <title>{title || "Venkat Sundaraneedi | Portfolio"}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <ClientRouter />
     <style is:inline>
-      ::-webkit-scrollbar{width:22px;background-color:#fff}
-      ::-webkit-scrollbar-track{background:linear-gradient(45deg,#000 25%,transparent 25%,transparent 75%,#000 75%,#000),linear-gradient(45deg,#000 25%,transparent 25%,transparent 75%,#000 75%,#000);background-color:#fff;background-size:4px 4px;background-position:0 0,2px 2px;width:10px;border-left:3px solid #000}
-      ::-webkit-scrollbar-thumb{width:20px;box-sizing:content-box;background-color:#fff;border:2px solid #000;border-right:none}
-      ::-webkit-scrollbar-thumb:hover{background:#fde047}
+      ::-webkit-scrollbar { width: 14px; background-color: #ffffff; }
+      ::-webkit-scrollbar-track {
+        background-image:
+          linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000),
+          linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000);
+        background-color: #ffffff;
+        background-size: 4px 4px;
+        background-position: 0 0, 2px 2px;
+        border-inline-start: 3px solid #000;
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: #fff;
+        border: 2px solid #000;
+        border-inline-end: none;
+      }
+      ::-webkit-scrollbar-thumb:hover { background: #fde047; }
     </style>
   </head>
   <body>
+    <a class="skip-link" href="#main">Skip to content</a>
     <CompileScreen />
-    <div class="container">
+    <main class="container" id="main" tabindex="-1">
       <Header />
       <slot />
       <Footer />
-    </div>
+    </main>
+    <TerminalOverlay />
     <script>
       // Guard: only run setup once (window persists across ClientRouter navigations)
       if (!(window as any).__portfolioSetup) {
         (window as any).__portfolioSetup = true;
 
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
         console.log("%c ██████╗ ██╗  ██╗ ██████╗ ███████╗██╗   ██╗███████╗\n%c██╔═████╗╚██╗██╔╝██╔════╝ ██╔════╝██║   ██║██╔════╝\n%c██║██╔██║ ╚███╔╝ ██║  ███╗███████╗██║   ██║███████╗\n%c████╔╝██║ ██╔██╗ ██║   ██║╚════██║██║   ██║╚════██║\n%c╚██████╔╝██╔╝ ██╗╚██████╔╝███████║╚██████╔╝███████║\n%c ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝ ╚═════╝ ╚══════╝", "color: #fde047; font-weight: bold;", "color: #fde047; font-weight: bold;", "color: #fde047; font-weight: bold;", "color: #fde047; font-weight: bold;", "color: #fde047; font-weight: bold;", "color: #fde047; font-weight: bold;");
 
-        // ── Timed page mutation ──
-        let idleTime = 0;
-        setInterval(() => {
-          idleTime++;
-          if (idleTime === 60) {
-            ['#fde047','#86efac','#d8b4fe','#93c5fd','#fca5a5','#fdba74'].forEach((c,i) => {
-              const el = document.querySelectorAll('.brutal-card,.project-card,.ascii-art,.curl-box')[i];
-              if (el) { (el as HTMLElement).style.filter = `drop-shadow(4px 4px 0 ${c})`; (el as HTMLElement).style.transition = 'filter 1.5s ease'; }
-            });
-            console.log("%c🌈 60s idle — adding color.", "font-size:12px;color:#d8b4fe;");
-          }
-          if (idleTime === 120) {
-            const m = document.createElement('div');
-            m.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#000;color:#fff;border:3px solid #000;border-radius:8px;padding:8px 20px;font:700 12px "Courier New",monospace;z-index:9998;opacity:.5;animation:toastIn .3s ease-out';
-            m.textContent = "you can leave now. or don't. i'm not your parent.";
-            document.body.appendChild(m);
-            setTimeout(() => { m.style.opacity = '0'; m.style.transition = 'opacity 1s'; }, 5000);
-          }
-        }, 1000);
-        ['mousemove','keydown','scroll','click'].forEach(e => document.addEventListener(e, () => { idleTime = 0; }));
+        // ── Idle easter egg — decorative, so it respects reduced motion ──
+        if (!reduceMotion.matches) {
+          let idleTime = 0;
+          setInterval(() => {
+            idleTime++;
+            if (idleTime === 60) {
+              ['#fde047','#86efac','#d8b4fe','#93c5fd','#fca5a5','#fdba74'].forEach((c,i) => {
+                const el = document.querySelectorAll('.brutal-card,.work-item,.ascii-art,.curl-box')[i];
+                if (el) { (el as HTMLElement).style.filter = `drop-shadow(4px 4px 0 ${c})`; (el as HTMLElement).style.transition = 'filter 1.5s ease'; }
+              });
+              console.log("%c🌈 60s idle — adding color.", "font-size:12px;color:#d8b4fe;");
+            }
+            if (idleTime === 120) {
+              const m = document.createElement('div');
+              m.setAttribute('role', 'status');
+              m.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#000;color:#fff;border:3px solid #000;padding:8px 20px;font:700 12px "Courier New",monospace;z-index:9998;animation:toastIn .3s ease-out';
+              m.textContent = "you can leave now. or don't. i'm not your parent.";
+              document.body.appendChild(m);
+              setTimeout(() => { m.style.opacity = '0'; m.style.transition = 'opacity 1s'; }, 5000);
+            }
+          }, 1000);
+          ['mousemove','keydown','scroll','click'].forEach(e => document.addEventListener(e, () => { idleTime = 0; }));
+        }
       }
-
     </script>
   </body>
 </html>

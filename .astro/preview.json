@@ -1,0 +1,22 @@
+{
+	"pid": 1123794,
+	"port": 4399,
+	"url": "http://localhost:4399",
+	"urls": {
+		"local": [
+			"http://localhost:4399/"
+		],
+		"network": [
+			"http://10.255.255.254:4399/",
+			"http://192.168.29.71:4399/",
+			"http://172.19.0.1:4399/"
+		],
+		"networkInterfaceNames": [
+			"lo",
+			"eth0",
+			"br-c371cd0a4bd7"
+		]
+	},
+	"background": false,
+	"startedAt": "2026-09-11T19:06:50.201Z"
+}

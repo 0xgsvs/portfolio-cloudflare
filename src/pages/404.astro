@@ -9,93 +9,160 @@ import { ClientRouter } from 'astro:transitions';
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <meta name="description" content="Page not found." />
     <title>404 — Page Not Found | Venkat Sundaraneedi</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <ClientRouter />
   </head>
   <body>
-    <div class="container" style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 16px;">
-
-      <!-- HTTP Response header -->
-      <div class="brutal-card card-red" style="max-width:520px;width:100%;font-family:monospace;font-size:13px;line-height:1.6;">
-        <div style="font-weight:800;margin-bottom:4px;">$ curl -I https://0xgsvs.dev/this-page</div>
-        <div style="opacity:0.75;">HTTP/1.1 404 Not Found</div>
-        <div style="opacity:0.75;">Content-Type: text/html</div>
-        <div style="opacity:0.75;">Server: nginx/1.27</div>
+    <main class="nf">
+      <div class="brutal-card card-red nf-response">
+        <div class="nf-cmd">$ curl -I https://0xgsvs.dev/this-page</div>
+        <div class="nf-line">HTTP/1.1 404 Not Found</div>
+        <div class="nf-line">Content-Type: text/html</div>
+        <div class="nf-line">Server: nginx/1.27</div>
       </div>
 
-      <!-- Glitch title -->
-      <h1 style="font-size:clamp(24px,5vw,48px);margin:24px 0;text-align:center;">
-        <span class="error-code">404: PAGE NOT FOUND</span>
-      </h1>
+      <h1 class="nf-title">404: page not found</h1>
 
-      <!-- Terminal -->
-      <div class="terminal-window" style="width:100%;">
+      <div class="terminal-window">
         <div class="terminal-header">
-          <span class="dot red"></span>
-          <span class="dot yellow"></span>
-          <span class="dot green"></span>
-          <span style="margin-left:8px;">0xgsvs@terminal:~ (404)</span>
+          <span class="dots" aria-hidden="true">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </span>
+          <span>0xgsvs@terminal:~ (404)</span>
         </div>
         <div class="terminal-body" id="term-body">
           <div class="line prompt"><span class="dollar">$</span> cd /this-page</div>
           <div class="line error">bash: cd: /this-page: No such file or directory</div>
-          <div class="line prompt"><span class="dollar">$</span> type 'help' for commands</div>
+          <div class="line output">Type 'help' for commands.</div>
           <div class="line output">&nbsp;</div>
         </div>
         <form class="terminal-input-form" id="term-form">
-          <span class="dollar">$</span>
-          <input type="text" id="term-input" placeholder="Type a command..." autocomplete="off" />
+          <label class="visually-hidden" for="term-input">Terminal command</label>
+          <span class="dollar" aria-hidden="true">$</span>
+          <input
+            type="text"
+            id="term-input"
+            name="command"
+            placeholder="help"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+          />
         </form>
       </div>
 
-      <!-- Home link -->
-      <a href="/" style="margin-top:20px;padding:10px 20px;border:3px solid black;border-radius:6px;text-decoration:none;color:black;font-weight:700;font-family:Poppins,sans-serif;filter:drop-shadow(4px 4px 0 rgba(0,0,0,1));background:#fde047;transition:all 0.15s;">cd ~ (Go Home)</a>
-    </div>
+      <a class="btn btn--accent nf-home" href="/">cd ~ (go home)</a>
+    </main>
   </body>
 </html>
 
+<style>
+  .nf {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    padding: var(--space-9) var(--space-4);
+  }
+  .nf-response {
+    max-width: 520px;
+    width: 100%;
+    margin-bottom: 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+  }
+  .nf-cmd {
+    font-weight: 800;
+    margin-bottom: var(--space-1);
+  }
+  .nf-line {
+    color: var(--ink-2);
+  }
+  .nf-title {
+    font-size: clamp(1.75rem, 5vw, var(--text-3xl));
+    text-align: center;
+  }
+  .nf .terminal-window {
+    width: 100%;
+  }
+  .nf-home {
+    margin-top: var(--space-2);
+  }
+</style>
+
 <script>
-  const CMDS = {
+  const CMDS: Record<string, string[]> = {
     help: ['help / ls / whoami / pwd / clear / cd ~ / cat .secret'],
-    ls: ['home/  projects/  .secret/'],
+    ls: ['home/  work/  .secret/'],
     whoami: ['lost_soul@internet'],
     pwd: ['/dev/null/404'],
-    'ls -la': ['drwxr-xr-x .', 'drwxr-xr-x ..', 'drwxr-xr-x home/', 'drwxr-xr-x projects/', 'drwxr-xr-x .secret/'],
-    'cat .secret': ['→ Opening .secret ...'],
-    'ls .secret': ['→ Opening .secret ...'],
-    'cd .secret': ['→ Opening .secret ...'],
+    'ls -la': ['drwxr-xr-x .', 'drwxr-xr-x ..', 'drwxr-xr-x home/', 'drwxr-xr-x work/', 'drwxr-xr-x .secret/'],
   };
-  const NAV = { 'cd ~': '/', 'cd /': '/', 'cd home': '/', 'cd projects': '/#projects' };
+  const NAV: Record<string, string> = { 'cd ~': '/', 'cd /': '/', 'cd home': '/', 'cd work': '/#work' };
 
-  function handle404(e) {
-    e.preventDefault();
+  function init404() {
+    const form = document.getElementById('term-form') as HTMLFormElement | null;
     const body = document.getElementById('term-body');
-    const input = document.getElementById('term-input');
-    const cmd = input.value.trim().toLowerCase();
-    input.value = '';
-    if (!cmd) return false;
-    // echo prompt
-    const p = document.createElement('div');
-    p.className = 'line prompt';
-    p.innerHTML = '<span class="dollar">$</span> ' + cmd.replace(/</g,'&lt;');
-    body.appendChild(p);
-    // navigate
-    if (NAV[cmd]) { window.location.href = NAV[cmd]; return false; }
-    // secret → redirect
-    if (cmd === 'cat .secret' || cmd === 'ls .secret' || cmd === 'cd .secret') { window.location.href = '/secret'; return false; }
-    // clear
-    if (cmd === 'clear') { body.innerHTML = ''; return false; }
-    // dispatch
-    const lines = CMDS[cmd] || ['bash: ' + cmd + ': command not found', "type 'help' for commands"];
-    lines.forEach(t => { const d = document.createElement('div'); d.className = 'line output'; d.textContent = t; body.appendChild(d); });
-    const sp = document.createElement('div');
-    sp.className = 'line output';
-    sp.innerHTML = '&nbsp;';
-    body.appendChild(sp);
-    body.scrollTop = body.scrollHeight;
-    return false;
+    const input = document.getElementById('term-input') as HTMLInputElement | null;
+    if (!form || !body || !input || form.dataset.bound === 'true') return;
+    form.dataset.bound = 'true';
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const cmd = input.value.trim().toLowerCase();
+      if (!cmd) return;
+      input.value = '';
+
+      const prompt = document.createElement('div');
+      prompt.className = 'line prompt';
+      const dollar = document.createElement('span');
+      dollar.className = 'dollar';
+      dollar.textContent = '$';
+      prompt.appendChild(dollar);
+      prompt.appendChild(document.createTextNode(' ' + cmd));
+      body.appendChild(prompt);
+
+      const scroll = () => {
+        body.scrollTop = body.scrollHeight;
+      };
+
+      if (NAV[cmd]) {
+        window.location.href = NAV[cmd];
+        return;
+      }
+      if (cmd === 'cat .secret' || cmd === 'ls .secret' || cmd === 'cd .secret') {
+        window.location.href = '/secret';
+        return;
+      }
+      if (cmd === 'clear') {
+        body.innerHTML = '';
+        return;
+      }
+
+      const lines = CMDS[cmd] ?? [`bash: ${cmd}: command not found`, "Type 'help' for commands"];
+      lines.forEach((text) => {
+        const line = document.createElement('div');
+        line.className = 'line output';
+        line.textContent = text;
+        body.appendChild(line);
+      });
+      const spacer = document.createElement('div');
+      spacer.className = 'line output';
+      spacer.innerHTML = '&nbsp;';
+      body.appendChild(spacer);
+      scroll();
+    });
   }
-  document.getElementById('term-form').addEventListener('submit', handle404);
+
+  init404();
+  document.addEventListener('astro:page-load', init404);
 </script>

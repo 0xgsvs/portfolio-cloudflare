@@ -3,12 +3,18 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Contact | Venkat Sundaraneedi" description="Get in touch with Venkat Sundaraneedi — Rust & Blockchain Developer">
-  <section class="section" style="padding-top:40px;">
-    <h2 class="section-title">GET IN TOUCH</h2>
+  <section class="section">
+    <div class="section-head">
+      <span class="section-label">Contact</span>
+      <h1 class="section-title">Get in touch</h1>
+      <p class="section-note">
+        Email is the fastest route. Everything below is also available straight from the domain.
+      </p>
+    </div>
 
-    <div class="brutal-card card-yellow" style="max-width:600px;margin-bottom:24px;">
-      <h3 style="margin-top:0;">📋 vCard</h3>
-      <pre style="font-family:'Courier New',monospace;font-size:13px;line-height:1.6;overflow-x:auto;">
+    <div class="brutal-card card-yellow" style="max-width:640px;">
+      <h2>vCard</h2>
+      <pre class="block-pre">
 BEGIN:VCARD
 VERSION:3.0
 FN:VENKAT SUNDARANEEDI
@@ -21,9 +27,9 @@ NOTE:Building on Solana. Arch/Nix dual boot. Terminal enthusiast.
 END:VCARD</pre>
     </div>
 
-    <div class="brutal-card card-green" style="max-width:600px;margin-bottom:24px;">
-      <h3 style="margin-top:0;">💻 For terminal users</h3>
-      <pre style="font-family:'Courier New',monospace;font-size:13px;line-height:1.6;">
+    <div class="brutal-card card-green" style="max-width:640px;">
+      <h2>For terminal users</h2>
+      <pre class="block-pre">
 # Get contact info
 curl -L https://0xgsvs.dev/contact.txt
 
@@ -31,10 +37,32 @@ curl -L https://0xgsvs.dev/contact.txt
 curl -L https://0xgsvs.dev/gpg.txt</pre>
     </div>
 
-    <div class="brutal-card card-blue" style="max-width:600px;">
-      <h3 style="margin-top:0;">📬 Direct</h3>
+    <div class="brutal-card card-blue" style="max-width:640px;">
+      <h2>Direct</h2>
       <p>Email: <strong>venkat.subrahmanyam.34@gmail.com</strong></p>
-      <p>GitHub: <a href="https://github.com/0xgsvs" style="color:black;">github.com/0xgsvs</a></p>
+      <p>GitHub: <a href="https://github.com/0xgsvs">github.com/0xgsvs</a></p>
     </div>
   </section>
 </Layout>
+
+<style>
+  .block-pre {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+  .brutal-card p {
+    margin-bottom: var(--space-2);
+    overflow-wrap: anywhere;
+  }
+  .brutal-card p:last-child {
+    margin-bottom: 0;
+  }
+  .block-pre {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+</style>
