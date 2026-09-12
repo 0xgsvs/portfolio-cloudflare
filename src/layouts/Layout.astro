@@ -14,6 +14,14 @@ const { title, description } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- First paint must be light. With no declared color-scheme, a dark-mode
+         browser paints the canvas black while the stylesheet is still pending,
+         which shows as a black frame on reload. Inline so it applies before
+         any external CSS is fetched. -->
+    <style is:inline>
+      :root { color-scheme: light; }
+      html { background-color: #ffffff; }
+    </style>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />

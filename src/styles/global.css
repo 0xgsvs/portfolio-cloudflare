@@ -3,6 +3,10 @@
 
 /* ===== TOKENS ===== */
 :root {
+  /* This is a light-only surface. Declaring it stops a dark-mode browser
+     from painting the UA canvas black before this stylesheet lands. */
+  color-scheme: light;
+
   /* surfaces */
   --white: #ffffff;
   --black: #000000;
