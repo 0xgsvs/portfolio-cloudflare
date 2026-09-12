@@ -172,14 +172,6 @@
     var levels = ['off','light','moderate','busy','intense'];
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    var levelMap = {
-      NONE: 0,
-      FIRST_QUARTILE: 1,
-      SECOND_QUARTILE: 2,
-      THIRD_QUARTILE: 3,
-      FOURTH_QUARTILE: 4
-    };
-
     function renderBlocks(days) {
       container.innerHTML = '';
 
@@ -233,27 +225,38 @@
       }
     }
 
-    fetch('https://github-contributions-api.deno.dev/0xgsvs.json')
+    // The previous host, github-contributions-api.deno.dev, was retired when
+    // Deno Deploy Classic shut down, which surfaced as "Failed to fetch".
+    var API = 'https://github-contributions-api.jogruber.de/v4/0xgsvs?y=last';
+
+    fetch(API)
       .then(function (res) {
-        if (!res.ok) throw new Error('API returned ' + res.status);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.json();
       })
       .then(function (data) {
-        var allDays = [];
-        var weeks = data.contributions;
-        for (var w = 0; w < weeks.length; w++) {
-          for (var d = 0; d < weeks[w].length; d++) {
-            allDays.push(weeks[w][d]);
-          }
+        var all = Array.isArray(data.contributions) ? data.contributions : [];
+        if (!all.length) throw new Error('no contribution data');
+
+        // Already flat daily records: { date, count, level }.
+        // Level is derived here from the count so it always matches the
+        // thresholds printed in the legend, rather than the API's own buckets.
+        function levelFor(count) {
+          if (count <= 0) return 0;
+          if (count <= 3) return 1;
+          if (count <= 8) return 2;
+          if (count <= 15) return 3;
+          return 4;
         }
 
-        var recent = allDays.slice(-30);
+        var recent = all.slice(-30);
         var days = [];
         for (var i = 0; i < recent.length; i++) {
+          var count = typeof recent[i].count === 'number' ? recent[i].count : 0;
           days.push({
             date: recent[i].date,
-            count: recent[i].contributionCount,
-            level: levelMap[recent[i].contributionLevel] || 0
+            count: count,
+            level: levelFor(count)
           });
         }
 
@@ -309,7 +312,7 @@
         container.innerHTML = '';
         var p = document.createElement('p');
         p.className = 'commit-loading';
-        p.textContent = 'Contributions unavailable — ' + err.message;
+        p.textContent = 'Contributions unavailable — ' + err.message + ' · ' + API;
         container.appendChild(p);
       });
   })();
