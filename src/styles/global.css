@@ -398,7 +398,7 @@ a {
 .rail-portrait {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--space-2);
   margin-bottom: var(--space-6);
 }
@@ -406,6 +406,7 @@ a {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   color: var(--ink-3);
+  text-align: center;
 }
 
 /* ===== WORK (ranked projects) ===== */
