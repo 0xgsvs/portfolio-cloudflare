@@ -544,6 +544,7 @@ a {
   font-weight: 700;
   padding: var(--space-1) var(--space-3);
   border: 2px solid var(--line);
+  background: var(--white);
   filter: drop-shadow(3px 3px 0 rgba(0, 0, 0, 1));
 }
 .stack-item--lang {
@@ -554,6 +555,22 @@ a {
 }
 .stack-item--env {
   background: var(--infrastructure);
+}
+/* Tool-page roles. One hue per role; the role label always names it in text. */
+.stack-item--terminal {
+  background: var(--purple);
+}
+.stack-item--editor {
+  background: var(--orange);
+}
+.stack-item--multiplexer {
+  background: var(--blue);
+}
+.stack-item--navigation {
+  background: var(--green);
+}
+.stack-item--vcs {
+  background: var(--pink);
 }
 
 /* ===== CONTACT ===== */

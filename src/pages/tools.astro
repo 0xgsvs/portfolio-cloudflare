@@ -1,0 +1,36 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const groups = [
+  { role: 'Terminal', variant: 'terminal', tools: ['Ghostty'] },
+  { role: 'Editors', variant: 'editor', tools: ['Neovim', 'Helix'] },
+  { role: 'Multiplexer', variant: 'multiplexer', tools: ['Zellij'] },
+  { role: 'Navigation', variant: 'navigation', tools: ['Zoxide'] },
+  { role: 'Version control', variant: 'vcs', tools: ['Jujutsu (jj)', 'jjui'] },
+];
+---
+
+<Layout title="Tools | Venkat Sundaraneedi" description="The terminal tools Venkat Sundaraneedi uses day to day.">
+  <section class="section">
+    <div class="section-head">
+      <span class="section-label">Tools</span>
+      <h1 class="section-title">Terminal tools I use</h1>
+      <p class="section-note">The current setup, grouped by what each one does.</p>
+    </div>
+
+    <div>
+      {
+        groups.map((group) => (
+          <div class="stack">
+            <div class="stack-term">{group.role}</div>
+            <ul class="stack-items">
+              {group.tools.map((tool) => (
+                <li class={`stack-item stack-item--${group.variant}`}>{tool}</li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</Layout>
