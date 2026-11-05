@@ -45,16 +45,16 @@ import { site } from "../data/site";
       { label: "Top", hint: "return to the manual", href: "/" },
       { label: "Work", hint: "projects and proof", href: "/#work" },
       { label: "Activity", hint: "last 30 days", href: "/#activity" },
-      { label: "Writing", hint: "three entries", href: "/writing" },
+      { label: "Writing", hint: "all entries", href: "/writing" },
       { label: "Tools", hint: "daily setup", href: "/tools" },
       { label: "Contact", hint: "email first", href: "/contact" },
-      { label: "Download CV", hint: "pdf placeholder", href: "/cv-placeholder.pdf", download: true },
+      { label: "Download CV", hint: "pdf placeholder", href: "/cv-placeholder.pdf", download: "venkat-cv.pdf" },
       { label: "GitHub", hint: "github.com/0xgsvs", href: "https://github.com/0xgsvs" },
       { label: "Email", hint: "copy address", copy: email },
       { label: "Guestbook", hint: "leave a trace", href: "/guestbook" },
     ];
 
-    let rows: { label: string; hint: string; href?: string; download?: boolean; copy?: string }[] = commands;
+    let rows: { label: string; hint: string; href?: string; download?: boolean | string; copy?: string }[] = commands;
     let selected = 0;
 
     const statusText = (message: string) => {
@@ -82,7 +82,7 @@ import { site } from "../data/site";
       if (command.download) {
         const link = document.createElement("a");
         link.href = command.href;
-        link.download = "";
+        link.download = typeof command.download === "string" ? command.download : "";
         link.click();
         return;
       }

@@ -16,12 +16,12 @@ A personal portfolio for Venkat Sundaraneedi, a Rust and blockchain developer wo
 
 ## Positioning
 
-Undecided: no positioning statement has been confirmed. The site currently leads with a terminal-native framing and a ranked project list.
+Undecided: no formal one-sentence positioning statement has been confirmed. The site leads with a printed-manual framing and verifiable work: Freight Delay on Solana devnet, public repositories, and a live contribution trace.
 
 ## Operating Context
 
 - Built with Astro as a static site and published at https://0xgsvs.dev.
-- Content lives in the repository: projects and stack in `src/data/projects.ts`, posts in `src/data/posts.ts`.
+- Content lives in the repository: profile, work, stack, and planned items in `src/data/site.ts`; posts in `src/data/posts.ts`.
 - Public identity: GitHub `0xgsvs`, email `venkat.subrahmanyam.34@gmail.com`.
 - Additional public work: https://github.com/ChaosCore-labs/Trana_Protocol.
 - The site is also usable from a terminal: `curl -L https://0xgsvs.dev/contact.txt` returns a vCard.
@@ -41,7 +41,7 @@ Undecided: no positioning statement has been confirmed. The site currently leads
 ## Brand Commitments
 
 - Name: Venkat Sundaraneedi. Handle: `0xgsvs`. Domain: `0xgsvs.dev`.
-- Existing voice is terminal-flavored, direct, and informal, with hidden routes and easter eggs.
+- Existing voice is printed-manual framing with terminal affordances, direct and informal, with hidden routes and easter eggs.
 - These identity choices come from the incumbent site; the user has not stated whether they are fixed for future work.
 
 ## Evidence on Hand

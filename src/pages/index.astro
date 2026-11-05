@@ -17,7 +17,7 @@ import { formatDate } from "../utils/date";
   hasAside
 >
   <Fragment slot="actions">
-    <a class="action action--solid" href="/cv-placeholder.pdf" download>
+    <a class="action action--solid" href="/cv-placeholder.pdf" download="venkat-cv.pdf">
       Download CV <span class="arrow" aria-hidden="true">↓</span>
     </a>
     <a class="action" href="/contact">Contact</a>
@@ -189,7 +189,7 @@ import { formatDate } from "../utils/date";
     <dl class="files">
       <div>
         <dt>CV</dt>
-        <dd><a href="/cv-placeholder.pdf" download>venkat-cv.pdf</a></dd>
+        <dd><a href="/cv-placeholder.pdf" download="venkat-cv.pdf">venkat-cv.pdf</a></dd>
         <span class="placeholder">Placeholder</span>
       </div>
       <div>
@@ -216,7 +216,7 @@ import { formatDate } from "../utils/date";
       <h2>See also</h2>
     </div>
     <ul class="see-also">
-      <li><a href="/writing"><span>writing(7)</span><span>three entries</span></a></li>
+      <li><a href="/writing"><span>writing(7)</span><span>{posts.length} entries</span></a></li>
       <li><a href="/tools"><span>tools(1)</span><span>daily setup</span></a></li>
       <li><a href="/contact"><span>contact(1)</span><span>email first</span></a></li>
       <li><a href="/guestbook"><span>guestbook(8)</span><span>leave a trace</span></a></li>
@@ -234,7 +234,7 @@ import { formatDate } from "../utils/date";
       <ul>
         <li>The CV download is a labelled placeholder, not the real document.</li>
         <li>{trana.title} is on devnet, not mainnet.</li>
-        <li>The three projects on the bench have no repositories yet, so they have no source links.</li>
+        <li>The {planned.length} projects on the bench have no repositories yet, so they have no source links.</li>
         <li>No GPG key is published. When there is a real one, it gets a real page.</li>
       </ul>
     </div>

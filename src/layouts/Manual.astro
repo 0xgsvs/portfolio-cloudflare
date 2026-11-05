@@ -36,6 +36,7 @@ const {
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
+const ogImage = new URL("/og.png", Astro.site ?? Astro.url).href;
 const year = new Date().getFullYear();
 const upper = manTitle.toUpperCase();
 const running = (runningTitle ?? manTitle).toUpperCase();
@@ -60,6 +61,12 @@ const running = (runningTitle ?? manTitle).toUpperCase();
     <meta property="og:description" content={description} />
     <meta property="og:site_name" content="0xgsvs.dev" />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="VENKAT(1), a printed manual card: Rust and Solana systems engineer. Freight Delay on Solana devnet." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link
       rel="preload"

@@ -36,7 +36,7 @@ export const repos = [
   {
     name: "solana-nix",
     url: "https://github.com/0xgsvs/solana-nix",
-    description: "Public repository in Nix.",
+    description: "A pinned Nix flake for the Agave Solana toolchain, SBF builds, and SPL tokens.",
     lang: "Nix",
   },
   {
