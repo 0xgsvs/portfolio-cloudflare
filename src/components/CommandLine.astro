@@ -1,0 +1,46 @@
+---
+interface Props {
+  label: string;
+  command: string;
+}
+
+const { label, command } = Astro.props;
+---
+
+<div class="command">
+  <pre><code translate="no">{command}</code></pre>
+  <div class="command-bar">
+    <span class="command-label">{label}</span>
+    <button class="copy" type="button" data-copy={command} aria-label={`Copy ${label}`}>Copy</button>
+  </div>
+</div>
+<p class="copy-status" aria-live="polite"></p>
+
+<script>
+  const copyButtons = document.querySelectorAll<HTMLButtonElement>("button.copy[data-copy]");
+  for (const button of copyButtons) {
+    if (button.dataset.bound === "true") continue;
+    button.dataset.bound = "true";
+    button.addEventListener("click", () => {
+      const value = button.dataset.copy ?? "";
+      const status = button.closest(".command")?.nextElementSibling;
+      const announce = (message: string) => {
+        if (status instanceof HTMLElement) status.textContent = message;
+      };
+      if (!navigator.clipboard) {
+        announce("Copy unavailable. Select the command and copy it manually.");
+        return;
+      }
+      navigator.clipboard.writeText(value).then(
+        () => {
+          button.textContent = "Copied";
+          announce("Command copied to clipboard.");
+          window.setTimeout(() => {
+            button.textContent = "Copy";
+          }, 2000);
+        },
+        () => announce("Copy failed. Select the command and copy it manually.")
+      );
+    });
+  }
+</script>

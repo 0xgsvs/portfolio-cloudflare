@@ -1,10 +1,11 @@
 BEGIN:VCARD
 VERSION:3.0
-FN:VENKAT SUNDARANEEDI
-ORG:Rust & Blockchain Developer
-TITLE:Blockchain Developer
+FN:Venkat Sundaraneedi
+N:Sundaraneedi;Venkat;;;
+ORG:0xgsvs
+TITLE:Rust & Solana Systems Engineer
 EMAIL:venkat.subrahmanyam.34@gmail.com
 URL:https://0xgsvs.dev
 GITHUB:https://github.com/0xgsvs
-NOTE:Building on Solana. Arch/Nix dual boot. Terminal enthusiast.
+NOTE:Freight Delay on Solana devnet. Rust, Solana, Nix. Arch/NixOS dual boot.
 END:VCARD

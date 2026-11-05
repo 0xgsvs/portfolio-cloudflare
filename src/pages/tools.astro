@@ -1,36 +1,37 @@
 ---
-import Layout from '../layouts/Layout.astro';
-
-const groups = [
-  { role: 'Terminal', variant: 'terminal', tools: ['Ghostty'] },
-  { role: 'Editors', variant: 'editor', tools: ['Neovim', 'Helix'] },
-  { role: 'Multiplexer', variant: 'multiplexer', tools: ['Zellij'] },
-  { role: 'Navigation', variant: 'navigation', tools: ['Zoxide'] },
-  { role: 'Version control', variant: 'vcs', tools: ['Jujutsu (jj)', 'jjui'] },
-];
+import Manual from "../layouts/Manual.astro";
+import { tools } from "../data/site";
 ---
 
-<Layout title="Tools | Venkat Sundaraneedi" description="The terminal tools Venkat Sundaraneedi uses day to day.">
-  <section class="section">
-    <div class="section-head">
-      <span class="section-label">Tools</span>
-      <h1 class="section-title">Terminal tools I use</h1>
-      <p class="section-note">The current setup, grouped by what each one does.</p>
-    </div>
+<Manual
+  title="Tools — Venkat Sundaraneedi"
+  description="The terminal tools Venkat Sundaraneedi uses day to day."
+  manTitle="Tools"
+  manNumber="1"
+  sectionLabel="User Commands"
+  tagline="The current terminal setup, grouped by what each one does."
+  activeNav="tools"
+  index={[{ id: "roles", label: "Roles", n: "01" }]}
+>
+  <Fragment slot="actions">
+    <a class="action" href="/">Back to the manual</a>
+    <a class="action" href="/contact">Contact</a>
+  </Fragment>
 
-    <div>
-      {
-        groups.map((group) => (
-          <div class="stack">
-            <div class="stack-term">{group.role}</div>
-            <ul class="stack-items">
-              {group.tools.map((tool) => (
-                <li class={`stack-item stack-item--${group.variant}`}>{tool}</li>
-              ))}
-            </ul>
-          </div>
-        ))
-      }
+  <section class="section" id="roles">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <h2>Roles</h2>
+      <p class="section-deck">Tools earn their place by shortening the loop. This list changes when they stop.</p>
     </div>
+    <dl class="files">
+      {tools.map((group) => (
+        <div>
+          <dt>{group.role}</dt>
+          <dd>{group.items.join(" · ")}</dd>
+          <span class="placeholder">{group.items.length} {group.items.length === 1 ? "tool" : "tools"}</span>
+        </div>
+      ))}
+    </dl>
   </section>
-</Layout>
+</Manual>

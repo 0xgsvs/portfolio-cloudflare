@@ -1,4 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="8" fill="#fde047"/>
-  <text x="32" y="46" font-family="monospace" font-size="36" font-weight="bold" fill="#000" text-anchor="middle">◆</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" fill="#f2ecdd"/>
+  <rect x="3" y="3" width="58" height="58" fill="none" stroke="#17140f" stroke-width="2"/>
+  <text x="10" y="46" font-family="monospace" font-size="38" font-weight="700" fill="#17140f">V</text>
+  <rect x="45" y="40" width="9" height="9" fill="#b03a22"/>
 </svg>

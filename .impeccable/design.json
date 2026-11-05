@@ -1,0 +1,343 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-05T10:51:23.838Z",
+  "title": "Design System: VENKAT(1)",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Manila Stock",
+        "canonical": "#f2ecdd",
+        "tonalRamp": [
+          "#322b1b",
+          "#5b4e2c",
+          "#87713a",
+          "#b59646",
+          "#c3ac72",
+          "#d1c39f",
+          "#e2dbc8",
+          "#f6f4ef"
+        ]
+      },
+      "paper-sunk": {
+        "role": "neutral",
+        "displayName": "Sunk Paper",
+        "canonical": "#e9e0cb",
+        "tonalRamp": [
+          "#312a1c",
+          "#594c2e",
+          "#836e3e",
+          "#b0924b",
+          "#bfa976",
+          "#cfc1a1",
+          "#e1dac9",
+          "#f5f3ef"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Press Ink",
+        "canonical": "#17140f",
+        "tonalRamp": [
+          "#2c2821",
+          "#4f4638",
+          "#73654e",
+          "#988463",
+          "#aea088",
+          "#c4bbac",
+          "#dbd7cf",
+          "#f4f3f1"
+        ]
+      },
+      "ink-secondary": {
+        "role": "neutral",
+        "displayName": "Graphite Ink",
+        "canonical": "#4b4539",
+        "tonalRamp": [
+          "#2a2723",
+          "#4b463c",
+          "#6c6455",
+          "#8f836d",
+          "#a79f8e",
+          "#c0bbb0",
+          "#d9d6d1",
+          "#f3f3f1"
+        ]
+      },
+      "ink-muted": {
+        "role": "neutral",
+        "displayName": "Muted Graphite",
+        "canonical": "#6b6353",
+        "tonalRamp": [
+          "#2a2723",
+          "#4a463d",
+          "#6b6456",
+          "#8d836e",
+          "#a69f8f",
+          "#bfbab1",
+          "#d9d6d1",
+          "#f3f3f1"
+        ]
+      },
+      "signal": {
+        "role": "primary",
+        "displayName": "Vermilion Signal",
+        "canonical": "#b03a22",
+        "tonalRamp": [
+          "#381b15",
+          "#672c20",
+          "#9b3a26",
+          "#d24629",
+          "#d8725e",
+          "#de9f92",
+          "#e9c8c1",
+          "#f7efed"
+        ]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#c9bfa8",
+        "tonalRamp": [
+          "#2c2920",
+          "#504837",
+          "#75684c",
+          "#9b8960",
+          "#b0a386",
+          "#c5bdab",
+          "#dcd8ce",
+          "#f4f3f0"
+        ]
+      },
+      "print-paper": {
+        "role": "neutral",
+        "displayName": "Print Paper",
+        "canonical": "#fff",
+        "tonalRamp": [
+          "#262626",
+          "#434343",
+          "#616161",
+          "#7e7e7e",
+          "#9b9b9b",
+          "#b8b8b8",
+          "#d5d5d5",
+          "#f2f2f2"
+        ]
+      },
+      "print-ink": {
+        "role": "neutral",
+        "displayName": "Print Ink",
+        "canonical": "#000",
+        "tonalRamp": [
+          "#262626",
+          "#434343",
+          "#616161",
+          "#7e7e7e",
+          "#9b9b9b",
+          "#b8b8b8",
+          "#d5d5d5",
+          "#f2f2f2"
+        ]
+      },
+      "print-muted": {
+        "role": "neutral",
+        "displayName": "Print Muted",
+        "canonical": "#444",
+        "tonalRamp": [
+          "#262626",
+          "#434343",
+          "#616161",
+          "#7e7e7e",
+          "#9b9b9b",
+          "#b8b8b8",
+          "#d5d5d5",
+          "#f2f2f2"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Masthead Display",
+        "purpose": "Page title only, uppercase, capped at 6rem."
+      },
+      "section": {
+        "displayName": "Section Heading",
+        "purpose": "Uppercase man-page section headings."
+      },
+      "body": {
+        "displayName": "Manual Body",
+        "purpose": "All prose, 68ch measure, 16px mono."
+      },
+      "label": {
+        "displayName": "Field Label",
+        "purpose": "Running heads, numerals, field names, command labels."
+      },
+      "tagline": {
+        "displayName": "Tagline",
+        "purpose": "The proposition under the masthead."
+      },
+      "display-compact": {
+        "displayName": "Compact Display",
+        "purpose": "Long article titles."
+      },
+      "lede": {
+        "displayName": "Lede",
+        "purpose": "The NAME paragraph."
+      },
+      "proof-title": {
+        "displayName": "Proof Title",
+        "purpose": "Current build name in the hero rail."
+      },
+      "micro": {
+        "displayName": "Micro Label",
+        "purpose": "Axis and command-block labels."
+      },
+      "print-display": {
+        "displayName": "Print Display",
+        "purpose": "Masthead in print only."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "print-in",
+        "value": "750ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The single masthead entrance; removed under prefers-reduced-motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact",
+        "value": "1080px"
+      },
+      {
+        "name": "stack",
+        "value": "860px"
+      },
+      {
+        "name": "phone",
+        "value": "560px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Action",
+      "kind": "button",
+      "refersTo": "action-primary",
+      "description": "The one solid action per view, such as Download CV.",
+      "html": "<a class=\"ds-action ds-action--solid\" href=\"#\">Download CV <span aria-hidden=\"true\">↓</span></a>",
+      "css": ".ds-action{display:inline-flex;align-items:center;gap:.4rem;min-height:2.75rem;padding:.5rem .9rem;border:1px solid var(--ink);background:transparent;color:var(--ink);font-family:var(--font-mono);font-size:.6875rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;text-decoration:none}.ds-action--solid{background:var(--ink);color:var(--paper)}.ds-action:hover{background:var(--signal);border-color:var(--signal);color:var(--paper)}.ds-action:focus-visible{outline:2px solid var(--signal);outline-offset:3px}"
+    },
+    {
+      "name": "Secondary Action",
+      "kind": "button",
+      "refersTo": "action-secondary",
+      "description": "Outlined action for contact and secondary links.",
+      "html": "<a class=\"ds-action\" href=\"#\">Contact</a>",
+      "css": ".ds-action{display:inline-flex;align-items:center;gap:.4rem;min-height:2.75rem;padding:.5rem .9rem;border:1px solid var(--ink);background:transparent;color:var(--ink);font-family:var(--font-mono);font-size:.6875rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;text-decoration:none}.ds-action:hover{background:var(--signal);border-color:var(--signal);color:var(--paper)}.ds-action:focus-visible{outline:2px solid var(--signal);outline-offset:3px}"
+    },
+    {
+      "name": "Command Trigger",
+      "kind": "button",
+      "refersTo": "command-trigger",
+      "description": "Opens the manual index dialog; also bound to / and Cmd/Ctrl+K.",
+      "html": "<button class=\"ds-cmd-trigger\" type=\"button\">Command line <kbd aria-hidden=\"true\">/</kbd></button>",
+      "css": ".ds-cmd-trigger{display:inline-flex;align-items:center;gap:.5rem;min-height:2.75rem;padding:.4rem .7rem;border:1px solid var(--ink);background:transparent;color:var(--ink);font-family:var(--font-mono);font-size:.6875rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}.ds-cmd-trigger:hover{background:var(--ink);color:var(--paper)}.ds-cmd-trigger:focus-visible{outline:2px solid var(--signal);outline-offset:3px}.ds-cmd-trigger kbd{border:1px solid currentColor;padding:0 .3em}"
+    },
+    {
+      "name": "Margin Index Row",
+      "kind": "nav",
+      "refersTo": "index-link",
+      "description": "The sticky contents index; the active row inverts to ink.",
+      "html": "<a class=\"ds-index-link is-active\" href=\"#work\"><span>Work</span><span class=\"ds-index-n\">03</span></a>",
+      "css": ".ds-index-link{display:flex;justify-content:space-between;gap:.75rem;padding:.45rem .35rem;border-bottom:1px solid var(--hairline);color:var(--ink);font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none}.ds-index-link:hover{background:var(--paper-sunk)}.ds-index-link.is-active{background:var(--ink);color:var(--paper)}.ds-index-n{color:var(--signal);font-weight:700}.ds-index-link.is-active .ds-index-n{color:var(--paper)}"
+    },
+    {
+      "name": "Copy Action",
+      "kind": "button",
+      "refersTo": "copy-button",
+      "description": "Copies an example command; announces the result next to the block.",
+      "html": "<button class=\"ds-copy\" type=\"button\" aria-label=\"Copy vCard\">Copy</button>",
+      "css": ".ds-copy{min-height:2.75rem;padding:.25rem .6rem;border:1px solid var(--ink);background:transparent;color:var(--ink);font-family:var(--font-mono);font-size:.6875rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}.ds-copy:hover{background:var(--ink);color:var(--paper)}.ds-copy:focus-visible{outline:2px solid var(--signal);outline-offset:3px}"
+    },
+    {
+      "name": "Command Palette Row",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Filterable index row inside the native dialog; selected row inverts.",
+      "html": "<div class=\"ds-cmd-row is-selected\" role=\"option\" aria-selected=\"true\"><span>Work</span><span class=\"ds-cmd-hint\">projects and proof</span></div>",
+      "css": ".ds-cmd-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:2.75rem;padding:.6rem 1rem;border-bottom:1px solid var(--hairline);color:var(--ink);font-family:var(--font-mono);font-size:.8125rem;cursor:pointer}.ds-cmd-row.is-selected{background:var(--ink);color:var(--paper)}.ds-cmd-hint{font-size:.6875rem;color:var(--ink-muted)}.ds-cmd-row.is-selected .ds-cmd-hint{color:var(--paper-sunk)}"
+    },
+    {
+      "name": "Fact Row",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "A ruled label/value pair for program IDs, test counts, and deploy dates.",
+      "html": "<div class=\"ds-fact\"><span class=\"ds-fact-key\">Program</span><code class=\"ds-fact-value\">4BtUosFfNUySEGAGspfjvStCzLzqSRdfoc4Z3Z1uqGJs</code></div>",
+      "css": ".ds-fact{display:flex;justify-content:space-between;gap:1rem;padding:.35rem 0;border-bottom:1px solid var(--hairline);font-family:var(--font-mono);font-size:.6875rem}.ds-fact-key{color:var(--ink-muted);letter-spacing:.08em;text-transform:uppercase}.ds-fact-value{min-width:0;text-align:end;font-weight:600;overflow-wrap:anywhere}"
+    },
+    {
+      "name": "Activity Bar",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "One day of the last-30-days activity trace; zero days stay as hairline ticks.",
+      "html": "<span class=\"ds-bar\" data-level=\"3\" style=\"height:80%\" title=\"Oct 11 — 17 contributions\"></span>",
+      "css": ".ds-bar{display:block;flex:1;min-height:1px;background:var(--ink-muted)}.ds-bar[data-level=\"0\"]{background:var(--hairline)}.ds-bar[data-level=\"1\"]{background:var(--ink-secondary)}.ds-bar[data-level=\"2\"]{background:var(--ink)}.ds-bar[data-level=\"3\"],.ds-bar[data-level=\"4\"]{background:var(--signal)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Field Manual",
+    "overview": "The site is one printed manual for a working system. Manila stock, dense mono text, numbered sections, ruled margins, and a single vermilion signal carry the whole surface. Every section is an addressable entry; every claim about work carries a real repository, a program ID, or a test count. The world is flat, legible, and deliberate. It refuses the hero-plus-cards scaffold, the dark editor cliché, and decorative terminal chrome.",
+    "keyCharacteristics": [
+      "Warm manila paper ground with near-black ink and one signal red.",
+      "A 6rem display masthead against a 16px mono body.",
+      "Hairline rules, zero radius, and no shadows; depth is only paper tone and ink weight.",
+      "A persistent right margin index with a red numeral and an ink active state.",
+      "A keyboard-first command palette that behaves like the manual's index."
+    ],
+    "rules": [
+      {
+        "name": "The Rule Weight Rule",
+        "body": "Section boundaries are 1px Press Ink. Internal rows are 1px Hairline. No border is thicker than 1px, and no border is rounded.",
+        "section": "colors"
+      },
+      {
+        "name": "The 6rem Ceiling",
+        "body": "Display type never exceeds 6rem, however wide the viewport.",
+        "section": "typography"
+      },
+      {
+        "name": "The Margin Numeral Rule",
+        "body": "Section numbers live in the left gutter as vermilion labels, never inside the heading text and never as an indented kicker above it.",
+        "section": "typography"
+      },
+      {
+        "name": "The Readable Mono Rule",
+        "body": "Mono is the body because this is a manual, not because mono looks technical. It never drops below 13px for content, and every long hash wraps rather than forcing a horizontal scroll.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Signal Rule",
+        "body": "Vermilion is a mark, never a surface. It may color a numeral, a status, an underline, a focus ring, or a live bar. It never fills a region larger than a line of type.",
+        "section": "colors"
+      }
+    ],
+    "dos": [
+      "Do keep the paper ground, the ink ramp, and the one vermilion signal as the entire palette.",
+      "Do set section headings uppercase in Bricolage with a vermilion numeral in the 3.25rem gutter.",
+      "Do keep body copy at 16px mono within 68ch; switch secondary text to Graphite Ink instead of opacity.",
+      "Do use 1px rules for structure and Sunk Paper only for code and command blocks.",
+      "Do give every action a 2.75rem minimum height and a 2px Vermilion focus outline.",
+      "Do label planned work as planned and placeholders as placeholders."
+    ],
+    "donts": [
+      "Don't use a kicker or eyebrow line above a heading; status metadata goes below the heading it describes.",
+      "Don't use cards, rounded corners, pills, shadows, gradient text, or glass.",
+      "Don't use a second accent color or a dark ground.",
+      "Don't let mono type carry decoration; it is the reading face of a manual.",
+      "Don't hide a state change in a closed dialog; announce it where the user can still see it.",
+      "Don't present a repository link, test count, or program ID that has not been verified."
+    ]
+  }
+}

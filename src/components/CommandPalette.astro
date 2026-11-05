@@ -1,0 +1,217 @@
+---
+import { site } from "../data/site";
+---
+
+<button class="cmd-trigger" type="button" id="cmd-open" aria-haspopup="dialog" aria-controls="cmd-dialog">
+  Command line <kbd aria-hidden="true">/</kbd>
+</button>
+
+<dialog class="cmd" id="cmd-dialog" aria-labelledby="cmd-title" data-email={site.email}>
+  <div class="cmd-head">
+    <span id="cmd-title">Manual index</span>
+    <span>Esc closes</span>
+  </div>
+  <label class="visually-hidden" for="cmd-filter">Filter the manual index</label>
+  <input
+    class="cmd-input"
+    id="cmd-filter"
+    type="text"
+    role="combobox"
+    aria-autocomplete="list"
+    aria-expanded="true"
+    aria-controls="cmd-list"
+    autocomplete="off"
+    spellcheck="false"
+    placeholder="Type a section or action…"
+  />
+  <ul class="cmd-list" id="cmd-list" role="listbox" aria-label="Manual index"></ul>
+  <div class="cmd-foot">
+    <span>↑↓ move</span>
+    <span>↵ open</span>
+    <span aria-live="polite" id="cmd-status"></span>
+  </div>
+</dialog>
+
+<script>
+  const dialog = document.getElementById("cmd-dialog") as HTMLDialogElement | null;
+  const trigger = document.getElementById("cmd-open") as HTMLButtonElement | null;
+  const input = document.getElementById("cmd-filter") as HTMLInputElement | null;
+  const list = document.getElementById("cmd-list") as HTMLUListElement | null;
+  const status = document.getElementById("cmd-status");
+
+  if (dialog && trigger && input && list) {
+    const email = dialog.dataset.email ?? "";
+    const commands = [
+      { label: "Top", hint: "return to the manual", href: "/" },
+      { label: "Work", hint: "projects and proof", href: "/#work" },
+      { label: "Activity", hint: "last 30 days", href: "/#activity" },
+      { label: "Writing", hint: "three entries", href: "/writing" },
+      { label: "Tools", hint: "daily setup", href: "/tools" },
+      { label: "Contact", hint: "email first", href: "/contact" },
+      { label: "Download CV", hint: "pdf placeholder", href: "/cv-placeholder.pdf", download: true },
+      { label: "GitHub", hint: "github.com/0xgsvs", href: "https://github.com/0xgsvs" },
+      { label: "Email", hint: "copy address", copy: email },
+      { label: "Guestbook", hint: "leave a trace", href: "/guestbook" },
+    ];
+
+    let rows: { label: string; hint: string; href?: string; download?: boolean; copy?: string }[] = commands;
+    let selected = 0;
+
+    const statusText = (message: string) => {
+      if (!status) return;
+      status.textContent = message;
+      window.setTimeout(() => {
+        if (status.textContent === message) status.textContent = "";
+      }, 2500);
+    };
+
+    const run = (command: (typeof commands)[number]) => {
+      if (command.copy) {
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(command.copy).then(
+            () => statusText("Email copied."),
+            () => statusText("Copy failed. Select the address and copy it manually.")
+          );
+        } else {
+          statusText("Copy unavailable. Select the address and copy it manually.");
+        }
+        return;
+      }
+      dialog.close();
+      if (!command.href) return;
+      if (command.download) {
+        const link = document.createElement("a");
+        link.href = command.href;
+        link.download = "";
+        link.click();
+        return;
+      }
+      window.location.assign(command.href);
+    };
+
+    const markSelected = () => {
+      const items = Array.from(list.querySelectorAll<HTMLLIElement>(".cmd-item"));
+      items.forEach((item, index) => {
+        const isSelected = index === selected;
+        item.setAttribute("aria-selected", String(isSelected));
+        if (isSelected) {
+          input.setAttribute("aria-activedescendant", item.id);
+          item.scrollIntoView({ block: "nearest" });
+        }
+      });
+    };
+
+    const render = () => {
+      const query = input.value.trim().toLowerCase();
+      const score = (command: (typeof commands)[number]) => {
+        const label = command.label.toLowerCase();
+        const hint = command.hint.toLowerCase();
+        if (label === query) return 0;
+        if (label.startsWith(query)) return 1;
+        if (label.includes(query)) return 2;
+        if (hint.includes(query)) return 3;
+        return 99;
+      };
+      rows = commands
+        .map((command, index) => ({ command, rank: query ? score(command) : index }))
+        .filter((entry) => entry.rank < 99)
+        .sort((a, b) => a.rank - b.rank || a.command.label.localeCompare(b.command.label))
+        .map((entry) => entry.command);
+      if (selected >= rows.length) selected = Math.max(0, rows.length - 1);
+      list.replaceChildren();
+
+      if (rows.length === 0) {
+        const empty = document.createElement("li");
+        empty.className = "cmd-empty";
+        empty.textContent = "No match. Try work, writing, cv, or github.";
+        list.append(empty);
+        input.removeAttribute("aria-activedescendant");
+        return;
+      }
+
+      rows.forEach((command, index) => {
+        const item = document.createElement("li");
+        item.className = "cmd-item";
+        item.id = `cmd-opt-${index}`;
+        item.setAttribute("role", "option");
+        item.setAttribute("aria-selected", String(index === selected));
+
+        const label = document.createElement("span");
+        label.textContent = command.label;
+        const hint = document.createElement("span");
+        hint.className = "hint";
+        hint.textContent = command.hint;
+        item.append(label, hint);
+
+        item.addEventListener("mouseenter", () => {
+          selected = index;
+          markSelected();
+        });
+        item.addEventListener("click", () => run(command));
+        list.append(item);
+      });
+
+      markSelected();
+    };
+
+    const open = () => {
+      if (dialog.open) return;
+      input.value = "";
+      selected = 0;
+      render();
+      dialog.showModal();
+      input.focus();
+    };
+
+    trigger.addEventListener("click", open);
+
+    input.addEventListener("input", () => {
+      selected = 0;
+      render();
+    });
+
+    input.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        selected = (selected + 1) % Math.max(rows.length, 1);
+        markSelected();
+      } else if (event.key === "ArrowUp") {
+        event.preventDefault();
+        selected = (selected - 1 + rows.length) % Math.max(rows.length, 1);
+        markSelected();
+      } else if (event.key === "Home") {
+        event.preventDefault();
+        selected = 0;
+        markSelected();
+      } else if (event.key === "End") {
+        event.preventDefault();
+        selected = Math.max(0, rows.length - 1);
+        markSelected();
+      } else if (event.key === "Enter") {
+        event.preventDefault();
+        if (rows[selected]) run(rows[selected]);
+      }
+    });
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      const target = event.target as HTMLElement | null;
+      const typing =
+        target instanceof HTMLInputElement ||
+        target instanceof HTMLTextAreaElement ||
+        target instanceof HTMLSelectElement ||
+        target?.isContentEditable;
+      if (typing) return;
+      if (event.key === "/" && !event.metaKey && !event.ctrlKey && !event.altKey) {
+        event.preventDefault();
+        open();
+      } else if (event.key.toLowerCase() === "k" && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        open();
+      }
+    });
+  }
+</script>

@@ -1,268 +1,317 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import { projects, stackGroups, socialLinks, kindLabels } from '../data/projects';
-import PixelTerminal from '../components/generic/PixelTerminal.astro';
-import PixelRust from '../components/generic/PixelRust.astro';
-import PixelSolana from '../components/generic/PixelSolana.astro';
-import PixelGithub from '../components/generic/PixelGithub.astro';
-import PixelEmail from '../components/generic/PixelEmail.astro';
-import PixelPortrait from '../components/generic/PixelPortrait.astro';
-import PixelCommitGraph from '../components/generic/PixelCommitGraph.astro';
-import MobileSocials from '../components/home/MobileSocials.astro';
-
-const socialIconMap: Record<string, any> = { github: PixelGithub, email: PixelEmail };
-
-const [lead, ...rest] = projects;
+import Manual from "../layouts/Manual.astro";
+import ActivityTrace from "../components/ActivityTrace.astro";
+import CommandLine from "../components/CommandLine.astro";
+import { site, trana, repos, planned, tools, homeSections } from "../data/site";
+import { posts } from "../data/posts";
+import { formatDate } from "../utils/date";
 ---
 
-<Layout title="Venkat Sundaraneedi | Rust & Blockchain Dev" description="Rust & Blockchain developer. Building on Solana, living in Arch/Nix, learning Zig.">
-  <!-- ===== IDENTITY ===== -->
-  <section class="hero">
-    <div class="hero-grid">
-      <div>
-        <p class="hero-role">Rust &amp; blockchain developer</p>
-        <h1><span class="hero-name">Venkat Sundaraneedi</span></h1>
-        <p class="tagline">
-          <span id="typewriter" class="typewriter-cursor"></span>
-        </p>
-        <div class="hero-actions">
-          <a class="btn btn--accent" href="#work">See the work</a>
-          <a class="btn" href="/contact">Contact</a>
-        </div>
+<Manual
+  title="Venkat Sundaraneedi — Rust & Solana systems engineer"
+  description={site.description}
+  manTitle="Venkat"
+  manNumber="1"
+  tagline={site.tagline}
+  index={homeSections}
+  hasAside
+>
+  <Fragment slot="actions">
+    <a class="action action--solid" href="/cv-placeholder.pdf" download>
+      Download CV <span class="arrow" aria-hidden="true">↓</span>
+    </a>
+    <a class="action" href="/contact">Contact</a>
+    <a class="action" href={site.github} target="_blank" rel="noopener noreferrer">
+      GitHub <span class="arrow" aria-hidden="true">↗</span>
+    </a>
+  </Fragment>
 
-        <ul class="dev-toolkit">
-          <li class="dev-tool">
-            <span class="tool-icon"><PixelTerminal /></span>
-            <span class="tool-label">Terminal</span>
-          </li>
-          <li class="dev-tool">
-            <span class="tool-icon"><PixelRust /></span>
-            <span class="tool-label">Rust</span>
-          </li>
-          <li class="dev-tool">
-            <span class="tool-icon"><PixelSolana /></span>
-            <span class="tool-label">Solana</span>
-          </li>
-        </ul>
-
-        <div class="curl-box">
-          <code id="curl-command">$ curl -L https://0xgsvs.dev/contact.txt</code>
-          <button class="copy-btn" id="curl-copy" type="button">COPY</button>
+  <Fragment slot="aside">
+    <div class="hero-proof">
+      <h2 class="proof-title">
+        <a href={trana.repo} target="_blank" rel="noopener noreferrer">{trana.title}</a>
+      </h2>
+      <p class="proof-status">Current build · devnet</p>
+      <p class="proof-desc">
+        Parametric freight-delay indemnity on Solana. USDC pools, permissionless settlement, fully
+        collateralised.
+      </p>
+      <dl class="facts">
+        <div>
+          <dt>Program</dt>
+          <dd class="break"><code translate="no">4BtUosFfNUySEGAGspfjvStCzLzqSRdfoc4Z3Z1uqGJs</code></dd>
         </div>
-        <p id="curl-status" class="visually-hidden" role="status" aria-live="polite"></p>
+        <div>
+          <dt>Evidence</dt>
+          <dd>38 LiteSVM tests · devnet e2e</dd>
+        </div>
+      </dl>
+      <div class="work-links">
+        <a href={trana.repo} target="_blank" rel="noopener noreferrer">Repository ↗</a>
+        <a href={trana.explorer} target="_blank" rel="noopener noreferrer">Explorer ↗</a>
       </div>
-
-      <aside class="rail" aria-label="Live activity">
-        <span class="rail-label">// system</span>
-        <div class="rail-portrait">
-          <PixelPortrait />
-          <p class="rail-hint">Hover the portrait for diagnostics.</p>
-        </div>
-        <PixelCommitGraph />
-      </aside>
+      <ActivityTrace />
     </div>
+  </Fragment>
 
-    <MobileSocials />
+  <section class="section" id="name">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <h2>Name</h2>
+    </div>
+    <p class="lede">
+      Venkat Sundaraneedi — Rust and Solana systems engineer. Building Freight Delay, a protocol
+      that settles freight-delay insurance in the open.
+    </p>
   </section>
 
-  <!-- ===== WORK ===== -->
-  <section id="work" class="section">
+  <section class="section" id="description">
     <div class="section-head">
-      <span class="section-label">01 / Work</span>
-      <h2 class="section-title">Selected projects</h2>
-      <p class="section-note">Ordered by weight, not by date. Every entry links to its source.</p>
+      <span class="section-num">02</span>
+      <h2>Description</h2>
+    </div>
+    <div class="prose">
+      <p>
+        I work close to the constraint: Rust programs, the Solana runtime, Anchor accounts and
+        invariants, Nix-built environments, and the terminal tools that keep the loop short. The
+        default is to make the invariant explicit, test it until it is boring, then make the next
+        one.
+      </p>
+      <p>
+        {trana.parent} lives under ChaosCore Labs. It ships to devnet, keeps every payout fully
+        collateralised, and runs its tests in-process against the same binary it deploys.
+      </p>
+      <p>
+        The rest of the setup is Linux: Arch as the daily driver, NixOS as the second boot, and
+        dotfiles kept in public. I write when a problem deserves a record.
+      </p>
+      <h3 class="subhead">Stack</h3>
+      <ul class="tool-list">
+        {tools.map((group) => (
+          <li><strong>{group.role}</strong> {group.items.join(" · ")}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="work">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <h2>Work</h2>
+      <p class="section-deck">Shipped work links to source. Planned work is labelled, not dressed as shipped.</p>
     </div>
 
-    <ol class="work">
-      <li class={`work-item work-item--lead work-item--${lead.kind}`}>
-        <div class="work-index">01</div>
-        <div class="work-body">
-          <h3>{lead.title}</h3>
-          <div class="work-meta">
-            <span class={`kind kind--${lead.kind}`}>{kindLabels[lead.kind]}</span>
-            <div class="tags">
-              {lead.tags.map((tag) => <span class="tag">{tag}</span>)}
-            </div>
-          </div>
-          <p class="work-desc">{lead.description}</p>
-          <div class="work-links">
-            {lead.codeUrl && <a href={lead.codeUrl} target="_blank" rel="noopener noreferrer">Source ↗</a>}
-            {lead.demoUrl && <a href={lead.demoUrl} target="_blank" rel="noopener noreferrer">Demo ↗</a>}
-          </div>
+    <article class="work-entry">
+      <div class="work-side">
+        Shipped · 2026
+        <span class="status status--live">Devnet live</span>
+      </div>
+      <div>
+        <h3 class="work-title">
+          <a href={trana.repo} target="_blank" rel="noopener noreferrer">{trana.title} →</a>
+        </h3>
+        <p class="work-desc">{trana.description}</p>
+        <div class="work-links">
+          <a href={trana.repo} target="_blank" rel="noopener noreferrer">Source</a>
+          <a href={trana.explorer} target="_blank" rel="noopener noreferrer">Devnet program</a>
         </div>
-      </li>
-
-      {
-        rest.map((project, i) => (
-          <li class={`work-item work-item--${project.kind}`}>
-            <div class="work-index">{String(i + 2).padStart(2, '0')}</div>
-            <div class="work-body">
-              <h3>{project.title}</h3>
-              <div class="work-meta">
-                <span class={`kind kind--${project.kind}`}>{kindLabels[project.kind]}</span>
-                <div class="tags">
-                  {project.tags.map((tag) => <span class="tag">{tag}</span>)}
-                </div>
-              </div>
-              <p class="work-desc">{project.description}</p>
-              <div class="work-links">
-                {project.codeUrl && <a href={project.codeUrl} target="_blank" rel="noopener noreferrer">Source ↗</a>}
-                {project.demoUrl && <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">Demo ↗</a>}
-              </div>
+        <dl class="facts">
+          {trana.facts.map((fact) => (
+            <div>
+              <dt>{fact.key}</dt>
+              <dd class={fact.key === "Program" ? "break" : ""}>
+                {fact.key === "Program" ? <code translate="no">{fact.value}</code> : fact.value}
+              </dd>
             </div>
-          </li>
-        ))
-      }
+          ))}
+        </dl>
+      </div>
+    </article>
+
+    <ul class="repo-list" aria-label="Public repositories">
+      {repos.map((repo) => (
+        <li>
+          <span>
+            <a href={repo.url} target="_blank" rel="noopener noreferrer">{repo.name} ↗</a>
+            <span class="muted small"> — {repo.description}</span>
+          </span>
+          <span class="lang">{repo.lang}</span>
+        </li>
+      ))}
+    </ul>
+
+    <div class="planned">
+      <p class="planned-title">On the bench · planned, not shipped</p>
+      <ul>
+        {planned.map((item) => (
+          <li><strong>{item.title}</strong><span>{item.note}</span></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="writing">
+    <div class="section-head">
+      <span class="section-num">04</span>
+      <h2>Writing</h2>
+      <p class="section-deck">I write when there is something to record, not on a schedule.</p>
+    </div>
+    <ol class="entries">
+      {posts.map((post) => (
+        <li class="entry">
+          <a href={`/writing/${post.slug}`}>
+            <time datetime={post.date}>{formatDate(post.date)}</time>
+            <span class="entry-title">{post.title}</span>
+            <span class="entry-arrow" aria-hidden="true">↗</span>
+            <span class="entry-excerpt">{post.excerpt}</span>
+          </a>
+        </li>
+      ))}
     </ol>
+    <p><a class="more" href="/writing">All writing</a></p>
   </section>
 
-  <!-- ===== STACK ===== -->
-  <section id="stack" class="section">
+  <section class="section" id="examples">
     <div class="section-head">
-      <span class="section-label">02 / Stack</span>
-      <h2 class="section-title">Tools I reach for</h2>
+      <span class="section-num">05</span>
+      <h2>Examples</h2>
+      <p class="section-deck">The site is usable from a shell, not only a browser.</p>
     </div>
-
-    <div>
-      {
-        stackGroups.map((group) => (
-          <div class="stack">
-            <div class="stack-term">{group.term}</div>
-            <ul class="stack-items">
-              {group.items.map((item) => (
-                <li class={`stack-item stack-item--${group.variant}`}>{item}</li>
-              ))}
-            </ul>
-          </div>
-        ))
-      }
-    </div>
+    <CommandLine label="vCard" command="curl -L https://0xgsvs.dev/contact.txt" />
+    <CommandLine label="Freight Delay" command="git clone https://github.com/ChaosCore-labs/Trana_Protocol.git" />
   </section>
 
-  <!-- ===== CONTACT ===== -->
-  <section id="contact" class="section">
+  <section class="section" id="files">
     <div class="section-head">
-      <span class="section-label">03 / Contact</span>
-      <h2 class="section-title">Get in touch</h2>
-      <p class="section-note">Terminal users can pull the vCard and GPG key straight from the domain.</p>
+      <span class="section-num">06</span>
+      <h2>Files</h2>
     </div>
+    <dl class="files">
+      <div>
+        <dt>CV</dt>
+        <dd><a href="/cv-placeholder.pdf" download>venkat-cv.pdf</a></dd>
+        <span class="placeholder">Placeholder</span>
+      </div>
+      <div>
+        <dt>vCard</dt>
+        <dd><a href="/contact.txt">contact.txt</a></dd>
+        <span class="placeholder">Plain text</span>
+      </div>
+      <div>
+        <dt>Source</dt>
+        <dd><a href={site.github} target="_blank" rel="noopener noreferrer">github.com/0xgsvs</a></dd>
+        <span class="placeholder">Public</span>
+      </div>
+      <div>
+        <dt>Email</dt>
+        <dd><a href={`mailto:${site.email}`} translate="no">{site.email}</a></dd>
+        <span class="placeholder">Direct</span>
+      </div>
+    </dl>
+  </section>
 
-    <div class="contact-grid">
-      {
-        socialLinks.map((link) => {
-          const IconComponent = socialIconMap[link.icon];
-          return (
-            <a
-              href={link.url}
-              class={`contact-card card-${link.color}`}
-              target={link.url.startsWith('mailto:') ? undefined : '_blank'}
-              rel="noopener noreferrer"
-            >
-              <span class="contact-icon">{IconComponent && <IconComponent />}</span>
-              <span>
-                <span class="contact-label">{link.name}</span>
-                <span class="contact-detail">{link.detail}</span>
-              </span>
-            </a>
-          );
-        })
-      }
+  <section class="section" id="see-also">
+    <div class="section-head">
+      <span class="section-num">07</span>
+      <h2>See also</h2>
+    </div>
+    <ul class="see-also">
+      <li><a href="/writing"><span>writing(7)</span><span>three entries</span></a></li>
+      <li><a href="/tools"><span>tools(1)</span><span>daily setup</span></a></li>
+      <li><a href="/contact"><span>contact(1)</span><span>email first</span></a></li>
+      <li><a href="/guestbook"><span>guestbook(8)</span><span>leave a trace</span></a></li>
+      <li><a href={site.github} target="_blank" rel="noopener noreferrer"><span>github.com/0xgsvs</span><span>source ↗</span></a></li>
+    </ul>
+  </section>
+
+  <section class="section" id="bugs">
+    <div class="section-head">
+      <span class="section-num">08</span>
+      <h2>Bugs</h2>
+      <p class="section-deck">Known limits, stated before you find them.</p>
+    </div>
+    <div class="prose">
+      <ul>
+        <li>The CV download is a labelled placeholder, not the real document.</li>
+        <li>{trana.title} is on devnet, not mainnet.</li>
+        <li>The three projects on the bench have no repositories yet, so they have no source links.</li>
+        <li>No GPG key is published. When there is a real one, it gets a real page.</li>
+      </ul>
     </div>
   </section>
 
-  <!-- ===== COLOPHON ===== -->
-  <div class="colophon">
-    <div class="ascii-art">
-      <pre> ██████╗ ██╗  ██╗ ██████╗ ███████╗██╗   ██╗███████╗
-██╔═████╗╚██╗██╔╝██╔════╝ ██╔════╝██║   ██║██╔════╝
-██║██╔██║ ╚███╔╝ ██║  ███╗███████╗██║   ██║███████╗
-████╔╝██║ ██╔██╗ ██║   ██║╚════██║██║   ██║╚════██║
-╚██████╔╝██╔╝ ██╗╚██████╔╝███████║╚██████╔╝███████║
- ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝ ╚═════╝ ╚══════╝
-
-Rust & Blockchain Developer | Solana Ecosystem
-Arch/Nix Dual Boot | Terminal Enthusiast
-
-📧 venkat.subrahmanyam.34@gmail.com
-🐙 github.com/0xgsvs</pre>
-    </div>
-
-    <div class="screen-too-small">
-      <pre>┌──────────────────────────────────┐
-│       SCREEN TOO SMALL           │
-│                                  │
-│     ┌───┐    ┌───┐    ┌───┐      │
-│     │ ▼ │    │ ▼ │    │ ▼ │      │
-│     └───┘    └───┘    └───┘      │
-│       ↑        ↑        ↑        │
-│     GET A    GET A     GET A     │
-│    BIGGER   BIGGER    BIGGER     │
-│    SCREEN   SCREEN    SCREEN     │
-│                                  │
-│ Terminal devs use real monitors  │
-└──────────────────────────────────┘</pre>
-    </div>
-  </div>
-</Layout>
-
-<script>
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-  // Typewriter — skipped entirely for reduced-motion users
-  function startTypewriter() {
-    const el = document.getElementById('typewriter');
-    if (!el) return;
-    const text = "Rust & Blockchain developer. Arch/Nix dual boot. Building in the Solana ecosystem.";
-
-    if (reduceMotion.matches) {
-      el.textContent = text;
-      el.classList.remove('typewriter-cursor');
-      el.classList.add('typewriter-done');
-      return;
+  <style>
+    .hero-proof .activity {
+      margin-top: 1.25rem;
     }
-
-    el.textContent = '';
-    el.classList.add('typewriter-cursor');
-    el.classList.remove('typewriter-done');
-    let i = 0;
-    function type() {
-      if (i < text.length) {
-        el.textContent = text.slice(0, i + 1);
-        i++;
-        setTimeout(type, 40);
-      } else {
-        el.classList.remove('typewriter-cursor');
-        el.classList.add('typewriter-done');
-      }
+    .hero-proof .proof-desc {
+      font-size: var(--text-sm);
     }
-    type();
-  }
-  startTypewriter();
-  document.addEventListener('astro:page-load', startTypewriter);
-
-  // Copy button — scripted, with an announced result
-  function bindCopyButton() {
-    const copyBtn = document.getElementById('curl-copy') as HTMLButtonElement | null;
-    const copyStatus = document.getElementById('curl-status');
-    if (!copyBtn || copyBtn.dataset.bound) return;
-    copyBtn.dataset.bound = 'true';
-    copyBtn.addEventListener('click', async () => {
-      const command = 'curl -L https://0xgsvs.dev/contact.txt';
-      try {
-        await navigator.clipboard.writeText(command);
-        copyBtn.textContent = 'COPIED';
-        copyBtn.classList.add('copied');
-        if (copyStatus) copyStatus.textContent = 'Command copied to clipboard.';
-      } catch {
-        copyBtn.textContent = 'COPY FAILED';
-        if (copyStatus) copyStatus.textContent = 'Copy failed. Select the command and copy it manually.';
-      }
-      setTimeout(() => {
-        copyBtn.textContent = 'COPY';
-        copyBtn.classList.remove('copied');
-      }, 2000);
-    });
-  }
-  bindCopyButton();
-  document.addEventListener('astro:page-load', bindCopyButton);
-</script>
+    .hero-proof .proof-status {
+      margin-top: 0.35rem;
+      font-size: var(--text-xs);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--signal);
+    }
+    .hero-proof .proof-title {
+      font-size: clamp(1.5rem, 2.4vw, 1.9rem);
+    }
+    .hero-proof .facts {
+      margin-top: 0.9rem;
+    }
+    .hero-proof .work-links {
+      margin-top: 0.75rem;
+    }
+    .subhead {
+      margin: 1.75rem 0 0.75rem;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+    .tool-list {
+      list-style: none;
+      margin: 0;
+      border-top: 1px solid var(--hair);
+      max-width: 46rem;
+    }
+    .tool-list li {
+      padding: 0.45rem 0;
+      border-bottom: 1px solid var(--hair);
+      font-size: var(--text-sm);
+    }
+    .tool-list strong {
+      display: inline-block;
+      min-width: 11rem;
+      font-size: var(--text-xs);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+    .work-entry .facts {
+      margin-top: 1rem;
+      max-width: 38rem;
+    }
+    .more {
+      display: inline-block;
+      margin-top: 1rem;
+      font-size: var(--text-xs);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-bottom: 1px solid var(--ink);
+    }
+    .more:hover {
+      color: var(--signal);
+      border-bottom-color: var(--signal);
+    }
+    #examples .command + .command {
+      margin-top: 1.25rem;
+    }
+  </style>
+</Manual>

@@ -1,116 +1,60 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Manual from "../layouts/Manual.astro";
+import CommandLine from "../components/CommandLine.astro";
 
-const guestbookIssueUrl = "https://github.com/0xgsvs/portfolio-cloudflare/issues/new?title=Guestbook%3A%20%5Byour%20name%5D&body=%23%23%20Guestbook%20Entry%0A%0A**Name%3A**%20%0A**From%3A**%20%0A**Message%3A**%20%0A%0A---%0A_Signed%20via%20the%20hidden%20guestbook%20at%200xgsvs.dev%2Fguestbook_";
-
-const sampleEntries = [
-  { name: "alice_h4ck3r", date: "2026-05-20", msg: "nice terminal. your neofetch made me install Arch. no regrets." },
-  { name: "0xBob", date: "2026-05-18", msg: "found the .secret page. pineapple on pizza is indeed the hill to die on." },
-  { name: "nix_newbie", date: "2026-05-12", msg: "your NixOS post convinced me to try it. 3 days later I still haven't booted to a GUI. thanks." },
-  { name: "sol_dev_42", date: "2026-04-28", msg: "the DEX aggregator looks sick. open source it so I can steal your code." },
-  { name: "anonymous_ferris", date: "2026-04-15", msg: "🦀" },
-];
+const issueUrl =
+  "https://github.com/0xgsvs/portfolio-cloudflare/issues/new?title=Guestbook%3A%20%5Byour%20name%5D&body=%23%23%20Guestbook%20Entry%0A%0A**Name%3A**%20%0A**From%3A**%20%0A**Message%3A**%20%0A%0A---%0A_Signed%20via%200xgsvs.dev%2Fguestbook_";
 ---
 
-<Layout title="Guestbook | Venkat Sundaraneedi" description="Sign the hidden guestbook">
-  <section class="section">
+<Manual
+  title="Guestbook — Venkat Sundaraneedi"
+  description="Sign the guestbook with a GitHub issue."
+  manTitle="Guestbook"
+  manNumber="8"
+  sectionLabel="Miscellaneous Information Manual"
+  tagline="Leave a trace. It goes to GitHub, not a database."
+  index={[
+    { id: "sign", label: "Sign", n: "01" },
+    { id: "method", label: "Method", n: "02" },
+  ]}
+>
+  <Fragment slot="actions">
+    <a class="action action--solid" href={issueUrl} target="_blank" rel="noopener noreferrer">
+      Open GitHub issue <span class="arrow" aria-hidden="true">↗</span>
+    </a>
+  </Fragment>
+
+  <section class="section" id="sign">
     <div class="section-head">
-      <span class="section-label">Guestbook</span>
-      <h1 class="section-title">Leave a trace</h1>
-      <p class="section-note">
-        This runs on GitHub Issues. I am not standing up a database for a guestbook.
-      </p>
+      <span class="section-num">01</span>
+      <h2>Sign</h2>
     </div>
-
-    <div class="brutal-card card-green" style="max-width:720px;">
-      <h2>Sign the guestbook</h2>
+    <div class="prose">
       <p>
-        This opens a prefilled GitHub issue. Add your name and message, submit, and you are in.
-        You need a GitHub account.
+        The guestbook is a prefilled GitHub issue. Add your name and message, submit it, and it
+        exists under your account. You need a GitHub account; this site has no accounts of its own.
       </p>
-      <a class="btn btn--commit" href={guestbookIssueUrl} target="_blank" rel="noopener noreferrer">
-        $ git commit -m "sign guestbook"
-      </a>
-    </div>
-
-    <div class="brutal-card" style="max-width:720px;">
-      <h2>Recent entries</h2>
-      {
-        sampleEntries.map((entry) => (
-          <div class="entry">
-            <div class="entry-head">
-              <span class="entry-name">{entry.name}</span>
-              <span class="entry-date">{entry.date}</span>
-            </div>
-            <p class="entry-msg">{entry.msg}</p>
-          </div>
-        ))
-      }
-      <p class="entry-note">
-        These are sample entries. Your real entry creates a GitHub issue, and I feature the best ones here.
+      <div class="actions">
+        <a class="action action--solid" href={issueUrl} target="_blank" rel="noopener noreferrer">
+          Sign the guestbook <span class="arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+      <p class="muted small">
+        Nothing is stored here. I feature entries by editing this page, which means it moves at the
+        speed of a human.
       </p>
-    </div>
-
-    <div class="brutal-card card-yellow" style="max-width:720px;">
-      <h2>Terminal method</h2>
-      <pre class="block-pre">
-# Create a guestbook entry via GitHub CLI
-gh issue create \
-  --repo 0xgsvs/portfolio-cloudflare \
-  --title "Guestbook: [your name]" \
-  --body "Message here" \
-  --label guestbook</pre>
     </div>
   </section>
-</Layout>
 
-<style>
-  .btn--commit {
-    background: var(--ink);
-    color: var(--green);
-    border-color: var(--green);
-    margin-top: var(--space-2);
-  }
-  .btn--commit:hover {
-    background: var(--green);
-    color: var(--ink);
-    border-color: var(--ink);
-  }
-  .entry {
-    padding: var(--space-3) 0;
-    border-bottom: 2px solid var(--line-soft);
-  }
-  .entry-head {
-    display: flex;
-    gap: var(--space-2);
-    align-items: baseline;
-    margin-bottom: var(--space-1);
-  }
-  .entry-name {
-    font-family: var(--font-mono);
-    font-weight: 700;
-    font-size: var(--text-sm);
-  }
-  .entry-date {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--ink-3);
-  }
-  .entry-msg {
-    color: var(--ink-2);
-  }
-  .entry-note {
-    margin-top: var(--space-3);
-    font-size: var(--text-sm);
-    color: var(--ink-3);
-  }
-  .block-pre {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    line-height: 1.6;
-    overflow-x: auto;
-  }
-  .brutal-card p {
-    margin-bottom: var(--space-2);
-  }
-</style>
+  <section class="section" id="method">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <h2>Method</h2>
+      <p class="section-deck">For terminal users, the same action without the browser.</p>
+    </div>
+    <CommandLine
+      label="GitHub CLI"
+      command={`gh issue create --repo 0xgsvs/portfolio-cloudflare --title "Guestbook: [your name]" --body "Message here"`}
+    />
+  </section>
+</Manual>

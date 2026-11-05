@@ -1,198 +1,169 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import { posts, type Post } from '../../data/posts';
+import Manual from "../../layouts/Manual.astro";
+import { posts } from "../../data/posts";
+import { formatDate } from "../../utils/date";
 
 export function getStaticPaths() {
   return posts.map((post) => ({ params: { slug: post.slug } }));
 }
 
 type Block =
-  | { type: 'h2'; text: string }
-  | { type: 'h3'; text: string }
-  | { type: 'p'; text: string }
-  | { type: 'ul'; items: { label?: string; text: string }[] }
-  | { type: 'code'; lang: string; code: string };
+  | { type: "h2"; text: string; id: string }
+  | { type: "h3"; text: string }
+  | { type: "p"; text: string }
+  | { type: "ul"; items: { label?: string; text: string }[] }
+  | { type: "code"; lang: string; code: string };
 
-function escapeHtml(text: string): string {
-  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-}
+const escapeHtml = (text: string) =>
+  text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-function inline(text: string): string {
-  return escapeHtml(text)
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/`(.+?)`/g, '<code>$1</code>');
-}
+const inline = (text: string) =>
+  escapeHtml(text)
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/`(.+?)`/g, "<code>$1</code>");
 
-function parseBlocks(src: string): Block[] {
-  const lines = src.split('\n');
+const slugify = (text: string) =>
+  text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+function parseBlocks(source: string): { blocks: Block[]; headings: { id: string; label: string; n: string }[] } {
+  const lines = source.split("\n");
   const blocks: Block[] = [];
-  let i = 0;
+  const headings: { id: string; label: string; n: string }[] = [];
+  let index = 0;
 
-  while (i < lines.length) {
-    const line = lines[i];
+  while (index < lines.length) {
+    const line = lines[index];
 
-    if (line.startsWith('```')) {
+    if (line.startsWith("```")) {
       const lang = line.slice(3).trim();
       const buffer: string[] = [];
-      i++;
-      while (i < lines.length && !lines[i].startsWith('```')) {
-        buffer.push(lines[i]);
-        i++;
+      index++;
+      while (index < lines.length && !lines[index].startsWith("```")) {
+        buffer.push(lines[index]);
+        index++;
       }
-      i++;
-      blocks.push({ type: 'code', lang, code: buffer.join('\n') });
+      index++;
+      blocks.push({ type: "code", lang, code: buffer.join("\n") });
       continue;
     }
 
-    if (line.startsWith('## ')) {
-      blocks.push({ type: 'h2', text: line.slice(3).trim() });
-      i++;
+    if (line.startsWith("## ")) {
+      const text = line.slice(3).trim();
+      const id = slugify(text);
+      blocks.push({ type: "h2", text, id });
+      headings.push({ id, label: text, n: String(headings.length + 1).padStart(2, "0") });
+      index++;
       continue;
     }
 
-    if (line.startsWith('**') && line.endsWith('**') && line.length > 4) {
-      blocks.push({ type: 'h3', text: line.slice(2, -2).trim() });
-      i++;
+    if (line.startsWith("**") && line.endsWith("**") && line.length > 4) {
+      blocks.push({ type: "h3", text: line.slice(2, -2).trim() });
+      index++;
       continue;
     }
 
-    if (line.startsWith('- ')) {
+    if (line.startsWith("- ")) {
       const items: { label?: string; text: string }[] = [];
-      while (i < lines.length && lines[i].startsWith('- ')) {
-        const raw = lines[i].slice(2).trim();
+      while (index < lines.length && lines[index].startsWith("- ")) {
+        const raw = lines[index].slice(2).trim();
         const match = raw.match(/^\*\*(.+?)\*\*:?\s*(.*)$/);
-        if (match) items.push({ label: match[1].replace(/:\s*$/, ''), text: match[2] });
+        if (match) items.push({ label: match[1].replace(/:\s*$/, ""), text: match[2] });
         else items.push({ text: raw });
-        i++;
+        index++;
       }
-      blocks.push({ type: 'ul', items });
+      blocks.push({ type: "ul", items });
       continue;
     }
 
-    if (line.trim() === '') {
-      i++;
+    if (line.trim() === "") {
+      index++;
       continue;
     }
 
     const buffer: string[] = [];
     while (
-      i < lines.length &&
-      lines[i].trim() !== '' &&
-      !lines[i].startsWith('#') &&
-      !lines[i].startsWith('- ') &&
-      !lines[i].startsWith('```')
+      index < lines.length &&
+      lines[index].trim() !== "" &&
+      !lines[index].startsWith("#") &&
+      !lines[index].startsWith("- ") &&
+      !lines[index].startsWith("```")
     ) {
-      buffer.push(lines[i].trim());
-      i++;
+      buffer.push(lines[index].trim());
+      index++;
     }
     if (buffer.length > 0) {
-      blocks.push({ type: 'p', text: buffer.join(' ') });
+      blocks.push({ type: "p", text: buffer.join(" ") });
     } else {
-      i++;
+      index++;
     }
   }
 
-  return blocks;
+  return { blocks, headings };
 }
 
 const { slug } = Astro.params;
-const post = posts.find((p) => p.slug === slug) as Post;
-const blocks = parseBlocks(post.content);
+const post = posts.find((entry) => entry.slug === slug);
+if (!post) throw new Error(`Unknown post: ${slug}`);
+const { blocks, headings } = parseBlocks(post.content);
 ---
 
-<Layout title={`${post.title} | Venkat`} description={post.excerpt}>
-  <section class="section">
-    <article>
-      <a class="post-back" href="/writing">← All posts</a>
+<Manual
+  title={`${post.title} — Venkat Sundaraneedi`}
+  description={post.excerpt}
+  manTitle={post.title}
+  runningTitle="Writing"
+  manNumber="7"
+  sectionLabel="Miscellaneous Information Manual"
+  compact
+  activeNav="writing"
+  index={headings}
+>
+  <Fragment slot="actions">
+    <a class="action" href="/writing">← All writing</a>
+    <a class="action" href="/contact">Contact</a>
+  </Fragment>
 
-      <header class="post-head">
-        <span class="section-label">Writing</span>
-        <h1 class="post-title">{post.title}</h1>
-        <div class="post-meta">
-          <time datetime={post.date}>{post.date}</time>
-          <ul class="post-tags">
-            {post.tags.map((tag) => <li class="post-tag">{tag}</li>)}
-          </ul>
-        </div>
-      </header>
-
-      <div class="prose">
-        {
-          blocks.map((block) => {
-            if (block.type === 'h2') return <h2 set:html={inline(block.text)} />;
-            if (block.type === 'h3') return <h3 set:html={inline(block.text)} />;
-            if (block.type === 'p') return <p set:html={inline(block.text)} />;
-            if (block.type === 'code')
-              return (
-                <figure class="codeblock">
-                  <figcaption class="codeblock-lang">{block.lang || 'text'}</figcaption>
-                  <pre>
-                    <code>{block.code}</code>
-                  </pre>
-                </figure>
-              );
-            return (
-              <ul>
-                {block.items.map((item) => (
-                  <li>
-                    {item.label ? (
-                      <>
-                        <strong>{item.label}</strong>
-                        {item.text ? ': ' : ''}
-                      </>
-                    ) : null}
-                    <span set:html={inline(item.text)} />
-                  </li>
-                ))}
-              </ul>
-            );
-          })
-        }
+  <article>
+    <header class="article-head">
+      <div class="article-meta">
+        <span>Written <time datetime={post.date}>{formatDate(post.date)}</time></span>
+        {post.tags.map((tag) => <span class="tag">{tag}</span>)}
       </div>
-    </article>
-  </section>
-</Layout>
+    </header>
 
-<style>
-  .post-back {
-    display: inline-block;
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    font-weight: 700;
-    margin-bottom: var(--space-6);
-  }
-  .post-head {
-    padding-bottom: var(--space-6);
-    border-bottom: 3px solid var(--line);
-    margin-bottom: var(--space-6);
-  }
-  .post-title {
-    font-size: var(--text-3xl);
-    max-width: 24ch;
-    margin-bottom: var(--space-4);
-  }
-  .post-meta {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-3);
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--ink-3);
-  }
-  .post-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    list-style: none;
-  }
-  .post-tag {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    font-weight: 700;
-    border: 2px solid var(--line);
-    padding: 1px var(--space-2);
-    background: var(--white);
-    color: var(--ink);
-  }
-</style>
+    <div class="prose">
+      {
+        blocks.map((block) => {
+          if (block.type === "h2") return <h2 id={block.id} set:html={inline(block.text)} />;
+          if (block.type === "h3") return <h3 set:html={inline(block.text)} />;
+          if (block.type === "p") return <p set:html={inline(block.text)} />;
+          if (block.type === "code")
+            return (
+              <figure class="prose-block">
+                <figcaption class="prose-block-lang">{block.lang || "text"}</figcaption>
+                <pre><code>{block.code}</code></pre>
+              </figure>
+            );
+          return (
+            <ul>
+              {block.items.map((item) => (
+                <li>
+                  {item.label ? (
+                    <>
+                      <strong>{item.label}</strong>
+                      {item.text ? ": " : ""}
+                    </>
+                  ) : null}
+                  <span set:html={inline(item.text)} />
+                </li>
+              ))}
+            </ul>
+          );
+        })
+      }
+    </div>
+  </article>
+</Manual>

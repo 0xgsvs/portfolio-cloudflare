@@ -1,68 +1,91 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Manual from "../layouts/Manual.astro";
+import CommandLine from "../components/CommandLine.astro";
+import { site } from "../data/site";
 ---
 
-<Layout title="Contact | Venkat Sundaraneedi" description="Get in touch with Venkat Sundaraneedi — Rust & Blockchain Developer">
-  <section class="section">
+<Manual
+  title="Contact — Venkat Sundaraneedi"
+  description="Contact Venkat Sundaraneedi, Rust and Solana systems engineer."
+  manTitle="Contact"
+  manNumber="1"
+  sectionLabel="User Commands"
+  tagline="Email is the fastest route. Everything else is one link away."
+  activeNav="contact"
+  index={[
+    { id: "contact", label: "Contact", n: "01" },
+    { id: "examples", label: "Examples", n: "02" },
+    { id: "files", label: "Files", n: "03" },
+  ]}
+>
+  <Fragment slot="actions">
+    <a class="action action--solid" href={`mailto:${site.email}`}>Email <span class="arrow" aria-hidden="true">↗</span></a>
+    <a class="action" href={site.github} target="_blank" rel="noopener noreferrer">GitHub <span class="arrow" aria-hidden="true">↗</span></a>
+    <a class="action" href="/cv-placeholder.pdf" download>Download CV <span class="arrow" aria-hidden="true">↓</span></a>
+  </Fragment>
+
+  <section class="section" id="contact">
     <div class="section-head">
-      <span class="section-label">Contact</span>
-      <h1 class="section-title">Get in touch</h1>
-      <p class="section-note">
-        Email is the fastest route. Everything below is also available straight from the domain.
+      <span class="section-num">01</span>
+      <h2>Contact</h2>
+    </div>
+    <div class="prose">
+      <p>
+        For work, collaboration, or a question about something on this site, email is the fastest
+        route. Include what you are building and what you need; a link helps.
       </p>
-    </div>
-
-    <div class="brutal-card card-yellow" style="max-width:640px;">
-      <h2>vCard</h2>
-      <pre class="block-pre">
-BEGIN:VCARD
-VERSION:3.0
-FN:VENKAT SUNDARANEEDI
-ORG:Rust & Blockchain Developer
-TITLE:Blockchain Developer
-EMAIL:venkat.subrahmanyam.34@gmail.com
-URL:https://0xgsvs.dev
-GITHUB:https://github.com/0xgsvs
-NOTE:Building on Solana. Arch/Nix dual boot. Terminal enthusiast.
-END:VCARD</pre>
-    </div>
-
-    <div class="brutal-card card-green" style="max-width:640px;">
-      <h2>For terminal users</h2>
-      <pre class="block-pre">
-# Get contact info
-curl -L https://0xgsvs.dev/contact.txt
-
-# Get GPG key
-curl -L https://0xgsvs.dev/gpg.txt</pre>
-    </div>
-
-    <div class="brutal-card card-blue" style="max-width:640px;">
-      <h2>Direct</h2>
-      <p>Email: <strong>venkat.subrahmanyam.34@gmail.com</strong></p>
-      <p>GitHub: <a href="https://github.com/0xgsvs">github.com/0xgsvs</a></p>
+      <dl class="files">
+        <div>
+          <dt>Email</dt>
+          <dd><a href={`mailto:${site.email}`} translate="no">{site.email}</a></dd>
+          <span class="placeholder">Fastest</span>
+        </div>
+        <div>
+          <dt>GitHub</dt>
+          <dd><a href={site.github} target="_blank" rel="noopener noreferrer">github.com/0xgsvs</a></dd>
+          <span class="placeholder">Source</span>
+        </div>
+        <div>
+          <dt>CV</dt>
+          <dd><a href="/cv-placeholder.pdf" download>venkat-cv.pdf</a></dd>
+          <span class="placeholder">Placeholder</span>
+        </div>
+      </dl>
     </div>
   </section>
-</Layout>
 
-<style>
-  .block-pre {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    line-height: 1.6;
-    overflow-x: auto;
-  }
-  .brutal-card p {
-    margin-bottom: var(--space-2);
-    overflow-wrap: anywhere;
-  }
-  .brutal-card p:last-child {
-    margin-bottom: 0;
-  }
-  .block-pre {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    line-height: 1.6;
-    overflow-x: auto;
-  }
-</style>
+  <section class="section" id="examples">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <h2>Examples</h2>
+      <p class="section-deck">No form, no database, no bot. Pull the vCard or copy the address.</p>
+    </div>
+    <CommandLine label="vCard" command="curl -L https://0xgsvs.dev/contact.txt" />
+    <CommandLine label="Email" command={site.email} />
+  </section>
+
+  <section class="section" id="files">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <h2>Files</h2>
+    </div>
+    <dl class="files">
+      <div>
+        <dt>Plain text</dt>
+        <dd><a href="/contact.txt">contact.txt</a> — vCard, one request</dd>
+        <span class="placeholder">Static</span>
+      </div>
+      <div>
+        <dt>Guestbook</dt>
+        <dd><a href="/guestbook">guestbook(8)</a> — leave a trace via GitHub</dd>
+        <span class="placeholder">Public</span>
+      </div>
+    </dl>
+  </section>
+
+  <style>
+    #examples .command + .command {
+      margin-top: 1.25rem;
+    }
+  </style>
+</Manual>

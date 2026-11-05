@@ -1,0 +1,186 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  manTitle: string;
+  manNumber?: string;
+  runningTitle?: string;
+  compact?: boolean;
+  hasAside?: boolean;
+  activeNav?: string;
+  sectionLabel?: string;
+  tagline?: string;
+  index?: { id: string; label: string; n: string }[];
+  showIndex?: boolean;
+  noindex?: boolean;
+}
+
+import "../styles/manual.css";
+import CommandPalette from "../components/CommandPalette.astro";
+import { site } from "../data/site";
+
+const {
+  title,
+  description,
+  manTitle,
+  manNumber = "1",
+  runningTitle,
+  compact = false,
+  hasAside = false,
+  activeNav,
+  sectionLabel = "General Commands Manual",
+  tagline,
+  index = [],
+  showIndex = index.length > 0,
+  noindex = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
+const year = new Date().getFullYear();
+const upper = manTitle.toUpperCase();
+const running = (runningTitle ?? manTitle).toUpperCase();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style is:inline>
+      :root { color-scheme: light; }
+      html { background-color: #f2ecdd; }
+    </style>
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f2ecdd" />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="0xgsvs.dev" />
+    <meta property="og:url" content={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="preload"
+      href="/fonts/bricolage-grotesque-latin-var.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/spline-sans-mono-latin-var.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <div class="sheet">
+      <div class="running" aria-hidden="true">
+        <span>{running}({manNumber})</span>
+        <span>{sectionLabel}</span>
+        <span>{running}({manNumber})</span>
+      </div>
+
+      <header class="topbar">
+        <a class="brand" href="/"><span class="mark" aria-hidden="true">◆</span>{site.handle}.dev</a>
+        <nav class="topnav" aria-label="Primary">
+          {site.nav.map((item) => (
+            <a
+              href={item.href}
+              aria-current={activeNav === item.label.toLowerCase() ? "page" : undefined}
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
+        <CommandPalette />
+      </header>
+
+      <div class:list={["masthead", { "masthead--aside": hasAside }]}>
+        <div class="masthead-grid">
+          <div>
+            <h1 class:list={["man-title", { "man-title--compact": compact }]}>
+              {upper}<span class="num">({manNumber})</span>
+            </h1>
+            {tagline && <p class="tagline">{tagline}</p>}
+            <div class="actions">
+              <slot name="actions" />
+            </div>
+          </div>
+          {hasAside && <div class="masthead-aside"><slot name="aside" /></div>}
+        </div>
+      </div>
+
+      <div class="page">
+        <main id="content" tabindex="-1">
+          <slot />
+        </main>
+
+        {
+          showIndex && (
+            <aside class="rail">
+              <p class="rail-head">Contents</p>
+              <nav aria-label="On this page">
+                <ol class="index" data-index>
+                  {index.map((item) => (
+                    <li>
+                      <a href={`#${item.id}`}>
+                        <span>{item.label}</span>
+                        <span class="n">{item.n}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+              <p class="rail-note">
+                <strong>Press /</strong> for the command line from anywhere on this page.
+              </p>
+            </aside>
+          )
+        }
+      </div>
+
+      <footer class="footer">
+        <p>&copy; {year} {site.name}. No analytics, no trackers, no database.</p>
+        <p>
+          Set in Bricolage Grotesque and Spline Sans Mono. Built with Astro.
+          <a href={`mailto:${site.email}`}>Email</a> · <a href={site.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+        </p>
+      </footer>
+    </div>
+
+    <script>
+      const links = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-index] a"));
+      if (links.length > 0) {
+        const sections = links
+          .map((link) => document.querySelector<HTMLElement>(link.getAttribute("href") ?? ""))
+          .filter((section): section is HTMLElement => section !== null);
+
+        const setActive = (id: string) => {
+          for (const link of links) {
+            link.setAttribute("aria-current", link.getAttribute("href") === `#${id}` ? "true" : "false");
+          }
+        };
+
+        if ("IntersectionObserver" in window) {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              const visible = entries.filter((entry) => entry.isIntersecting);
+              if (visible.length === 0) return;
+              visible.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+              setActive(visible[0].target.id);
+            },
+            { rootMargin: "-10% 0px -75% 0px", threshold: 0 }
+          );
+          for (const section of sections) observer.observe(section);
+        }
+
+        setActive(sections[0]?.id ?? "");
+      }
+    </script>
+  </body>
+</html>

@@ -1,83 +1,42 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import { posts } from '../../data/posts';
+import Manual from "../../layouts/Manual.astro";
+import { posts } from "../../data/posts";
+import { formatDate } from "../../utils/date";
 ---
 
-<Layout title="Writing | Venkat Sundaraneedi" description="Technical writing by Venkat Sundaraneedi">
-  <section class="section">
+<Manual
+  title="Writing — Venkat Sundaraneedi"
+  description="Notes on Rust, Solana, and Linux by Venkat Sundaraneedi."
+  manTitle="Writing"
+  manNumber="7"
+  sectionLabel="Miscellaneous Information Manual"
+  tagline="Notes on Rust, Solana, and Linux. Written when a problem deserves a record."
+  activeNav="writing"
+  index={[{ id: "inventory", label: "Inventory", n: "01" }]}
+>
+  <Fragment slot="actions">
+    <a class="action" href="/">Back to the manual</a>
+    <a class="action" href="/contact">Contact</a>
+  </Fragment>
+
+  <section class="section" id="inventory">
     <div class="section-head">
-      <span class="section-label">Writing</span>
-      <h1 class="section-title">Notes on Rust, Solana, and Linux</h1>
-      <p class="section-note">
-        I write when I have something to say, not on a schedule. There is no RSS feed yet.
-      </p>
+      <span class="section-num">01</span>
+      <h2>Inventory</h2>
+      <p class="section-deck">{posts.length} entries. No schedule, no feed, no newsletter.</p>
     </div>
 
-    <ol class="post-list">
-      {
-        posts.map((post) => (
-          <li class="post-list-item">
-            <a href={`/writing/${post.slug}`}>
-              <time class="post-date" datetime={post.date}>{post.date}</time>
-              <h2 class="post-list-title">{post.title}</h2>
-              <p class="post-excerpt">{post.excerpt}</p>
-              <ul class="post-tags">
-                {post.tags.map((tag) => <li class="post-tag">{tag}</li>)}
-              </ul>
-            </a>
-          </li>
-        ))
-      }
+    <ol class="entries">
+      {posts.map((post) => (
+        <li class="entry">
+          <a href={`/writing/${post.slug}`}>
+            <time datetime={post.date}>{formatDate(post.date)}</time>
+            <span class="entry-title">{post.title}</span>
+            <span class="entry-arrow" aria-hidden="true">↗</span>
+            <span class="entry-excerpt">{post.excerpt}</span>
+          </a>
+        </li>
+      ))}
     </ol>
   </section>
-</Layout>
-
-<style>
-  .post-list {
-    list-style: none;
-    border-top: 3px solid var(--line);
-  }
-  .post-list-item {
-    border-bottom: 3px solid var(--line);
-  }
-  .post-list-item a {
-    display: block;
-    padding: var(--space-6) 0;
-    text-decoration: none;
-    color: var(--ink);
-  }
-  .post-list-item a:hover {
-    background: var(--surface-sunk);
-  }
-  .post-date {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--ink-3);
-    margin-bottom: var(--space-2);
-  }
-  .post-list-title {
-    font-size: var(--text-xl);
-    max-width: 30ch;
-    margin-bottom: var(--space-2);
-  }
-  .post-excerpt {
-    color: var(--ink-2);
-    max-width: 68ch;
-    margin-bottom: var(--space-3);
-  }
-  .post-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    list-style: none;
-  }
-  .post-tag {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    font-weight: 700;
-    border: 2px solid var(--line);
-    padding: 1px var(--space-2);
-    background: var(--white);
-  }
-</style>
+</Manual>

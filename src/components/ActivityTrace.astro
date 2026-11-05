@@ -1,0 +1,111 @@
+---
+---
+
+<div class="activity" data-activity aria-busy="true">
+  <div class="activity-head">
+    <span>Last 30 days · public contributions</span>
+    <span><strong data-total>Reading…</strong></span>
+  </div>
+  <div class="activity-chart" data-chart aria-hidden="true"></div>
+  <div class="activity-axis" aria-hidden="true"><span data-start></span><span data-end></span></div>
+  <p class="activity-note" data-note>Fetched live from the public contribution API. Private work is not included.</p>
+  <div class="visually-hidden">
+    <table data-table>
+      <caption>Public GitHub contributions for 0xgsvs, last 30 days</caption>
+      <thead><tr><th scope="col">Date</th><th scope="col">Contributions</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-activity]");
+  if (root) {
+    const chart = root.querySelector<HTMLElement>("[data-chart]");
+    const total = root.querySelector<HTMLElement>("[data-total]");
+    const note = root.querySelector<HTMLElement>("[data-note]");
+    const start = root.querySelector<HTMLElement>("[data-start]");
+    const end = root.querySelector<HTMLElement>("[data-end]");
+    const tbody = root.querySelector("tbody");
+    const api = "https://github-contributions-api.jogruber.de/v4/0xgsvs?y=last";
+    const dayFormat = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+
+    type Day = { date: string; count: number };
+
+    const levelFor = (count: number) => {
+      if (count <= 0) return 0;
+      if (count <= 3) return 1;
+      if (count <= 8) return 2;
+      if (count <= 15) return 3;
+      return 4;
+    };
+
+    const parseDay = (iso: string) => {
+      const [year, month, day] = iso.split("-").map(Number);
+      return new Date(Date.UTC(year, month - 1, day));
+    };
+
+    const render = (days: Day[]) => {
+      if (!chart || !total || !tbody) return;
+      const max = Math.max(1, ...days.map((day) => day.count));
+      const sum = days.reduce((value, day) => value + day.count, 0);
+      const active = days.filter((day) => day.count > 0).length;
+
+      chart.replaceChildren();
+      tbody.replaceChildren();
+
+      for (const day of days) {
+        const bar = document.createElement("span");
+        bar.className = "activity-bar";
+        const level = levelFor(day.count);
+        bar.dataset.level = String(level);
+        bar.dataset.count = String(day.count);
+        const height = day.count === 0 ? 1 : Math.max(8, Math.round((day.count / max) * 100));
+        bar.style.height = `${height}%`;
+        bar.title = `${dayFormat.format(parseDay(day.date))} — ${day.count} ${day.count === 1 ? "contribution" : "contributions"}`;
+        chart.append(bar);
+
+        const row = document.createElement("tr");
+        const dateCell = document.createElement("th");
+        dateCell.scope = "row";
+        dateCell.textContent = dayFormat.format(parseDay(day.date));
+        const countCell = document.createElement("td");
+        countCell.textContent = String(day.count);
+        row.append(dateCell, countCell);
+        tbody.append(row);
+      }
+
+      total.textContent = `${sum} contributions · ${active} active ${active === 1 ? "day" : "days"}`;
+      if (start) start.textContent = dayFormat.format(parseDay(days[0].date));
+      if (end) end.textContent = dayFormat.format(parseDay(days[days.length - 1].date));
+      root.dataset.ready = "true";
+      root.setAttribute("aria-busy", "false");
+    };
+
+    fetch(api, { signal: AbortSignal.timeout(8000) })
+      .then((response) => {
+        if (!response.ok) throw new Error("contribution service returned " + response.status);
+        return response.json();
+      })
+      .then((data) => {
+        const all: Day[] = Array.isArray(data.contributions) ? data.contributions : [];
+        if (all.length === 0) throw new Error("no contribution data");
+        render(all.slice(-30));
+      })
+      .catch((error: Error) => {
+        if (chart) chart.replaceChildren();
+        if (total) total.textContent = "Unavailable";
+        if (note) {
+          note.textContent = "Activity could not be loaded. ";
+          const link = document.createElement("a");
+          link.href = "https://github.com/0xgsvs";
+          link.textContent = "Read the full history on GitHub.";
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          note.append(link);
+        }
+        root.dataset.error = error.message;
+        root.setAttribute("aria-busy", "false");
+      });
+  }
+</script>
