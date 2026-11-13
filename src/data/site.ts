@@ -59,18 +59,26 @@ export const repos = [
   },
 ];
 
-export const planned = [
+export const building = [
   {
-    title: "Solana DEX aggregator",
-    note: "Jupiter routing, custom optimisation for slippage and MEV exposure.",
+    title: "pgjobq",
+    note: "Postgres-backed job queue: retries, dead-letter queue, cron scheduling.",
+    repo: "https://github.com/0xgsvs/pgjobq",
   },
   {
-    title: "Rust TUI file manager",
-    note: "ratatui, vim-like keybindings, preview panes.",
+    title: "solana-guard",
+    note: "Static analysis for Solana programs: account validation, PDA seeds, CPI, and close.",
+    repo: "https://github.com/0xgsvs/solana-guard",
   },
   {
-    title: "Solana indexer",
-    note: "Real-time account tracking, event streaming, PostgreSQL storage.",
+    title: "svm-fuzz",
+    note: "Invariant fuzzer for Solana programs on LiteSVM.",
+    repo: "https://github.com/0xgsvs/svm-fuzz",
+  },
+  {
+    title: "svm-range",
+    note: "Vulnerable Solana program range with exploits, patches, and write-ups.",
+    repo: "https://github.com/0xgsvs/svm-range",
   },
 ];
 
@@ -82,13 +90,41 @@ export const tools = [
   { role: "Version control", items: ["Jujutsu (jj)", "jjui"] },
 ];
 
+export const leisure = [
+  {
+    label: "Playing",
+    items: [
+      { title: "Valorant" },
+      { title: "Red Dead Redemption 2" },
+      { title: "Minecraft" },
+      { title: "Retro emulation" },
+    ],
+  },
+  {
+    label: "Completed",
+    items: [
+      { title: "Grand Theft Auto V" },
+      { title: "Cyberpunk 2077" },
+      { title: "Need for Speed: Most Wanted", note: "2005" },
+    ],
+  },
+  {
+    label: "Reading",
+    items: [
+      { title: "Shadow Slave", note: "reading" },
+      { title: "Martial Peak", note: "completed" },
+    ],
+  },
+];
+
 export const homeSections = [
   { id: "name", label: "Name", n: "01" },
   { id: "description", label: "Description", n: "02" },
   { id: "work", label: "Work", n: "03" },
   { id: "writing", label: "Writing", n: "04" },
-  { id: "examples", label: "Examples", n: "05" },
-  { id: "files", label: "Files", n: "06" },
-  { id: "see-also", label: "See also", n: "07" },
-  { id: "bugs", label: "Bugs", n: "08" },
+  { id: "leisure", label: "Leisure", n: "05" },
+  { id: "examples", label: "Examples", n: "06" },
+  { id: "files", label: "Files", n: "07" },
+  { id: "see-also", label: "See also", n: "08" },
+  { id: "bugs", label: "Bugs", n: "09" },
 ];

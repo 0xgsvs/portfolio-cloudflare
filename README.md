@@ -42,6 +42,10 @@ bun run preview
 - `DESIGN.md`: the design system, color tokens, type, rules, and components.
 - `.impeccable/`: Impeccable direction context and the home surface brief.
 
+## Roadmap
+
+- `PROJECTS.md`: the four selected projects, milestones, and the deferred idea bank.
+
 ## Deployment
 
 The site is a static Cloudflare Pages deployment: build with `bun run build`, publish `dist/`. The canonical domain is set in `astro.config.mjs`.

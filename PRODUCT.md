@@ -21,7 +21,7 @@ Undecided: no formal one-sentence positioning statement has been confirmed. The 
 ## Operating Context
 
 - Built with Astro as a static site and published at https://0xgsvs.dev.
-- Content lives in the repository: profile, work, stack, and planned items in `src/data/site.ts`; posts in `src/data/posts.ts`.
+- Content lives in the repository: profile, work, stack, and building items in `src/data/site.ts`; posts in `src/data/posts.ts`.
 - Public identity: GitHub `0xgsvs`, email `venkat.subrahmanyam.34@gmail.com`.
 - Additional public work: https://github.com/ChaosCore-labs/Trana_Protocol.
 - The site is also usable from a terminal: `curl -L https://0xgsvs.dev/contact.txt` returns a vCard.
@@ -29,14 +29,15 @@ Undecided: no formal one-sentence positioning statement has been confirmed. The 
 ## Capabilities and Constraints
 
 - Static pages: home, contact, tools, writing index and article pages, guestbook, secret, and a 404 with a command-line index.
+- The homepage includes a leisure index for games, novels, and retro emulation.
 - No backend or database. The guestbook opens a prefilled GitHub issue; there is no on-site submission or storage.
 - Contribution activity is fetched client-side from a third-party GitHub contributions API; private contributions are not included.
 - No RSS feed exists.
 - A CV download is present as a labelled placeholder PDF until the real document is supplied.
 - Decorative motion respects `prefers-reduced-motion`; the command palette is a native modal dialog with keyboard navigation and restored focus.
-- Open: the three projects on the homepage are labelled as planned, not shipped. They have no repositories yet.
+- Open: the four projects on the homepage are labelled as building, not shipped. Their repositories are being created.
 - Open: no GPG key is published. The previous placeholder page and file were removed rather than shipped as a real key.
-- Open: the user wants to create new projects; which ones, and what proof each will ship with, is undecided.
+- Open: four projects are selected; see `PROJECTS.md` for scope, milestones, and proof.
 
 ## Brand Commitments
 
@@ -49,7 +50,7 @@ Undecided: no formal one-sentence positioning statement has been confirmed. The 
 - GitHub profile `0xgsvs` with real contribution data (314 contributions in the last year at the time of writing), and the Trana Protocol repository (Freight Delay) at `ChaosCore-labs/Trana_Protocol`, deployed on Solana devnet with 38 passing LiteSVM tests and a devnet end-to-end run.
 - Three on-site articles under `/writing`.
 - `public/contact.txt` vCard and `public/cv-placeholder.pdf`.
-- Absent: the real CV, a real GPG key, repositories for the planned projects, and any testimonials, case studies, or benchmarks. Do not fabricate them.
+- Absent: the real CV, a real GPG key, repositories for the four projects in progress, and any testimonials, case studies, or benchmarks. Do not fabricate them.
 
 ## Product Principles
 

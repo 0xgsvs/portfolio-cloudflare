@@ -2,7 +2,7 @@
 import Manual from "../layouts/Manual.astro";
 import ActivityTrace from "../components/ActivityTrace.astro";
 import CommandLine from "../components/CommandLine.astro";
-import { site, trana, repos, planned, tools, homeSections } from "../data/site";
+import { site, trana, repos, building, tools, leisure, homeSections } from "../data/site";
 import { posts } from "../data/posts";
 import { formatDate } from "../utils/date";
 ---
@@ -98,7 +98,7 @@ import { formatDate } from "../utils/date";
     <div class="section-head">
       <span class="section-num">03</span>
       <h2>Work</h2>
-      <p class="section-deck">Shipped work links to source. Planned work is labelled, not dressed as shipped.</p>
+      <p class="section-deck">Shipped work links to source. Work in progress is labelled, not dressed as shipped.</p>
     </div>
 
     <article class="work-entry">
@@ -141,10 +141,13 @@ import { formatDate } from "../utils/date";
     </ul>
 
     <div class="planned">
-      <p class="planned-title">On the bench · planned, not shipped</p>
+      <p class="planned-title">Building now · repositories being created</p>
       <ul>
-        {planned.map((item) => (
-          <li><strong>{item.title}</strong><span>{item.note}</span></li>
+        {building.map((item) => (
+          <li>
+            <strong><a href={item.repo} target="_blank" rel="noopener noreferrer">{item.title} ↗</a></strong>
+            <span>{item.note}</span>
+          </li>
         ))}
       </ul>
     </div>
@@ -171,9 +174,32 @@ import { formatDate } from "../utils/date";
     <p><a class="more" href="/writing">All writing</a></p>
   </section>
 
-  <section class="section" id="examples">
+  <section class="section" id="leisure">
     <div class="section-head">
       <span class="section-num">05</span>
+      <h2>Leisure</h2>
+      <p class="section-deck">Games, novels, and the occasional emulator.</p>
+    </div>
+    <div class="leisure">
+      {leisure.map((group) => (
+        <div class="leisure-group">
+          <h3>{group.label}</h3>
+          <ul>
+            {group.items.map((item) => (
+              <li>
+                <span>{item.title}</span>
+                {item.note && <span class="note">{item.note}</span>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section" id="examples">
+    <div class="section-head">
+      <span class="section-num">06</span>
       <h2>Examples</h2>
       <p class="section-deck">The site is usable from a shell, not only a browser.</p>
     </div>
@@ -183,7 +209,7 @@ import { formatDate } from "../utils/date";
 
   <section class="section" id="files">
     <div class="section-head">
-      <span class="section-num">06</span>
+      <span class="section-num">07</span>
       <h2>Files</h2>
     </div>
     <dl class="files">
@@ -212,7 +238,7 @@ import { formatDate } from "../utils/date";
 
   <section class="section" id="see-also">
     <div class="section-head">
-      <span class="section-num">07</span>
+      <span class="section-num">08</span>
       <h2>See also</h2>
     </div>
     <ul class="see-also">
@@ -226,7 +252,7 @@ import { formatDate } from "../utils/date";
 
   <section class="section" id="bugs">
     <div class="section-head">
-      <span class="section-num">08</span>
+      <span class="section-num">09</span>
       <h2>Bugs</h2>
       <p class="section-deck">Known limits, stated before you find them.</p>
     </div>
@@ -234,7 +260,7 @@ import { formatDate } from "../utils/date";
       <ul>
         <li>The CV download is a labelled placeholder, not the real document.</li>
         <li>{trana.title} is on devnet, not mainnet.</li>
-        <li>The {planned.length} projects on the bench have no repositories yet, so they have no source links.</li>
+        <li>The {building.length} projects in progress have repositories being created; links may 404 until each is pushed.</li>
         <li>No GPG key is published. When there is a real one, it gets a real page.</li>
       </ul>
     </div>
