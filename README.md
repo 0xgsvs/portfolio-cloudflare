@@ -54,5 +54,4 @@ The site is a static Cloudflare Pages deployment: build with `bun run build`, pu
 
 - `public/cv-placeholder.pdf` is a labelled placeholder, not the real CV.
 - The guestbook opens a GitHub issue in a repository that must be public with Issues enabled.
-- No GPG key is published.
 - The four MVP projects are public but not production-ready.
