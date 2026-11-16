@@ -59,10 +59,10 @@ export const repos = [
   },
 ];
 
-export const building = [
+export const mvps = [
   {
     title: "pgjobq",
-    note: "Postgres-backed job queue: retries, dead-letter queue, cron scheduling.",
+    note: "Postgres-backed job queue: retries, dead-letter queue, and SKIP LOCKED workers.",
     repo: "https://github.com/0xgsvs/pgjobq",
   },
   {
@@ -89,6 +89,7 @@ export const tools = [
   { role: "Search", items: ["fzf"] },
   { role: "Navigation", items: ["Zoxide"] },
   { role: "Packaging", items: ["Nix"] },
+  { role: "Toolchain", items: ["mise"] },
   { role: "Version control", items: ["Jujutsu (jj)", "jjui"] },
 ];
 

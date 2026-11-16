@@ -4,14 +4,14 @@ Four deep projects, chosen 2026-11-16. Three are new Solana security tools; one 
 
 ## Selected
 
-| # | Repo | Type | Why |
-|---|---|---|---|
-| 1 | [`pgjobq`](https://github.com/0xgsvs/pgjobq) | Rust backend | Finish the existing `jobq`; proves production Rust, Postgres, and operability. |
-| 2 | [`solana-guard`](https://github.com/0xgsvs/solana-guard) | Security tool | Static analysis for Solana programs; flagship for the Rektoff direction. |
-| 3 | [`svm-fuzz`](https://github.com/0xgsvs/svm-fuzz) | Security tool | LiteSVM invariant fuzzer; deep testing and reproducible bug finding. |
-| 4 | [`svm-range`](https://github.com/0xgsvs/svm-range) | Security content | Vulnerable Solana programs with exploits, patches, and write-ups. |
+| # | Repo | Type | Status | Why |
+|---|---|---|---|---|
+| 1 | [`pgjobq`](https://github.com/0xgsvs/pgjobq) | Rust backend | MVP | Finish the existing `jobq`; proves production Rust, Postgres, and operability. |
+| 2 | [`solana-guard`](https://github.com/0xgsvs/solana-guard) | Security tool | MVP | Static analysis for Solana programs; flagship for the Rektoff direction. |
+| 3 | [`svm-fuzz`](https://github.com/0xgsvs/svm-fuzz) | Security tool | MVP | LiteSVM invariant fuzzer; deep testing and reproducible bug finding. |
+| 4 | [`svm-range`](https://github.com/0xgsvs/svm-range) | Security content | MVP | Vulnerable Solana programs with exploits, patches, and write-ups. |
 
-The four repository URLs are the agreed names and all four are public. The projects are still in progress; the site labels them as building until each has a README, tests, and a working artifact.
+All four repositories are public and contain MVPs. They are in progress, not production-ready; the site labels them accordingly.
 
 The order above is the build order. Ship `pgjobq` first for a quick public win, then the security suite.
 
@@ -156,4 +156,4 @@ Every selected repo ships with:
 
 Add a project to the site only when it is public, has a README, has passing tests, and has one verifiable artifact: a demo, a report, a benchmark, or a published package. Do not add planned repos as shipped work.
 
-The site's current "on the bench" list should be replaced with the selected projects once their repos exist.
+The selected projects are linked from the home page; keep them labelled MVP until production-ready.

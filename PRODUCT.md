@@ -21,7 +21,7 @@ Undecided: no formal one-sentence positioning statement has been confirmed. The 
 ## Operating Context
 
 - Built with Astro as a static site and published at https://0xgsvs.dev.
-- Content lives in the repository: profile, work, stack, and building items in `src/data/site.ts`; posts in `src/data/posts.ts`.
+- Content lives in the repository: profile, work, stack, and MVP items in `src/data/site.ts`; posts in `src/data/posts.ts`.
 - Public identity: GitHub `0xgsvs`, email `venkat.subrahmanyam.34@gmail.com`.
 - Additional public work: https://github.com/ChaosCore-labs/Trana_Protocol.
 - The site is also usable from a terminal: `curl -L https://0xgsvs.dev/contact.txt` returns a vCard.
@@ -35,7 +35,7 @@ Undecided: no formal one-sentence positioning statement has been confirmed. The 
 - No RSS feed exists.
 - A CV download is present as a labelled placeholder PDF until the real document is supplied.
 - Decorative motion respects `prefers-reduced-motion`; the command palette is a native modal dialog with keyboard navigation and restored focus.
-- Open: the four projects on the homepage are labelled as building, not shipped. Their public repositories exist; implementation starts next.
+- Open: the four projects on the homepage are labelled as public MVPs, not production. Their repositories contain working MVPs.
 - Open: no GPG key is published. The previous placeholder page and file were removed rather than shipped as a real key.
 - Open: four projects are selected; see `PROJECTS.md` for scope, milestones, and proof.
 
@@ -51,7 +51,7 @@ Undecided: no formal one-sentence positioning statement has been confirmed. The 
 - Professional experience includes Rust API services, WebSocket systems, blockchain indexing, Docker, and metrics with Prometheus and Grafana.
 - Three on-site articles under `/writing`.
 - `public/contact.txt` vCard and `public/cv-placeholder.pdf`.
-- Absent: the real CV, a real GPG key, repositories for the four projects in progress, and any testimonials, case studies, or benchmarks. Do not fabricate them.
+- Absent: the real CV, a real GPG key, production hardening for the four MVP projects, and any testimonials, case studies, or benchmarks. Do not fabricate them.
 
 ## Product Principles
 

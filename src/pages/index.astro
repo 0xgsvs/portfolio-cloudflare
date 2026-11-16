@@ -2,7 +2,7 @@
 import Manual from "../layouts/Manual.astro";
 import ActivityTrace from "../components/ActivityTrace.astro";
 import CommandLine from "../components/CommandLine.astro";
-import { site, trana, repos, building, stack, leisure, homeSections } from "../data/site";
+import { site, trana, repos, mvps, stack, leisure, homeSections } from "../data/site";
 import { posts } from "../data/posts";
 import { formatDate } from "../utils/date";
 ---
@@ -133,6 +133,18 @@ import { formatDate } from "../utils/date";
       </div>
     </article>
 
+    <div class="planned">
+      <p class="planned-title">Public MVPs · in progress</p>
+      <ul>
+        {mvps.map((item) => (
+          <li>
+            <strong><a href={item.repo} target="_blank" rel="noopener noreferrer">{item.title} ↗</a></strong>
+            <span>{item.note}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
     <ul class="repo-list" aria-label="Public repositories">
       {repos.map((repo) => (
         <li>
@@ -144,18 +156,6 @@ import { formatDate } from "../utils/date";
         </li>
       ))}
     </ul>
-
-    <div class="planned">
-      <p class="planned-title">Building now · public repos, not shipped</p>
-      <ul>
-        {building.map((item) => (
-          <li>
-            <strong><a href={item.repo} target="_blank" rel="noopener noreferrer">{item.title} ↗</a></strong>
-            <span>{item.note}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
   </section>
 
   <section class="section" id="writing">
@@ -266,7 +266,7 @@ import { formatDate } from "../utils/date";
       <ul>
         <li>The CV download is a labelled placeholder, not the real document.</li>
         <li>{trana.title} is on devnet, not mainnet.</li>
-        <li>The {building.length} projects in progress have public repositories; none are shipped yet.</li>
+        <li>The {mvps.length} projects have public MVPs; none are production-ready.</li>
         <li>No GPG key is published. When there is a real one, it gets a real page.</li>
       </ul>
     </div>
