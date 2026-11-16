@@ -9,12 +9,13 @@ import { tools } from "../data/site";
   manTitle="Tools"
   manNumber="1"
   sectionLabel="User Commands"
-  tagline="The current terminal setup, grouped by what each one does."
+  tagline="Personal terminal setup. The professional stack lives on the home page."
   activeNav="tools"
   index={[{ id: "roles", label: "Roles", n: "01" }]}
 >
   <Fragment slot="actions">
     <a class="action" href="/">Back to the manual</a>
+    <a class="action" href="/#description">Stack</a>
     <a class="action" href="/contact">Contact</a>
   </Fragment>
 
@@ -22,7 +23,7 @@ import { tools } from "../data/site";
     <div class="section-head">
       <span class="section-num">01</span>
       <h2>Roles</h2>
-      <p class="section-deck">Tools earn their place by shortening the loop. This list changes when they stop.</p>
+      <p class="section-deck">Arch, NixOS, and the terminal choices that keep the loop short. Personal, not the professional stack.</p>
     </div>
     <dl class="files">
       {tools.map((group) => (

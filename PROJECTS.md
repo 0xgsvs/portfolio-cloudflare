@@ -11,7 +11,7 @@ Four deep projects, chosen 2026-11-16. Three are new Solana security tools; one 
 | 3 | [`svm-fuzz`](https://github.com/0xgsvs/svm-fuzz) | Security tool | LiteSVM invariant fuzzer; deep testing and reproducible bug finding. |
 | 4 | [`svm-range`](https://github.com/0xgsvs/svm-range) | Security content | Vulnerable Solana programs with exploits, patches, and write-ups. |
 
-The four repository URLs are the agreed names; the repositories are being created. The site labels them as building until each has a README, tests, and a pushed commit.
+The four repository URLs are the agreed names and all four are public. The projects are still in progress; the site labels them as building until each has a README, tests, and a working artifact.
 
 The order above is the build order. Ship `pgjobq` first for a quick public win, then the security suite.
 

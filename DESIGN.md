@@ -231,7 +231,7 @@ Every control and surface is a rectangle with 0 radius. Borders are 1px. There a
 - **Shape:** Full-width rows, Hairline dividers, date in an 7.5rem first column, title in the display face, arrow at the end, excerpt beneath the title. Hover fills Sunk Paper, never lifts.
 
 ### Leisure Index
-- **Shape:** Three-column grid at desktop, one column below 860px. Each group has a 1px Press Ink top rule, an uppercase mono label, Hairline row dividers, and title-left/status-right rows. No cards, imagery, or album art.
+- **Shape:** Three-column grid at desktop, one column below 860px. Each group has a 1px Press Ink top rule, an uppercase mono label, Hairline row dividers, and title-left/status-right rows. A single muted "Also exploring" line closes the section. No cards, imagery, or album art.
 
 ### Facts Table
 - **Shape:** A 1px Press Ink top rule and Hairline row dividers; labels in uppercase muted mono at left, values right-aligned in 600 mono. Long hashes break anywhere; rows align to the top.

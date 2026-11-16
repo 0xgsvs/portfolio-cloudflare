@@ -86,8 +86,23 @@ export const tools = [
   { role: "Terminal", items: ["Ghostty"] },
   { role: "Editors", items: ["Neovim", "Helix"] },
   { role: "Multiplexer", items: ["Zellij"] },
+  { role: "Search", items: ["fzf"] },
   { role: "Navigation", items: ["Zoxide"] },
+  { role: "Packaging", items: ["Nix"] },
   { role: "Version control", items: ["Jujutsu (jj)", "jjui"] },
+];
+
+export const stack = [
+  { role: "Languages", items: ["Rust", "TypeScript", "SQL"] },
+  { role: "Solana", items: ["Anchor", "LiteSVM", "Solana CLI", "SPL Token"] },
+  {
+    role: "Backend & APIs",
+    items: ["Tokio", "Axum", "SQLx", "WebSockets", "REST APIs"],
+  },
+  { role: "Data & indexing", items: ["Blockchain indexing", "PostgreSQL"] },
+  { role: "Observability", items: ["Prometheus", "Grafana"] },
+  { role: "Infrastructure", items: ["Docker", "Nix", "Linux", "Git"] },
+  { role: "Web", items: ["Astro", "HTML", "CSS"] },
 ];
 
 export const leisure = [

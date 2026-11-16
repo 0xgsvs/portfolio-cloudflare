@@ -2,7 +2,7 @@
 import Manual from "../layouts/Manual.astro";
 import ActivityTrace from "../components/ActivityTrace.astro";
 import CommandLine from "../components/CommandLine.astro";
-import { site, trana, repos, building, tools, leisure, homeSections } from "../data/site";
+import { site, trana, repos, building, stack, leisure, homeSections } from "../data/site";
 import { posts } from "../data/posts";
 import { formatDate } from "../utils/date";
 ---
@@ -78,19 +78,24 @@ import { formatDate } from "../utils/date";
         one.
       </p>
       <p>
+        Professionally, I have worked across Rust API services, WebSocket systems, blockchain
+        indexing, and metrics with Prometheus and Grafana.
+      </p>
+      <p>
         {trana.parent} lives under ChaosCore Labs. It ships to devnet, keeps every payout fully
         collateralised, and runs its tests in-process against the same binary it deploys.
       </p>
       <p>
-        The rest of the setup is Linux: Arch as the daily driver, NixOS as the second boot, and
-        dotfiles kept in public. I write when a problem deserves a record.
+        The work happens on Linux with Nix-built environments. The personal terminal setup lives on
+        the tools page; I write when a problem deserves a record.
       </p>
       <h3 class="subhead">Stack</h3>
-      <ul class="tool-list">
-        {tools.map((group) => (
+      <ul class="stack-list">
+        {stack.map((group) => (
           <li><strong>{group.role}</strong> {group.items.join(" · ")}</li>
         ))}
       </ul>
+      <p><a class="more" href="/tools">Personal tools</a></p>
     </div>
   </section>
 
@@ -141,7 +146,7 @@ import { formatDate } from "../utils/date";
     </ul>
 
     <div class="planned">
-      <p class="planned-title">Building now · repositories being created</p>
+      <p class="planned-title">Building now · public repos, not shipped</p>
       <ul>
         {building.map((item) => (
           <li>
@@ -195,6 +200,7 @@ import { formatDate } from "../utils/date";
         </div>
       ))}
     </div>
+    <p class="leisure-note"><strong>Also exploring</strong> · homelab and self-hosting</p>
   </section>
 
   <section class="section" id="examples">
@@ -260,7 +266,7 @@ import { formatDate } from "../utils/date";
       <ul>
         <li>The CV download is a labelled placeholder, not the real document.</li>
         <li>{trana.title} is on devnet, not mainnet.</li>
-        <li>The {building.length} projects in progress have repositories being created; links may 404 until each is pushed.</li>
+        <li>The {building.length} projects in progress have public repositories; none are shipped yet.</li>
         <li>No GPG key is published. When there is a real one, it gets a real page.</li>
       </ul>
     </div>
@@ -299,18 +305,18 @@ import { formatDate } from "../utils/date";
       text-transform: uppercase;
       color: var(--ink-3);
     }
-    .tool-list {
+    .stack-list {
       list-style: none;
       margin: 0;
       border-top: 1px solid var(--hair);
       max-width: 46rem;
     }
-    .tool-list li {
+    .stack-list li {
       padding: 0.45rem 0;
       border-bottom: 1px solid var(--hair);
       font-size: var(--text-sm);
     }
-    .tool-list strong {
+    .stack-list strong {
       display: inline-block;
       min-width: 11rem;
       font-size: var(--text-xs);
