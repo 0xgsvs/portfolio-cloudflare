@@ -11,7 +11,7 @@ Scope: the public site, home first. Mode: Experience. Audience: recruiters, deve
 
 Product: Venkat Sundaraneedi, Rust and Solana systems engineer. Real proof: Trana Protocol (Freight Delay) deployed on Solana devnet with 38 passing tests, the `0xgsvs` GitHub body of work, three written articles, and contact routes. Planned projects stay labelled as planned.
 
-Chosen direction: Manual Page (candidate 3 of 7 grounded directions). Memorable moment: the command line palette and the persistent margin index. Unresolved: the CV file is a labelled placeholder; the four MVPs are not production-ready.
+Chosen direction: Manual Page (candidate 3 of 7 grounded directions). Memorable moment: the command line palette and the persistent margin index. Unresolved: the CV file is a labelled placeholder; the four projects are personal MVPs by design.
 
 ## Direction contract
 

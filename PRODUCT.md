@@ -35,7 +35,7 @@ Undecided: no formal one-sentence positioning statement has been confirmed. The 
 - No RSS feed exists.
 - A CV download is present as a labelled placeholder PDF until the real document is supplied.
 - Decorative motion respects `prefers-reduced-motion`; the command palette is a native modal dialog with keyboard navigation and restored focus.
-- Open: the four projects on the homepage are labelled as public MVPs, not production. Their repositories contain working MVPs.
+- Open: the four projects on the homepage are labelled as personal projects with public MVPs; production hardening is out of scope.
 - Open: four projects are selected; see `PROJECTS.md` for scope, milestones, and proof.
 
 ## Brand Commitments
@@ -50,7 +50,7 @@ Undecided: no formal one-sentence positioning statement has been confirmed. The 
 - Professional experience includes Rust API services, WebSocket systems, blockchain indexing, Docker, and metrics with Prometheus and Grafana.
 - Three on-site articles under `/writing`.
 - `public/contact.txt` vCard and `public/cv-placeholder.pdf`.
-- Absent: the real CV, production hardening for the four MVP projects, and any testimonials, case studies, or benchmarks. Do not fabricate them.
+- Absent: the real CV, and any testimonials, case studies, or benchmarks. The four projects are personal MVPs by design, not production services.
 
 ## Product Principles
 

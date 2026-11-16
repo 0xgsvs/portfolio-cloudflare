@@ -11,7 +11,7 @@ Four deep projects, chosen 2026-11-16. Three are new Solana security tools; one 
 | 3 | [`svm-fuzz`](https://github.com/0xgsvs/svm-fuzz) | Security tool | MVP | LiteSVM invariant fuzzer; deep testing and reproducible bug finding. |
 | 4 | [`svm-range`](https://github.com/0xgsvs/svm-range) | Security content | MVP | Vulnerable Solana programs with exploits, patches, and write-ups. |
 
-All four repositories are public and contain MVPs. They are in progress, not production-ready; the site labels them accordingly.
+All four repositories are public and contain MVPs. They are personal projects; production hardening is out of scope.
 
 The order above is the build order. Ship `pgjobq` first for a quick public win, then the security suite.
 
@@ -156,4 +156,4 @@ Every selected repo ships with:
 
 Add a project to the site only when it is public, has a README, has passing tests, and has one verifiable artifact: a demo, a report, a benchmark, or a published package. Do not add planned repos as shipped work.
 
-The selected projects are linked from the home page; keep them labelled MVP until production-ready.
+The selected projects are linked from the home page; keep them labelled as personal MVPs.
