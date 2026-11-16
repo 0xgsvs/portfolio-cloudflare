@@ -84,12 +84,14 @@ export const mvps = [
 
 export const tools = [
   { role: "Terminal", items: ["Ghostty"] },
+  { role: "Shells", items: ["Fish", "Nushell"] },
   { role: "Editors", items: ["Neovim", "Helix"] },
   { role: "Multiplexer", items: ["Zellij"] },
   { role: "Search", items: ["fzf"] },
   { role: "Navigation", items: ["Zoxide"] },
   { role: "Packaging", items: ["Nix"] },
   { role: "Toolchain", items: ["mise"] },
+  { role: "Keyboard", items: ["KMonad"] },
   { role: "Version control", items: ["Jujutsu (jj)", "jjui"] },
 ];
 
